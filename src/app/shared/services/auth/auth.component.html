@@ -1,0 +1,66 @@
+<div class="main">
+    <section class="signup">
+
+        <div class="container">
+            <div class="signup-content">
+
+                <app-list-errors [errors]="errors"></app-list-errors>
+                <form [formGroup]="authForm" (ngSubmit)="submitForm()" id="signup-form" class="signup-form">
+                    <h2 class="form-title">{{ title }}</h2>
+
+
+                    <mat-form-field *ngIf="authType == 'register'" appearance="outline" class="example-chip-list">
+                        <mat-label>Username for login</mat-label>
+                        <input matInput formControlName="username">
+                        <mat-icon matSuffix><i class="fas fa-user-tie"></i></mat-icon>
+                    </mat-form-field>
+
+
+
+
+                    <mat-form-field *ngIf="authType == 'register'" appearance="outline" class="example-chip-list">
+                        <mat-label>Displayed Name</mat-label>
+                        <input matInput formControlName="name">
+                        <mat-icon matSuffix><i class="fas fa-user-tie"></i></mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field *ngIf="authType == 'register'" appearance="outline" class="example-chip-list">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email">
+                        <mat-icon matSuffix><i class="fas fa-envelope"></i></mat-icon>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field *ngIf="authType == 'login'" appearance="outline" class="example-chip-list">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="usernameOrEmail">
+                        <mat-icon matSuffix><i class="fas fa-envelope"></i></mat-icon>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field appearance="outline" class="example-chip-list">
+                        <mat-label>Enter your password</mat-label>
+                        <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+                        <button mat-icon-button matSuffix (click)="hide = !hide;$event.preventDefault()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon><i [ngClass]="hide ? 'fas fa-eye-slash' : 'fas fa-eye'"></i></mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" [class.spinner]="isSubmitting" [disabled]="!authForm.valid||isSubmitting" type="submit">
+                        {{ title }}
+                    </button>
+                </form>
+
+                <p class="loginhere">
+                    <a [routerLink]="['/login']" class="loginhere-link" *ngIf="authType == 'register'">Have an account?</a>
+                    <a [routerLink]="['/register']" class="loginhere-link" *ngIf="authType == 'login'">Need an account?</a>
+                </p>
+
+            </div>
+        </div>
+
+    </section>
+</div>

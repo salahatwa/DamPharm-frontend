@@ -1,0 +1,39 @@
+{
+  "intro": "دام فارم",
+  "change":{"language":"اختر اللغه"},
+  "form":{
+    "button":{
+    "login":"تسجيل الدخول"
+    },
+    "label":{
+      "email":"البريد الإلكترونى",
+      "password":"كلمة المرور"
+    }
+  },
+  "sidebar":
+  {
+   "menu":
+   {
+    "dashboard":"الصفحه الرئيسيه",
+    "products":"المنتجات",
+    "customers":"العملاء",
+    "profile":"الملف الشخصى"
+   }
+  },
+  "navbar":{
+    "language":{
+      "arabic":"عربى",
+      "english":"إنجليزى"
+    }
+  },
+  "dashboard":{
+    "title":"الصفحه الرئيسيه",
+    "space":"المساحه المستخدمه",
+    "revenue":"العائد",
+    "fixedIssue":"المشاكل المنتهيه",
+    "followers":"المتابعين"
+  },
+  "profile":{
+    "title":"الملف الشخصى"
+  }
+}

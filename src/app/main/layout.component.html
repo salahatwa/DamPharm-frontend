@@ -1,0 +1,22 @@
+<div class="wrapper">
+  <div
+    class="sidebar"
+    data-color="danger"
+    data-background-color="white"
+    data-image="./assets/img/sidebar-1.jpg"
+  >
+    <app-inma-sidebar></app-inma-sidebar>
+    <!-- <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div> -->
+  </div>
+  <div [ngClass]="isRTL ? 'main-panel-rtl' : 'main-panel'">
+    <app-inma-navbar></app-inma-navbar>
+    <div class="main-content">
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <!-- <div *ngIf="isMaps('maps')">
+            <app-footer></app-footer>
+        </div> -->
+  </div>
+</div>

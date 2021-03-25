@@ -1,0 +1,19 @@
+<div *ngIf="page" class="card-actions align-items-center justify-content-end">
+    <span class="align-self-center mb-1 mx-1 text-muted">Elements per page:</span>
+
+    <mat-select style="width: 6%;" [(value)]="selected" (selectionChange)="updatePageSize($event.value)">
+        <mat-option value="5">5</mat-option>
+        <mat-option value="25">25</mat-option>
+        <mat-option value="50">50</mat-option>
+    </mat-select>
+
+    <span class="align-self-center mb-1 mr-2 text-muted">
+     Shows {{page.numberOfElements}} of {{page.totalElements}}
+    </span>
+    <a class="btn btn-outline" [ngClass]="{'disabled': page.first }" [routerLink]="" (click)="previousPage()">
+        <i class="fas fa-angle-double-left"></i>
+    </a>
+    <a class="btn btn-outline" [ngClass]="{'disabled': page.last }" [routerLink]="" (click)="nextPage()">
+        <i class="fas fa-angle-double-right"></i>
+    </a>
+</div>

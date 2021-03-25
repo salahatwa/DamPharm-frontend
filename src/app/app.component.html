@@ -1,0 +1,14 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<ng-progress [color]="'#522D24'" [direction]="progressDir" [spinnerPosition]="spinnerPos" #myProgress></ng-progress>
+<!-- <ng-progress id="myProgress"></ng-progress> -->
+<!-- <button (click)="myProgress.start()">Start</button>
+<button (click)="myProgress.complete()">Complete</button>
+<button class="chip" (click)="testHttp()" [disabled]="preventAbuse">
+    {{ preventAbuse ? 'Wait...' : 'Test Http Request' }}
+  </button> -->
+<router-outlet></router-outlet>
+<div class="uk-overlay-default uk-position-cover">
+    <div class="uk-position-center">
+        <div uk-spinner></div>
+    </div>
+</div>

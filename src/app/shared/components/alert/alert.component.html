@@ -1,0 +1,46 @@
+<ng-container *ngFor="let alert of alerts">
+  <ng-container *ngIf="alert.alertType === alertType.DEFAULT">
+    <ng-container
+      [ngTemplateOutlet]="default"
+      [ngTemplateOutletContext]="{ alert: alert }"
+    ></ng-container>
+  </ng-container>
+  <ng-container *ngIf="alert.alertType === alertType.ALINMA">
+    <ng-container
+      [ngTemplateOutlet]="alinma"
+      [ngTemplateOutletContext]="{ alert: alert }"
+    ></ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #default let-alert="alert">
+  <span class="ml-3 small" class="{{ cssClass(alert) }}">
+    <!-- <i-feather *ngIf="alert.msgType===msgType.Success" name="check-circle" class="icon-sm">
+        </i-feather> -->
+    <span *ngIf="alert.msgType === msgType.Success" class="material-icons">
+      check_circle_outline
+    </span>
+    <span *ngIf="alert.msgType === msgType.Error" class="material-icons">
+      error_outline
+    </span>
+
+    {{ alert.message }}
+  </span>
+</ng-template>
+
+<ng-template #alinma let-alert="alert">
+  <div class="{{ cssClass(alert) }}">
+    <div class="media">
+
+        <span *ngIf="alert.msgType === msgType.Success" class="material-icons icon-sm text-fresh-mint align-self-center mr-3">
+            check_circle_outline
+          </span>
+          <span *ngIf="alert.msgType === msgType.Error" class="material-icons icon-sm text-coral-red align-self-center mr-3">
+            error_outline
+          </span>
+
+
+      <div class="media-body">{{ alert.message }}</div>
+    </div>
+  </div>
+</ng-template>

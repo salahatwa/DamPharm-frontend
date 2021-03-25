@@ -1,0 +1,9 @@
+<button
+  mat-raised-button
+  color="primary"
+  [class.spinner]="preventAbuse"
+  (click)="testHttp()"
+  [disabled]="preventAbuse"
+>
+  {{ preventAbuse ? "Wait..." : "Test Http Request" }}
+</button>

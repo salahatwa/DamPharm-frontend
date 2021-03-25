@@ -1,0 +1,53 @@
+
+<!-- <div class="main-content"> -->
+    
+<!-- </div> -->
+
+<div class="main">
+  <div class="container-fluid jumbotron vertical-center container" style="padding-top: 10px;background-color: #F4F2F0;">
+
+          <div class="signup-content">
+
+              <form [formGroup]="authForm" (ngSubmit)="submitForm()" id="signup-form" class="signup-form">
+               
+                   
+                <h2 class="form-title"><img src="./assets/images/inmaInvest.png"  class="card-img">
+                    <h6 class="form-title">   
+                        <mat-button-toggle-group [(value)] = "selectedLang"  appearance="legacy" name="fontStyle" aria-label="Font Style">
+                                <mat-button-toggle value="ar" (change)="useLanguage('ar')">{{'navbar.language.arabic'|translate}}</mat-button-toggle>
+                                <mat-button-toggle value="en" (change)="useLanguage('en')">{{'navbar.language.english'|translate}}</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </h6>
+                </h2>
+                
+                 
+
+                  <alert></alert>
+
+                  <mat-form-field  appearance="fill" class="example-chip-list">
+                      <mat-label>{{'form.label.email' | translate}}</mat-label>
+                      <input matInput formControlName="username">
+                      <mat-icon matSuffix><i class="material-icons">email</i></mat-icon>
+                  </mat-form-field>
+
+
+
+                  <mat-form-field appearance="fill" class="example-chip-list">
+                      <mat-label>{{'form.label.password' | translate}}</mat-label>
+                      <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+                      <mat-icon *ngIf="hide" matSuffix><i class="material-icons" style="cursor: pointer;" (click)="hide = !hide;$event.preventDefault()" >visibility_off</i></mat-icon>
+                      <mat-icon *ngIf="!hide" matSuffix><i class="material-icons" style="cursor: pointer;" (click)="hide = !hide;$event.preventDefault()" >visibility</i></mat-icon>
+                  </mat-form-field>
+
+                  <button mat-raised-button color="primary" [class.spinner]="isSubmitting" [disabled]="!authForm.valid||isSubmitting" type="submit">
+                    {{'form.button.login' | translate}}
+                  </button>
+              </form>
+
+              <p class="loginhere">
+              </p>
+
+          </div>
+
+</div>
+</div> 
