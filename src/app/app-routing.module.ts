@@ -4,11 +4,11 @@ import { AppLayoutModule } from './main/app-layout.module';
 import { CustomerComponent } from './main/customer/customer.component';
 import { DashboardComponent } from './main/dashboard/dashboard.component';
 import { LayoutComponent } from './main/layout.component';
-import { ProductComponent } from './main/product/product.component';
 import { ProfileComponent } from './main/profile/profile.component';
 import { AboutComponent } from './shared/components/about.component';
 import { ErrorComponent } from './shared/components/error.component';
 import { AuthGuard } from './shared/services/auth/auth-guard.service';
+import { CategoriesComponent } from './main/categories/categories.component';
 
 
 @NgModule({
@@ -37,8 +37,8 @@ import { AuthGuard } from './shared/services/auth/auth-guard.service';
             loadChildren: () => AppLayoutModule
           },
           {
-            path: 'product',
-            component: ProductComponent,
+            path: 'categories',
+            component: CategoriesComponent,
             loadChildren: () => AppLayoutModule
           },
           {

@@ -1,16 +1,21 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UtilsService } from '../services/utils.service';
-import { MatrialModule } from './matrial.module';
-import { ApiService } from '../services/api.service';
+import { Title } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { AlertModule } from '../components/alert/alert.module';
 import { NavbarModule } from '../components/navbar/navbar.module';
 import { SidebarModule } from '../components/sidebar/sidebar.module';
-import { Title } from '@angular/platform-browser';
-import { NgProgress, NgProgressRef } from 'ngx-progressbar';
-import { AlertModule } from '../components/alert/alert.module';
+import { ApiService } from '../services/api.service';
+import { UtilsService } from '../services/utils.service';
+import { ConfirmDialogComponent } from './../components/confirm-dialog/confirm-dialog.component';
+import { SectionLoadingComponent } from './../components/loading/section-loading.component';
+import { NoResultFound } from './../components/no-result-found.component';
+import { MatrialModule } from './matrial.module';
+
 
 @NgModule({
   imports: [
@@ -22,12 +27,14 @@ import { AlertModule } from '../components/alert/alert.module';
     MatrialModule,
     NavbarModule,
     SidebarModule,
-    AlertModule
+    AlertModule,
+    NgxPaginationModule,
+    NgbModalModule,
   ],
   declarations: [
-    
+    SectionLoadingComponent, ConfirmDialogComponent, NoResultFound
   ],
-  providers: [Title,UtilsService,ApiService],
+  providers: [Title, UtilsService, ApiService],
   exports: [
     CommonModule,
     FormsModule,
@@ -36,7 +43,12 @@ import { AlertModule } from '../components/alert/alert.module';
     NavbarModule,
     TranslateModule,
     MatrialModule,
-    AlertModule
+    AlertModule,
+    NgxPaginationModule,
+    SectionLoadingComponent,
+    NgbModalModule,
+    ConfirmDialogComponent,
+    NoResultFound
   ]
 })
 export class SharedModule { }

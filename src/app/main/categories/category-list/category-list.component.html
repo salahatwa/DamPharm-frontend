@@ -1,0 +1,40 @@
+<div class="card mt-5">
+  <div class="card-body">
+    <h6 class="text-center">List of Categories</h6>
+
+    <alert [id]="alert.id"></alert>
+
+    <app-section-loading [isLoading]="loading"></app-section-loading>
+    <table class="table table-sm table-hover">
+      <tbody>
+        <tr *ngFor="let category of categoryList | paginate: page;let i=index">
+          <td>{{ category.name }}</td>
+          <td>{{ category.description }}</td>
+          <td>
+            <a
+              class="btn btn-secondary text-white p-1"
+              (click)="onEdit(category,i)"
+            >
+              <i class="material-icons md-18">mode_edit_outline</i>
+            </a>
+          </td>
+          <td>
+            <a
+              class="btn btn-danger text-white p-1"
+              (click)="onDelete(category,i)"
+            >
+              <i class="material-icons md-18">delete_outline</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <app-no-result-found [display]="categoryList.length<=0"></app-no-result-found> -->
+
+ 
+    <pagination-controls *ngIf="categoryList.length>0"
+      (pageChange)="getPage($event)"
+      id="{{ page.id }}"
+    ></pagination-controls>
+  </div>
+</div>

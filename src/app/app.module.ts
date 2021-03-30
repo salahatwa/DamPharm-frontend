@@ -13,6 +13,7 @@ import { LayoutComponent } from './main/layout.component';
 import { SharedModule } from './shared/modules/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // npm install --save notyf
 // ng serve -prod
@@ -31,7 +32,8 @@ import { NgProgressHttpModule } from 'ngx-progressbar/http';
     MainModule,
     AppRoutingModule,
     TranslationModule,
-    SharedModule
+    SharedModule,
+    
   ],
   providers: [Title, Config, DatePipe],
   bootstrap: [AppComponent]

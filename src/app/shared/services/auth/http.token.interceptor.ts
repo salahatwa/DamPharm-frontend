@@ -1,14 +1,15 @@
-import { Injectable, Injector } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-
-import { catchError } from 'rxjs/operators';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { UtilsService } from '../utils.service';
 import { JwtService } from './jwt.service';
+
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
-  constructor(private jwtService: JwtService,private router:Router) {}
+  constructor(private jwtService: JwtService, private router: Router, private utilService: UtilsService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const headersConfig = {
@@ -24,14 +25,22 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       headersConfig['Authorization'] = `Bearer ${token}`;
     }
 
+    const lang = this.utilService.getCurrentLang();
+
+    if (lang) {
+      headersConfig['Accept-Language'] = `${lang}`;
+    } else
+
+      headersConfig['Accept-Language'] = `ar`;
+
     // console.log('TOKEN:'+token);
 
-    const request = req.clone({ setHeaders: headersConfig,withCredentials: false});
-  
+    const request = req.clone({ setHeaders: headersConfig, withCredentials: false });
+
     return next.handle(request).pipe(
       catchError(
         (err, caught) => {
-          if (err.status === 401){
+          if (err.status === 401) {
             this.handleAuthError();
             return of(err);
           }

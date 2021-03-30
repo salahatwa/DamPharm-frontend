@@ -93,8 +93,8 @@ export class AlertComponent implements OnInit, OnDestroy {
 
         if (alert.alertType == AlertType.ALINMA) {
             msgTypeClass = {
-                [MsgType.Success]: 'alert bg-fresh-mint-20 bg-white border-1 border-fresh-mint border-left-5 p-2',
-                [MsgType.Error]: 'alert bg-coral-red-20 bg-white border-1 border-coral-red border-left-5 p-2',
+                [MsgType.Success]: 'alert bg-fresh-mint-20 border-1 border-fresh-mint border-left-5 p-2',
+                [MsgType.Error]: 'alert bg-coral-red-20  border-1 border-coral-red border-left-5 p-2',
                 [MsgType.Info]: 'alert alert-info',
                 [MsgType.Warning]: 'alert alert-warning'
             }

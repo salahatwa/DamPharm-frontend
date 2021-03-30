@@ -13,7 +13,7 @@ declare const UIkit: any;
 declare const ipcRenderer: any;
 
 @Component({
-  selector: 'app-inma-root',
+  selector: 'app-dampharm-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

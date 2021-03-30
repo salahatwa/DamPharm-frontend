@@ -14,7 +14,7 @@
 </ng-container>
 
 <ng-template #default let-alert="alert">
-  <span class="ml-3 small" class="{{ cssClass(alert) }}">
+  <span class="small" class="{{ cssClass(alert) }}">
     <!-- <i-feather *ngIf="alert.msgType===msgType.Success" name="check-circle" class="icon-sm">
         </i-feather> -->
     <span *ngIf="alert.msgType === msgType.Success" class="material-icons">

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import 'moment/min/locales.min';
 // import { Headers, RequestOptions } from '@angular/common/http';
-import { Subscription, Subject, Observable } from 'rxjs';
-import { isUndefined } from 'lodash';
-import { Title } from '@angular/platform-browser';
+import { Observable, Subject, Subscription } from 'rxjs';
 // import { ErrorMessage } from '../../core/classes/errorMessage';
 
 declare var $: any;
@@ -17,11 +17,11 @@ export class UtilsService {
   //_notyf = new Notyf();
   _moment = moment;
 
-  private changeLangDir= new Subject();
+  private changeLangDir = new Subject();
   public changeLangDir$: Observable<{}> = this.changeLangDir.asObservable();
 
   constructor(
-    private translate: TranslateService,private titleService: Title
+    private translate: TranslateService, private titleService: Title
   ) { }
 
   /**
@@ -29,21 +29,21 @@ export class UtilsService {
    * @param titleKey 
    * @param onLangChange 
    */
-   setDocTitle(titleKey: string,onLangChange:boolean) {
-     if(onLangChange)
+  setDocTitle(titleKey: string, onLangChange: boolean) {
+    if (onLangChange)
       this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-        this.translate.get(titleKey).subscribe((text:string) => {
-        this.titleService.setTitle(this.translate.instant(text));
+        this.translate.get(titleKey).subscribe((text: string) => {
+          this.titleService.setTitle(this.translate.instant(text));
+        });
       });
-      });
-      else
+    else
       this.translate.get(titleKey).subscribe(
         translation => {
           this.titleService.setTitle(translation);
-        }); 
-   }
+        });
+  }
 
-  
+
 
   /**
     * Method to convert the file to base64
@@ -57,7 +57,7 @@ export class UtilsService {
     };
   }
 
-  
+
 
   loading(options: object): void {
     const defaultOpts = {
@@ -89,10 +89,10 @@ export class UtilsService {
   notyf(action: string, msg: string): void {
     switch (action) {
       case 'success':
-     //   this._notyf.confirm(msg);
+        //   this._notyf.confirm(msg);
         break;
       case 'failed':
-      //  this._notyf.alert(msg);
+        //  this._notyf.alert(msg);
         break;
 
       default:
@@ -118,29 +118,45 @@ export class UtilsService {
   /**
  * auto reload defualt lan
  */
-loadDefaultSetting()
-{
-  let lang:string = this.getCurrentLang();
-  if(lang&&lang!=null&&lang!='')
-  this.setLang(lang);
-  else
-  this.setLang('en');
-}
+  loadDefaultSetting() {
+    let lang: string = this.getCurrentLang();
+    if (lang && lang != null && lang != '')
+      this.setLang(lang);
+    else
+      this.setLang('en');
+  }
 
+  getRequestParams(page, pageSize,sortBy): any {
+    let params = {};
 
-  setLang(language: string): void {
+    if (page) {
+      params[`page`] = page - 1;
+    }
+
+    if (pageSize) {
+      params[`size`] = pageSize;
+    }
+
+    if (sortBy) {
+      params[`sortBy`] = sortBy;
+    }
+
+    return params;
+  }
+
+  setLang(language: string): string {
     this.translate.use(language);
     this._moment.locale(language);
     localStorage.setItem('language', language);
-    if(language==='ar')
+    if (language === 'ar')
       document.body.setAttribute("dir", "rtl");
     else
       document.body.setAttribute("dir", "ltr");
     this.changeLangDir.next(language);
+    return language;
   }
 
-  setDir()
-  {
+  setDir() {
     this.changeLangDir.next(this.getCurrentLang());
   }
 
@@ -149,7 +165,7 @@ loadDefaultSetting()
   }
 
 
- 
+
 
   get format(): string {
     return localStorage.getItem('format');
@@ -172,12 +188,11 @@ loadDefaultSetting()
 
 
   handleError(error: any): void {
-    console.log('*****************ERROR*********************\n'+JSON.stringify(error)+"\n*****************************");
-    if(!JSON.parse(error._body)&&JSON.parse(error._body).hasOwnProperty('errorDetails'))
-    {
-    //  var msg:ErrorMessage=JSON.parse(error._body);
-     console.log("Error:#:"+error);
-    //  this.notyf('failed',msg.message);
+    console.log('*****************ERROR*********************\n' + JSON.stringify(error) + "\n*****************************");
+    if (!JSON.parse(error._body) && JSON.parse(error._body).hasOwnProperty('errorDetails')) {
+      //  var msg:ErrorMessage=JSON.parse(error._body);
+      console.log("Error:#:" + error);
+      //  this.notyf('failed',msg.message);
     }
   }
 }

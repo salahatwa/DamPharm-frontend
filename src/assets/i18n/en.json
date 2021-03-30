@@ -1,41 +1,50 @@
 {
   "intro": "Dam Pharm",
-  "change":{"language":"Change Language"},
-  "form":{
-    "button":{
-    "login":"Login"
+  "change": { "language": "Change Language" },
+  "form": {
+    "button": {
+      "login": "Login"
     },
-    "label":{
-      "email":"Email",
-      "password":"Password"
+    "label": {
+      "email": "Email",
+      "password": "Password"
     }
   },
-  "sidebar":
-  {
-   "menu":
-   {
-    "dashboard":"Dashboard",
-    "products":"Products",
-    "customers":"Customers",
-    "profile":"Profile"
-   }
-  },
-  "navbar":{
-    "language":{
-      "arabic":"Arabic",
-      "english":"English"
+  "sidebar": {
+    "menu": {
+      "dashboard": "Dashboard",
+      "categories": "Categories",
+      "products": "Products",
+      "customers": "Customers",
+      "profile": "Profile"
     }
   },
-  "dashboard":{
-    "title":"Dashboard",
-    "space":"Used Space",
-    "revenue":"Revenue",
-    "fixedIssue":"Fixed Issues",
-    "followers":"Followers"
+  "navbar": {
+    "language": {
+      "arabic": "Arabic",
+      "english": "English"
+    }
   },
-  "profile":{
-    "title":"Profile"
+  "dashboard": {
+    "title": "Dashboard",
+    "space": "Used Space",
+    "revenue": "Revenue",
+    "fixedIssue": "Fixed Issues",
+    "followers": "Followers"
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "notify": {
+    "success": {
+      "add": "Data has been saved successfully",
+      "update": "Data has been Updated successfully",
+      "delete": "Data has been deleted successfully"
+    }
+  },
+  "common": {
+    "search": {
+      "emptyResult": "No Data Found"
+    }
   }
-
-
 }

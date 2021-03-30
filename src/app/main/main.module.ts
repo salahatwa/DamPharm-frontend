@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CustomerModule } from './customer/customer.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { LoginModule } from './login/login.module';
-import { ProductModule } from './product/product.module';
+import { CategoriesModule } from './categories/categories.module';
 import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
@@ -13,7 +13,7 @@ import { ProfileModule } from './profile/profile.module';
     DashboardModule,
     ProfileModule,
     CustomerModule,
-    ProductModule
+    CategoriesModule
   ]
 })
 export class MainModule { }

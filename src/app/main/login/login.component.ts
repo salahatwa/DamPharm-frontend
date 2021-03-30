@@ -21,12 +21,13 @@ class AuthenticationRequest {
   providers: [UserService, ApiService, JwtService]
 })
 export class LoginComponent {
+  
   hide = true;
   title: String = '';
   errors: [];
   isSubmitting = false;
   authForm: FormGroup;
-  selectedLang: string = 'en';
+  selectedLang: string = 'ar';
 
   constructor(
     private route: ActivatedRoute,
@@ -69,8 +70,18 @@ export class LoginComponent {
 
   }
 
-  useLanguage(language: string) {
-    this.utilService.setLang(language);
+  switchLang() {
+
+    this.selectedLang = this.utilService.getCurrentLang();
+
+    if (this.selectedLang == "ar")
+
+      this.selectedLang = this.utilService.setLang("en");
+
+    else if (this.selectedLang == "en")
+
+      this.selectedLang = this.utilService.setLang("ar");
+
   }
 
 }

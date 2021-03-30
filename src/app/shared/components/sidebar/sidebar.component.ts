@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
      */
     this.menuItems = [
       { path: '/dashboard', title: 'sidebar.menu.dashboard', icon: 'dashboard', class: '' },
-      { path: '/product', title: 'sidebar.menu.products', icon: 'production_quantity_limits', class: '' },
+      { path: '/categories', title: 'sidebar.menu.categories', icon: 'production_quantity_limits', class: '' },
       { path: '/customer', title: 'sidebar.menu.customers', icon: 'people_outline', class: '' },
       { path: '/profile', title: 'sidebar.menu.profile', icon: 'person', class: '' },
       // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
