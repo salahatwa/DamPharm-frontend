@@ -13,6 +13,7 @@ import { CategoryComponent } from './category/category.component';
     SharedModule,
     AuthModule,
     CommonModule
-  ]
+  ],
+  exports: [CategoryComponent]
 })
 export class CategoriesModule { }

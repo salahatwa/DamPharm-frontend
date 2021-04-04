@@ -9,6 +9,7 @@ import { AboutComponent } from './shared/components/about.component';
 import { ErrorComponent } from './shared/components/error.component';
 import { AuthGuard } from './shared/services/auth/auth-guard.service';
 import { CategoriesComponent } from './main/categories/categories.component';
+import { ProductsComponent } from './main/products/products.component';
 
 
 @NgModule({
@@ -39,6 +40,11 @@ import { CategoriesComponent } from './main/categories/categories.component';
           {
             path: 'categories',
             component: CategoriesComponent,
+            loadChildren: () => AppLayoutModule
+          },
+          {
+            path: 'products',
+            component: ProductsComponent,
             loadChildren: () => AppLayoutModule
           },
           {

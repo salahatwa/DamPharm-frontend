@@ -16,6 +16,11 @@ export class CategoryService {
 
   constructor(private apiService: ApiService) { }
 
+  getAllCategories(): Observable<any> {
+    return this.apiService.get('/category/all').pipe(map(data => {
+      return data;
+    }));
+  }
 
   getCategories(params: any): Observable<any> {
     return this.apiService.get('/category', params).pipe(map(data => {
@@ -25,7 +30,7 @@ export class CategoryService {
 
   insertCategory(category: Category): Observable<Category> {
     return this.apiService.post('/category', category).pipe(map(data => {
-      data.action='Add';
+      data.action = 'Add';
       this.messageSource.next(data);
       return data;
     }));
@@ -33,15 +38,15 @@ export class CategoryService {
 
   updateCategory(category: Category) {
     return this.apiService.put('/category', category).pipe(map(data => {
-      category.action='Update';
+      category.action = 'Update';
       this.messageSource.next(category);
       return data;
     }));
   }
 
   deleteCategory(category: Category) {
-    return this.apiService.delete('/category/'+category.id).pipe(map(data => {
-      category.action='Delete';
+    return this.apiService.delete('/category/' + category.id).pipe(map(data => {
+      category.action = 'Delete';
       this.messageSource.next(category);
       return data;
     }));
