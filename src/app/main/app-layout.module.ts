@@ -1,13 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LayoutComponent } from './layout.component';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { SharedModule } from '../shared/modules/shared.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MainRoutingModule } from './main-routing.module';
-import { HttpClientModule } from '@angular/common/http';
-import { NavbarModule } from '../shared/components/navbar/navbar.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 

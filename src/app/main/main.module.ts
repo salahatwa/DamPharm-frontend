@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CategoriesModule } from './categories/categories.module';
-import { CustomerModule } from './customer/customer.module';
+import { CustomersModule } from './customers/customers.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { LoginModule } from './login/login.module';
 import { ProductsModule } from './products/products.module';
@@ -13,7 +13,7 @@ import { ProfileModule } from './profile/profile.module';
     LoginModule,
     DashboardModule,
     ProfileModule,
-    CustomerModule,
+    CustomersModule,
     CategoriesModule,
     ProductsModule
   ]

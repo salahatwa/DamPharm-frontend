@@ -32,7 +32,7 @@
     <!-- <app-no-result-found [display]="categoryList.length<=0"></app-no-result-found> -->
 
  
-    <pagination-controls *ngIf="categoryList.length>0"
+    <pagination-controls *ngIf="categoryList?.length>0"
       (pageChange)="getPage($event)"
       id="{{ page.id }}"
     ></pagination-controls>

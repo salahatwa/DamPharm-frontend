@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppLayoutModule } from './main/app-layout.module';
-import { CustomerComponent } from './main/customer/customer.component';
+import { CustomersComponent } from './main/customers/customers.component';
 import { DashboardComponent } from './main/dashboard/dashboard.component';
 import { LayoutComponent } from './main/layout.component';
 import { ProfileComponent } from './main/profile/profile.component';
@@ -33,8 +33,8 @@ import { ProductsComponent } from './main/products/products.component';
             data: { title: 'dashboard.title' }
           },
           {
-            path: 'customer',
-            component: CustomerComponent,
+            path: 'customers',
+            component: CustomersComponent,
             loadChildren: () => AppLayoutModule
           },
           {

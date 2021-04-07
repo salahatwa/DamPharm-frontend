@@ -1,8 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { UtilsService } from '../shared/services/utils.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NgProgress } from 'ngx-progressbar';
+import { UtilsService } from '../shared/services/utils.service';
 
 @Component({
   selector: 'app-layout',

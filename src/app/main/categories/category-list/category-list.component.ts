@@ -56,6 +56,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
 
   onEdit(category: Category, index: number) {
+    this.categoryService.getValueBtn(2);
     this.categoryService.selectedCategory = Object.assign({}, category);
     this.categoryService.selectedCategory.index = index;
   }

@@ -13,9 +13,17 @@ export class CategoryService {
   currentMessage = this.messageSource.asObservable();
 
   selectedCategory: Category = new Category();
+  public valueBtn: string;
 
   constructor(private apiService: ApiService) { }
 
+  getValueBtn(val) {
+    if (val == 1)
+      return this.valueBtn = 'Add';
+    else
+      return this.valueBtn = 'Update';
+  }
+  
   getAllCategories(): Observable<any> {
     return this.apiService.get('/category/all').pipe(map(data => {
       return data;

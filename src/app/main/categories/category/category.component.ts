@@ -21,6 +21,7 @@ export class CategoryComponent implements OnInit {
 
 
   ngOnInit() {
+    this.categoryService.getValueBtn(1);
     this.resetForm();
   }
 
@@ -48,6 +49,7 @@ export class CategoryComponent implements OnInit {
   resetForm(categoryForm?: NgForm) {
     if (categoryForm != null)
       categoryForm.reset();
+    this.categoryService.getValueBtn(1);
     this.categoryService.selectedCategory = new Category();
   }
 
