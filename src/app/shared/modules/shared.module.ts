@@ -14,6 +14,7 @@ import { UtilsService } from '../services/utils.service';
 import { ConfirmDialogComponent } from './../components/confirm-dialog/confirm-dialog.component';
 import { SectionLoadingComponent } from './../components/loading/section-loading.component';
 import { NoResultFound } from './../components/no-result-found.component';
+import { ReportViewerDialogComponent } from './../components/report-dialogs/report-viewer-dialog/report-viewer.component';
 import { MatrialModule } from './matrial.module';
 
 
@@ -32,7 +33,7 @@ import { MatrialModule } from './matrial.module';
     NgbModalModule,
   ],
   declarations: [
-    SectionLoadingComponent, ConfirmDialogComponent, NoResultFound
+    SectionLoadingComponent, ConfirmDialogComponent, ReportViewerDialogComponent, NoResultFound
   ],
   providers: [Title, UtilsService, ApiService],
   exports: [
@@ -48,6 +49,7 @@ import { MatrialModule } from './matrial.module';
     SectionLoadingComponent,
     NgbModalModule,
     ConfirmDialogComponent,
+    ReportViewerDialogComponent,
     NoResultFound
   ]
 })

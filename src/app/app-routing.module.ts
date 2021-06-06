@@ -10,6 +10,8 @@ import { ErrorComponent } from './shared/components/error.component';
 import { AuthGuard } from './shared/services/auth/auth-guard.service';
 import { CategoriesComponent } from './main/categories/categories.component';
 import { ProductsComponent } from './main/products/products.component';
+import { InvoicesComponent } from './main/invoice/invoices.component';
+import { InvoiceListComponent } from './main/invoice/invoice-list/invoice-list.component';
 
 
 @NgModule({
@@ -45,6 +47,17 @@ import { ProductsComponent } from './main/products/products.component';
           {
             path: 'products',
             component: ProductsComponent,
+            loadChildren: () => AppLayoutModule
+          },
+          {
+            path: 'invoices',
+            component: InvoicesComponent,
+            loadChildren: () => AppLayoutModule
+          },
+          //invoices-list
+          {
+            path: 'invoices-list',
+            component: InvoiceListComponent,
             loadChildren: () => AppLayoutModule
           },
           {

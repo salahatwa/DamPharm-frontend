@@ -27,11 +27,16 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/reports/stimulsoft.designer.office2013.whiteblue.css",
+              "src/reports/stimulsoft.viewer.office2013.whiteblue.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/reports/stimulsoft.reports.js",
+              "src/reports/stimulsoft.viewer.js",
+              "src/reports/stimulsoft.designer.js"
             ]
           },
           "configurations": {

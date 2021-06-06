@@ -42,6 +42,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
       { path: '/categories', title: 'sidebar.menu.categories', icon: 'production_quantity_limits', class: '' },
       { path: '/products', title: 'sidebar.menu.products', icon: 'production_quantity_limits', class: '' },
       { path: '/customers', title: 'sidebar.menu.customers', icon: 'people_outline', class: '' },
+      { path: '/invoices', title: 'sidebar.menu.invoices', icon: 'people_outline', class: '' },
+      { path: '/invoices-list', title: 'sidebar.menu.invoices', icon: 'people_outline', class: '' },
+      
       { path: '/profile', title: 'sidebar.menu.profile', icon: 'person', class: '' },
       // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
       // { path: '/typography', title: 'Typography',  icon:'library_books', class: '' },
