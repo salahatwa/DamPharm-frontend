@@ -12,15 +12,18 @@
           <td>{{ category.description }}</td>
           <td>
             <a 
-              class="btn btn-secondary text-white p-1"
+            mat-raised-button
+            color="dam-success"
+            class="btn-sm icon-btn-sm mr-2"
               (click)="onEdit(category,i)"
             >
               <i class="material-icons md-18">mode_edit_outline</i>
             </a>
-          </td>
-          <td>
+
             <a
-              class="btn btn-danger text-white p-1"
+            mat-raised-button
+            color="warn"
+            class="btn-sm icon-btn-sm  mr-2"
               (click)="onDelete(category,i)"
             >
               <i class="material-icons md-18">delete_outline</i>

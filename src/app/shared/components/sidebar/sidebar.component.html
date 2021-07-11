@@ -1,22 +1,30 @@
 <div class="logo">
   <a href="#" class="simple-text">
-      <div class="logo-img">
-        <img src="assets/images/inmaInvest.png" class="card-img">
-      </div>
-      {{ 'intro' | translate }}
+    <div class="logo-img">
+      <img src="assets/images/favicon.ico" class="card-img" />
+    </div>
+    {{ "intro" | translate }}
+
+    <!-- <i class="material-icons">logout</i> -->
   </a>
 </div>
 <div class="sidebar-wrapper">
-
-  <ul class="nav" [ngStyle]="{'display':isRTL ? 'inline' : 'block' }">
-      <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-          <a class="nav-link" [routerLink]="[menuItem.path]" (click)="updatePageTitle(menuItem.title)">
-              <div class="logo-img">
-               <i class="material-icons">{{menuItem.icon}}</i>
-              </div>
-              <p class="simple-text">   {{ menuItem.title | translate }}</p>
-          </a>
-      </li>
+  <ul class="nav" [ngStyle]="{ display: isRTL ? 'inline' : 'block' }">
+    <li
+      routerLinkActive="active"
+      *ngFor="let menuItem of menuItems"
+      class="{{ menuItem.class }} nav-item"
+    >
+      <a
+        class="nav-link"
+        [routerLink]="[menuItem.path]"
+        (click)="updatePageTitle(menuItem.title)"
+      >
+        <div class="logo-img">
+          <i class="material-icons">{{ menuItem.icon }}</i>
+        </div>
+        <p class="simple-text">{{ menuItem.title | translate }}</p>
+      </a>
+    </li>
   </ul>
 </div>
-

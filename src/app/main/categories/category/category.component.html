@@ -49,17 +49,21 @@
         />
       </div>
 
-      <div class="form-group">
-        <button 
-          class="btn btn-primary"
+      <div class="text-center">
+        <button
+          mat-raised-button
+          color="dam-success"
           type="submit"
+          class="mr-2"
           [disabled]="categoryForm.invalid"
         >
-        {{this.categoryService.valueBtn}}
+          {{ this.categoryService.valueBtn }}
         </button>
         <button
-          class="btn btn-secondary"
+          mat-raised-button
+          color="dam-warn"
           type="reset"
+          class="mr-2"
           (click)="resetForm(categoryForm)"
         >
           Reset

@@ -9,11 +9,32 @@
   color: #a52531;
 }
 
+.mat-dam-success {
+  background-color: #32234b;
+  color: #fff;
+}
+
+.mat-dam-warn {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+.icon-btn-sm{
+  // width: 20px!important;
+  min-width: unset!important;
+}
+
+.ngx-pagination .current {
+  background: #32234b!important;
+}
+
+
 /* Font-Face */
 @font-face {
   font-family: "Conv_AlinmaTheSans-Bold";
   src: url("./assets/fonts/AlinmaTheSans-Bold.eot");
-  src: local("☺"), url("./assets/fonts/AlinmaTheSans-Bold.woff") format("woff"),
+  src: local("☺"), 
+  url("./assets/fonts/AlinmaTheSans-Bold.woff") format("woff"),
     url("./assets/fonts/AlinmaTheSans-Bold.ttf") format("truetype"),
     url("./assets/fonts/AlinmaTheSans-Bold.svg") format("svg");
   font-weight: normal;
