@@ -27,7 +27,7 @@
                 <div class="col-md-4">
                   <select class="form-control custom-select" id="customer" formControlName="customer"
                     (ngModelChange)="getSelectedOptionText($event)">
-                    <option [ngValue]="true">-Customer-</option>
+                    <option value="">-Select Customer-</option>
                     <option *ngFor="let item of customerList" [ngValue]="item">{{item.name}} {{item.lastname}}</option>
                   </select>
                 </div>

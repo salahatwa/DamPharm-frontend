@@ -43,7 +43,7 @@ export class InvoiceComponent implements OnInit {
 
   initForm(): void {
     this.form = this._fb.group({
-      customer: [null, Validators.required],
+      customer: ["", Validators.required],
       totalPrice: 0,
       items: this._fb.array([])
     });
@@ -132,7 +132,7 @@ export class InvoiceComponent implements OnInit {
   }
 
 
-  print() {
+ print() {
 
     let report = new Stimulsoft.Report.StiReport();
 
@@ -191,7 +191,7 @@ export class InvoiceComponent implements OnInit {
     this.showDiv = null;
     this.phoneCustomer = event.phone;
     this.addressCustomer = event.address;
-  }
+  } 
 
 
 

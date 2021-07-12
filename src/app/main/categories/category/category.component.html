@@ -23,7 +23,7 @@
           [(ngModel)]="categoryService.selectedCategory.name"
           placeholder="Add Category Name"
           minlength="3"
-          pattern="[a-zA-Z ]*"
+          pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
           required
         />
       </div>
@@ -44,7 +44,6 @@
           [(ngModel)]="categoryService.selectedCategory.description"
           placeholder="Add Category Description"
           minlength="3"
-          pattern="[a-zA-Z ]*"
           required
         />
       </div>

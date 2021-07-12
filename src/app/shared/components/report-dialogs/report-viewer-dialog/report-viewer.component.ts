@@ -10,7 +10,7 @@ declare var Stimulsoft: any;
   styleUrls: ['./report-viewer.component.scss']
 })
 export class ReportViewerDialogComponent implements OnInit {
-  // viewer: any = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
+  viewer: any = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
   report: any = new Stimulsoft.Report.StiReport();
   dataSet: any;
 
@@ -42,10 +42,10 @@ export class ReportViewerDialogComponent implements OnInit {
   }
 
   generateInvoice() {
-    // this.viewer = new Stimulsoft.Viewer.StiViewer(this.initReportSetting(), "StiViewer", false);
+    this.viewer = new Stimulsoft.Viewer.StiViewer(this.initReportSetting(), "StiViewer", false);
+   
 
-
-    // this.viewer.report = new Stimulsoft.Report.StiReport();
+    this.viewer.report = new Stimulsoft.Report.StiReport();
 
 
     console.log('create new DataSet Object');
@@ -58,67 +58,42 @@ export class ReportViewerDialogComponent implements OnInit {
     this.report.regData("Demo22", "Demo22", this.dataSet);
     this.report.dictionary.synchronize();
 
-    // this.viewer.report = this.report;
+    this.viewer.report = this.report;
 
-    // console.log('Rendering the viewer to selected element');
-    // this.viewer.renderHtml('viewer');
+    console.log('Rendering the viewer to selected element');
+    this.viewer.renderHtml('viewer');
+    // });
 
+    var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner", false);
 
-    // var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner", false);
+    this.viewer.onDesignReport = function (args) {
 
-    // this.viewer.onDesignReport = function (args) {
+      designer.report = this.report;
+      designer.renderHtml("viewer");
 
-    //   designer.report = this.report;
-    //   designer.renderHtml("viewer");
+    }
 
-    // }
-    // Render report
-    this.report.renderAsync(function () {
-      // document.getElementById("savePdf").disabled = false;
-    });
-
-    this.saveReportPdf(this.report);
 
     console.log('Loading completed successfully!');
 
 
 
 
-    // designer.onSaveReport = function (event) {
+    designer.onSaveReport = function (event) {
 
-    //   var jsonStr = event.report.saveToJsonString();
+      var jsonStr = event.report.saveToJsonString();
 
-    //   console.log("saving a report:" + jsonStr);
-    // }
+      console.log("saving a report:" + jsonStr);
+    }
 
-    // designer.onSaveAsReport = function (event) {
+    designer.onSaveAsReport = function (event) {
 
-    //   var jsonStr = event.report.saveToJsonString();
+      var jsonStr = event.report.saveToJsonString();
 
-    //   console.log("saving a report:" + jsonStr);
-    // }
+      console.log("saving a report:" + jsonStr);
+    }
 
 
-  }
-
-  saveReportPdf(report) {
-    var pdfSettings = new Stimulsoft.Report.Export.StiPdfExportSettings();
-    var pdfService = new Stimulsoft.Report.Export.StiPdfExportService();
-    var stream = new Stimulsoft.System.IO.MemoryStream();
-    report.renderAsync(function () {
-      pdfService.exportToAsync(function () {
-        var data = stream.toArray();
-        var blob = new Blob([new Uint8Array(data)], { type: "application/pdf" });
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          var fileName = (report.reportAlias == null || report.reportAlias.trim().length == 0) ? report.reportName : report.reportAlias;
-          window.navigator.msSaveOrOpenBlob(blob, fileName + ".pdf");
-        }
-        else {
-          var fileUrl = URL.createObjectURL(blob);
-          window.open(fileUrl);
-        }
-      }, report, stream, pdfSettings);
-    }, false);
   }
 
 }
