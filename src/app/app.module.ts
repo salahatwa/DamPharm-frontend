@@ -19,10 +19,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // ng serve -prod
 @NgModule({
   declarations: [
-    AppComponent,LayoutComponent
+    AppComponent, LayoutComponent
   ],
   imports: [
     BrowserAnimationsModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
     NgProgressModule.withConfig({
       spinnerPosition: "left",
@@ -33,7 +34,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     TranslationModule,
     SharedModule,
-    
+
   ],
   providers: [Title, Config, DatePipe],
   bootstrap: [AppComponent]

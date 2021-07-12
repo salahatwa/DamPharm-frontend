@@ -17,61 +17,61 @@ import { InvoiceListComponent } from './main/invoice/invoice-list/invoice-list.c
 @NgModule({
   imports: [
     RouterModule.forRoot([
-      // { path: 'login', redirectTo: 'login', pathMatch: 'full' },
-      {
+    // { path: 'login', redirectTo: 'login', pathMatch: 'full' },
+    {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
         data: { title: 'dashboard.title' }
-      },
-      {
+    },
+    {
         path: '',
         component: LayoutComponent,
         children: [
-          {
-            path: '',
-            component: DashboardComponent,
-            loadChildren: () => AppLayoutModule,
-            data: { title: 'dashboard.title' }
-          },
-          {
-            path: 'customers',
-            component: CustomersComponent,
-            loadChildren: () => AppLayoutModule
-          },
-          {
-            path: 'categories',
-            component: CategoriesComponent,
-            loadChildren: () => AppLayoutModule
-          },
-          {
-            path: 'products',
-            component: ProductsComponent,
-            loadChildren: () => AppLayoutModule
-          },
-          {
-            path: 'invoices',
-            component: InvoicesComponent,
-            loadChildren: () => AppLayoutModule
-          },
-          //invoices-list
-          {
-            path: 'invoices-list',
-            component: InvoiceListComponent,
-            loadChildren: () => AppLayoutModule
-          },
-          {
-            path: 'profile',
-            component: ProfileComponent,
-            loadChildren: () => AppLayoutModule,
-            data: { title: 'profile.title' }
-          }
+            {
+                path: '',
+                component: DashboardComponent,
+                loadChildren: () => AppLayoutModule,
+                data: { title: 'dashboard.title' }
+            },
+            {
+                path: 'customers',
+                component: CustomersComponent,
+                loadChildren: () => AppLayoutModule
+            },
+            {
+                path: 'categories',
+                component: CategoriesComponent,
+                loadChildren: () => AppLayoutModule
+            },
+            {
+                path: 'products',
+                component: ProductsComponent,
+                loadChildren: () => AppLayoutModule
+            },
+            {
+                path: 'invoices',
+                component: InvoicesComponent,
+                loadChildren: () => AppLayoutModule
+            },
+            //invoices-list
+            {
+                path: 'invoices-list',
+                component: InvoiceListComponent,
+                loadChildren: () => AppLayoutModule
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent,
+                loadChildren: () => AppLayoutModule,
+                data: { title: 'profile.title' }
+            }
         ]
-      },
-      { path: '404', component: ErrorComponent },
-      { path: 'about', component: AboutComponent },
-      { path: '**', component: ErrorComponent, pathMatch: 'full' }
-    ], { useHash: false })
+    },
+    { path: '404', component: ErrorComponent },
+    { path: 'about', component: AboutComponent },
+    { path: '**', component: ErrorComponent, pathMatch: 'full' }
+], { useHash: false, initialNavigation: 'enabled' })
   ],
   declarations: [
     ErrorComponent,

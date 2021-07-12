@@ -3,18 +3,21 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "heroku-postbuild": "ng build --prod",
-    "start": "node server.js",
-    "build": "ng build",
+    "postinstall": "npm run build:ssr",
+    "start:heroku": "node dist/DamPharm/server/main.js",
+    "start": "npm run serve:ssr",
+    "build": "npm run build:ssr",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "dev:ssr": "ng run DamPharm:serve-ssr",
+    "serve:ssr": "node dist/DamPharm/server/main.js",
+    "build:ssr": "ng build --prod && ng run DamPharm:server",
+    "prerender": "ng run DamPharm:prerender"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.9",
-    "@angular/cli": "~10.0.6",
-    "@angular/compiler-cli": "~10.0.9",
     "@angular/cdk": "^10.0.9",
     "@angular/common": "~10.0.9",
     "@angular/compiler": "~10.0.9",
@@ -24,10 +27,13 @@
     "@angular/material": "^10.0.9",
     "@angular/platform-browser": "~10.0.9",
     "@angular/platform-browser-dynamic": "~10.0.9",
+    "@angular/platform-server": "~10.0.9",
     "@angular/router": "~10.0.9",
     "@ng-bootstrap/ng-bootstrap": "^8.0.4",
+    "@nguniversal/express-engine": "^12.1.0",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^4.0.0",
+    "@schematics/angular": "^12.1.1",
     "bootstrap": "^4.6.0",
     "express": "^4.17.1",
     "jquery": "^3.6.0",
@@ -36,11 +42,14 @@
     "ngx-progressbar": "^6.0.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
-    "zone.js": "~0.10.3",
-    "typescript": "~3.9.5"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.6",
+    "@angular/cli": "~10.0.6",
+    "@angular/compiler-cli": "~10.0.9",
+    "@nguniversal/builders": "^12.1.0-next.0",
+    "@types/express": "^4.17.0",
     "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
@@ -54,7 +63,8 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
-    "tslint": "~6.1.0"
+    "tslint": "~6.1.0",
+    "typescript": "~3.9.5"
   },
   "engines": {
     "node": "12.18.2",
