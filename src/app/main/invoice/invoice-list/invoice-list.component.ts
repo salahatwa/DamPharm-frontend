@@ -14,6 +14,7 @@ import { AlertService } from './../../../shared/components/alert/alert.service';
 import { UtilsService } from './../../../shared/services/utils.service';
 import { DamConstants } from './../../../shared/utils/constants';
 
+declare var Stimulsoft: any;
 
 
 @Component({
@@ -180,5 +181,49 @@ export class InvoiceListComponent implements OnInit {
     return invoice?.customer?.name.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1 || invoice?.customer?.lastname.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1;
   }
 
+
+  print(invoice) {
+
+    let report = new Stimulsoft.Report.StiReport();
+
+    let dataSet = new Stimulsoft.System.Data.DataSet("Demo22");
+
+    // this.dataSet.readJson(this.invoice());
+
+    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1617538367/DamPharmLat10_zzcvtn.mrt');
+
+    report.regData("Demo22", "Demo22", dataSet);
+    report.dictionary.synchronize();
+
+    report.renderAsync(function () {
+      // document.getElementById("savePdf").disabled = false;
+    });
+
+    this.saveReportPdf(report);
+
+
+   
+  }
+
+
+  saveReportPdf(report) {
+    var pdfSettings = new Stimulsoft.Report.Export.StiPdfExportSettings();
+    var pdfService = new Stimulsoft.Report.Export.StiPdfExportService();
+    var stream = new Stimulsoft.System.IO.MemoryStream();
+    report.renderAsync(function () {
+      pdfService.exportToAsync(function () {
+        var data = stream.toArray();
+        var blob = new Blob([new Uint8Array(data)], { type: "application/pdf" });
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          var fileName = (report.reportAlias == null || report.reportAlias.trim().length == 0) ? report.reportName : report.reportAlias;
+          window.navigator.msSaveOrOpenBlob(blob, fileName + ".pdf");
+        }
+        else {
+          var fileUrl = URL.createObjectURL(blob);
+          window.open(fileUrl);
+        }
+      }, report, stream, pdfSettings);
+    }, false);
+  }
 
 }

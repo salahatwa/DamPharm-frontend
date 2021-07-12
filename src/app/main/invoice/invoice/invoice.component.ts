@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReportViewerDialogComponent } from 'src/app/shared/components/report-dialogs/report-viewer-dialog/report-viewer.component';
 import { Customer } from './../../../core/classes/customer';
 import { IInvoice } from './../../../core/classes/invoice';
 import { Product } from './../../../core/classes/product';
 import { CustomerService } from './../../../core/services/customer.service';
 import { InvoiceService } from './../../../core/services/invoice.service';
 import { ProductService } from './../../../core/services/product.service';
-import { ReportViewerDialogComponent } from 'src/app/shared/components/report-dialogs/report-viewer-dialog/report-viewer.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+declare var Stimulsoft: any;
 
 @Component({
   selector: 'app-invoice',
@@ -28,7 +29,7 @@ export class InvoiceComponent implements OnInit {
   showDialog1;
   showDialog;
 
-  constructor( private modalService: NgbModal,private router: Router, private _fb: FormBuilder, private invoiceService: InvoiceService, private customerService: CustomerService, private productService: ProductService) { }
+  constructor(private modalService: NgbModal, private router: Router, private _fb: FormBuilder, private invoiceService: InvoiceService, private customerService: CustomerService, private productService: ProductService) { }
 
   ngOnInit() {
     this.customerService.getAllCustomers().subscribe(data => {
@@ -110,7 +111,7 @@ export class InvoiceComponent implements OnInit {
       const result: IInvoice = <IInvoice>this.form.value;
       // Do useful stuff with the gathered data
       console.log(result);
-      this.invoiceService.insertInvoice(result).subscribe((data=>{
+      this.invoiceService.insertInvoice(result).subscribe((data => {
 
         this.phoneCustomer = '';
         this.addressCustomer = '';
@@ -120,7 +121,7 @@ export class InvoiceComponent implements OnInit {
         this.router.navigate(['/invoices-list']);
       }));
 
-     
+
     } else {
       if (this.form.controls['totalPrice'].value <= 0) {
         //Agregar msg
@@ -131,18 +132,58 @@ export class InvoiceComponent implements OnInit {
   }
 
 
-  print(){
-    const dialogRef = this.modalService.open(ReportViewerDialogComponent, { size: 'xl' });
+  print() {
 
-    dialogRef.result.then(result => {
+    let report = new Stimulsoft.Report.StiReport();
 
-      if (result) {
-       
+    let dataSet = new Stimulsoft.System.Data.DataSet("Demo22");
 
-      }
-    }).catch((res) => {
+    // this.dataSet.readJson(this.invoice());
 
+    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1617538367/DamPharmLat10_zzcvtn.mrt');
+
+    report.regData("Demo22", "Demo22", dataSet);
+    report.dictionary.synchronize();
+
+    report.renderAsync(function () {
+      // document.getElementById("savePdf").disabled = false;
     });
+
+    this.saveReportPdf(report);
+
+
+    // const dialogRef = this.modalService.open(ReportViewerDialogComponent, { size: 'xl' });
+
+    // dialogRef.result.then(result => {
+
+    //   if (result) {
+
+
+    //   }
+    // }).catch((res) => {
+
+    // });
+  }
+
+
+  saveReportPdf(report) {
+    var pdfSettings = new Stimulsoft.Report.Export.StiPdfExportSettings();
+    var pdfService = new Stimulsoft.Report.Export.StiPdfExportService();
+    var stream = new Stimulsoft.System.IO.MemoryStream();
+    report.renderAsync(function () {
+      pdfService.exportToAsync(function () {
+        var data = stream.toArray();
+        var blob = new Blob([new Uint8Array(data)], { type: "application/pdf" });
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          var fileName = (report.reportAlias == null || report.reportAlias.trim().length == 0) ? report.reportName : report.reportAlias;
+          window.navigator.msSaveOrOpenBlob(blob, fileName + ".pdf");
+        }
+        else {
+          var fileUrl = URL.createObjectURL(blob);
+          window.open(fileUrl);
+        }
+      }, report, stream, pdfSettings);
+    }, false);
   }
 
   getSelectedOptionText(event) {

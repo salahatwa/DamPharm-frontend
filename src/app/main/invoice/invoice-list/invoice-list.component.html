@@ -125,8 +125,8 @@
               <button class="btn btn-outline-primary" (click)="searchText=''">X</button>
             </form>
             <div class="row">
-              <div class="col-sm">
-                  <table class="table table-sm table-hover table-bordered ">
+              <div class="table-responsive">
+                  <table class="table table-hover table-bordered ">
                       <thead class="thead-light">
                         <tr>
                           <th scope="col">Name</th>
@@ -150,6 +150,8 @@
                               </li>
                             </td>
                             <td class="btn-group m-1">
+                              <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="print(invoice);showDialog = !showDialog">
+                                <i class="material-icons md-18">print</i></a>      
                               <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="onUpdate(invoice);showDialog = !showDialog">
                                 <i class="material-icons md-18">mode_edit_outline</i></a>            
                               <a class="btn-sm icon-btn-sm btn-danger text-white" (click)="onDelete(invoice.$key)">
