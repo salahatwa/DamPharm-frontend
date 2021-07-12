@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { isUndefined } from 'lodash';
@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import 'moment/min/locales.min';
 // import { Headers, RequestOptions } from '@angular/common/http';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 // import { ErrorMessage } from '../../core/classes/errorMessage';
 
 declare var $: any;
@@ -20,7 +21,7 @@ export class UtilsService {
   private changeLangDir = new Subject();
   public changeLangDir$: Observable<{}> = this.changeLangDir.asObservable();
 
-  constructor(
+  constructor(@Inject(DOCUMENT) private document: Document,
     private translate: TranslateService, private titleService: Title
   ) { }
 
@@ -126,7 +127,7 @@ export class UtilsService {
       this.setLang('en');
   }
 
-  getRequestParams(page, pageSize,sortBy): any {
+  getRequestParams(page, pageSize, sortBy): any {
     let params = {};
 
     if (page) {
@@ -149,9 +150,9 @@ export class UtilsService {
     this._moment.locale(language);
     localStorage.setItem('language', language);
     if (language === 'ar')
-      document.body.setAttribute("dir", "rtl");
+      this.document.body.setAttribute("dir", "rtl");
     else
-      document.body.setAttribute("dir", "ltr");
+      this.document.body.setAttribute("dir", "ltr");
     this.changeLangDir.next(language);
     return language;
   }
