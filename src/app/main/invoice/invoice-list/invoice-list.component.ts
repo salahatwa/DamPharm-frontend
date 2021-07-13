@@ -184,13 +184,25 @@ export class InvoiceListComponent implements OnInit {
 
   print(invoice) {
 
+    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/fonts/AlinmaTheSans-Bold.ttf");
+
     let report = new Stimulsoft.Report.StiReport();
+
+    // Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/fonts/AlinmaTheSans-Bold.ttf", "AlinmaTheSans-Bold");
+
+    var fileContent = Stimulsoft.System.IO.File.getFile("assets/fonts/AlinmaTheSans-Bold.ttf", "AlinmaTheSans-Bold", true);
+    var resource = new Stimulsoft.Report.Dictionary.StiResource(
+      "AlinmaTheSans-Bold", "AlinmaTheSans-Bold", false, Stimulsoft.Report.Dictionary.StiResourceType.FontTtf, fileContent);
+    report.dictionary.resources.add(resource);
 
     let dataSet = new Stimulsoft.System.Data.DataSet("Demo22");
 
-    // this.dataSet.readJson(this.invoice());
 
-    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1617538367/DamPharmLat10_zzcvtn.mrt');
+    dataSet.readJson(this.utilService.generateInvoice(invoice));
+
+
+
+    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1626185587/DamPharmLat_Invoice_latest_4_bsmhex_nr2aee.mrt');
 
     report.regData("Demo22", "Demo22", dataSet);
     report.dictionary.synchronize();
@@ -200,16 +212,31 @@ export class InvoiceListComponent implements OnInit {
     });
 
     this.saveReportPdf(report);
-
-
-   
   }
+
 
 
   saveReportPdf(report) {
     var pdfSettings = new Stimulsoft.Report.Export.StiPdfExportSettings();
     var pdfService = new Stimulsoft.Report.Export.StiPdfExportService();
     var stream = new Stimulsoft.System.IO.MemoryStream();
+    pdfSettings.EmbeddedFonts = true;
+    pdfSettings.AllowImportSystemLibraries = true;
+    // pdfSettings.UseUnicode = true;
+    // pdfSettings.StandardPdfFonts = false;
+    // pdfSettings.AllowFontsCache = true;
+
+   
+    // pdfService.LoadFontInfoToStore("AlinmaTheSans-Bold", "https://res.cloudinary.com/genhub/raw/upload/v1626176320/AlinmaTheSans-Bold_lpz4kh.ttf"); 
+
+
+
+
+    var fileContent = Stimulsoft.System.IO.File.getFile("assets/fonts/AlinmaTheSans-Bold.ttf", "AlinmaTheSans-Bold", true);
+    var resource = new Stimulsoft.Report.Dictionary.StiResource(
+      "AlinmaTheSans-Bold", "AlinmaTheSans-Bold", false, Stimulsoft.Report.Dictionary.StiResourceType.FontTtf, fileContent);
+    report.dictionary.resources.add(resource);
+
     report.renderAsync(function () {
       pdfService.exportToAsync(function () {
         var data = stream.toArray();

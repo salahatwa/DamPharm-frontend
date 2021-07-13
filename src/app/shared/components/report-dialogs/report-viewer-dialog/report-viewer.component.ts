@@ -43,7 +43,7 @@ export class ReportViewerDialogComponent implements OnInit {
 
   generateInvoice() {
     this.viewer = new Stimulsoft.Viewer.StiViewer(this.initReportSetting(), "StiViewer", false);
-   
+
 
     this.viewer.report = new Stimulsoft.Report.StiReport();
 
@@ -53,7 +53,13 @@ export class ReportViewerDialogComponent implements OnInit {
 
     // this.dataSet.readJson(this.invoice());
 
-    this.report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1617538367/DamPharmLat10_zzcvtn.mrt');
+    var fileContent = Stimulsoft.System.IO.File.getFile("assets/fonts/AlinmaTheSans-Bold.ttf","AlinmaTheSans-Bold", true);
+    var resource = new Stimulsoft.Report.Dictionary.StiResource(
+      "AlinmaTheSans-Bold", "AlinmaTheSans-Bold", false, Stimulsoft.Report.Dictionary.StiResourceType.FontTtf, fileContent);
+    this.report.dictionary.resources.add(resource);
+
+
+    this.report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1626185587/DamPharmLat_Invoice_latest_4_bsmhex_nr2aee.mrt');
 
     this.report.regData("Demo22", "Demo22", this.dataSet);
     this.report.dictionary.synchronize();

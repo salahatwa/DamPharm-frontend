@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
+import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 import { JwtService } from './jwt.service';
-import { map ,  distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 import { ApiService } from '../api.service';
 import { User } from './../../../core/classes/user.model';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -16,11 +17,12 @@ export class UserService {
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  constructor (
+  constructor(
     private apiService: ApiService,
     private http: HttpClient,
-    private jwtService: JwtService
-  ) {}
+    private jwtService: JwtService,
+    private router: Router
+  ) { }
 
   // Verify JWT in localstorage with server & load user's info.
   // This runs once on application startup.
@@ -28,13 +30,13 @@ export class UserService {
     // If JWT detected, attempt to get & store user's info
     if (this.jwtService.getToken()) {
       this.apiService.get('/user/me')
-      .subscribe(
-        data => this.setAuth(data),
-        err => {
-          console.log(err);
-          this.purgeAuth();
-        }
-      );
+        .subscribe(
+          data => this.setAuth(data),
+          err => {
+            console.log(err);
+            this.purgeAuth();
+          }
+        );
     } else {
       // Remove any potential remnants of previous auth states
       this.purgeAuth();
@@ -65,11 +67,11 @@ export class UserService {
 
     return this.apiService.post('/auth' + route, credentials)
       .pipe(map(
-      data => {
-        this.setAuth(data);
-        return data;
-      }
-    ));
+        data => {
+          this.setAuth(data);
+          return data;
+        }
+      ));
   }
 
   getCurrentUser(): User {
@@ -79,13 +81,18 @@ export class UserService {
   // Update the user on the server (email, pass, etc)
   update(user): Observable<User> {
     return this.apiService
-    .put('/user/update',  user )
-    .pipe(map(data => {
-      // Update the currentUser observable
-      this.purgeAuth();
-      this.setAuth(data);
-      return data;
-    }));
+      .put('/user/update', user)
+      .pipe(map(data => {
+        // Update the currentUser observable
+        this.purgeAuth();
+        this.setAuth(data);
+        return data;
+      }));
+  }
+
+  logout() {
+    this.purgeAuth();
+    this.router.navigate(['/login']);
   }
 
 }

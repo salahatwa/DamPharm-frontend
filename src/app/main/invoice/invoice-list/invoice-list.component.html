@@ -103,7 +103,7 @@
             </div>
           </app-dialog> -->
       <div class="col-md-12 text-center" >
-        <div class="card mt-5" style="min-width: 670px;">
+        <div class="card mt-5">
           <div class="card-body">
               <h6 class="text-center p-4">
                 <!-- <button (click)="showDialog1 = !showDialog1" class="btn btn-outline-success text-success float-right">Add Invoice&nbsp;<i
@@ -143,10 +143,10 @@
                             <td>{{invoice.customer.name}} {{invoice.customer.lastname}}</td>
                             <td>{{invoice.totalPrice | currency:'USD':'symbol'}}</td>
                             <td>{{invoice.uid}}</td>
-                            <td>{{invoice.createdAt}}</td>
+                            <td>{{invoice.createdAt | date: 'dd/MM/yyyy'}}</td>
                             <td>
                               <li class="list-group-item" *ngFor="let purchase of invoice.items">
-                                {{purchase.product.name}}
+                                {{purchase.product.name}} -  {{purchase.quantity}}
                               </li>
                             </td>
                             <td class="btn-group m-1">

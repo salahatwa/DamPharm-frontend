@@ -186,6 +186,20 @@ export class InvoiceComponent implements OnInit {
     }, false);
   }
 
+  design(){
+    const dialogRef = this.modalService.open(ReportViewerDialogComponent, { size: 'xl' });
+
+    dialogRef.result.then(result => {
+
+      if (result) {
+       
+
+      }
+    }).catch((res) => {
+
+    });
+  }
+
   getSelectedOptionText(event) {
     this.resetPurchase();
     this.showDiv = null;

@@ -2,36 +2,50 @@
   <div class="card-body p-4">
     <h6 class="text-center">List of Customer</h6>
     <alert [id]="alert.id"></alert>
-    <table class="table table-sm table-hover">
-        
+    <app-section-loading [isLoading]="loading"></app-section-loading>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover">
         <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Address</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-      <tbody>
-        <tr *ngFor="let customer of customerList| paginate: page;let i=index">
-          <td>{{customer.name}}</td>
-          <td>{{customer.lastname}}</td>
-          <td>{{customer.phone}}</td>
-          <td>{{customer.address}}</td>
-          <td>
-            <a  class="btn btn-secondary text-white" (click)="onEdit(customer,i)">
-              <i class="material-icons md-18">mode_edit_outline</i>              
-            </a>
-            <a class="btn btn-danger text-white" (click)="onDelete(customer,i)">
-              <i class="material-icons md-18">delete_outline</i>             
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Address</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let customer of customerList | paginate: page;
+              let i = index
+            "
+          >
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.lastname }}</td>
+            <td>{{ customer.phone }}</td>
+            <td>{{ customer.address }}</td>
+            <td>
+              <a
+                class="btn btn-secondary text-white"
+                (click)="onEdit(customer, i)"
+              >
+                <i class="material-icons md-18">mode_edit_outline</i>
               </a>
-        </td>
-       </tr>
-      </tbody>
-    </table>
+              <a
+                class="btn btn-danger text-white"
+                (click)="onDelete(customer, i)"
+              >
+                <i class="material-icons md-18">delete_outline</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <pagination-controls *ngIf="customerList?.length>0"
+    <pagination-controls
+      *ngIf="customerList?.length > 0"
       (pageChange)="getPage($event)"
       id="{{ page.id }}"
     ></pagination-controls>

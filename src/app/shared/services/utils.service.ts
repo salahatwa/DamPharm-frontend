@@ -1,12 +1,14 @@
-import { Injectable, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import 'moment/min/locales.min';
+import { PrintInvoice, BillFrom, BillTo, BillDetail, BillTotal } from './../../core/classes/print-invoice';
 // import { Headers, RequestOptions } from '@angular/common/http';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+import { IInvoice } from 'src/app/core/classes/invoice';
 // import { ErrorMessage } from '../../core/classes/errorMessage';
 
 declare var $: any;
@@ -196,4 +198,68 @@ export class UtilsService {
       //  this.notyf('failed',msg.message);
     }
   }
+
+  /**
+  * This Method for init PrintInvoice data
+  */
+  generateInvoice(invoice:IInvoice): PrintInvoice {
+    var printInvoice = new PrintInvoice();
+    var billFrom: BillFrom = new BillFrom();
+    billFrom.name = "DamPharm";
+    billFrom.email = "services@dampharm.com";
+    billFrom.company = "DamPharm";
+    billFrom.city = "Monfia";
+    billFrom.phone = "966549168065";
+    billFrom.website = "dampharm.com";
+    billFrom.state = "Egypt";
+    billFrom.address = "Elbajour-Monfia";
+
+
+    var billTo: BillTo = new BillTo();
+    billTo.name = invoice.customer.name;
+    billTo.company = invoice.customer.id;
+    billTo.phone = invoice.customer.phone;
+    billTo.state = invoice.customer.address;
+    billTo.address = invoice.customer.address;
+    billTo.city = invoice.customer.address;
+
+    let totalSum = 0;
+
+
+    invoice.items.forEach((item, i) => {
+
+      var billDetail = new BillDetail();
+      billDetail.billNum = (i + 1);
+      billDetail.productName = item.product.name;
+      billDetail.productQty = item.quantity + '';
+      billDetail.productUnitPrice = item.product.price + '';
+      billDetail.productAmount =(item.quantity*item.product.price);
+      // billDetail.productDiscount = item.discount + '%';
+      // billDetail.productAmountAfterDiscount = this.currency.set(((100 - item.discount) * item.product.selling_price * item.amount) / 100).format(this.format()) + '';
+      printInvoice.billProduct.push(billDetail);
+
+      // totalSum = totalSum + (((100 - item.discount) * item.product.selling_price * item.amount) / 100);
+      totalSum = totalSum + billDetail.productAmount;
+
+    });
+
+
+
+    var billTotal = new BillTotal();
+    billTotal.subtotal = totalSum + '';
+    billTotal.total = totalSum + '';
+    // billTotal.createdAt = this.datepipe.transform(this.getCurrentDate(), 'yyyy-MM-dd');
+    billTotal.billNum =invoice.invoiceNumber;
+    billTotal.other = '';
+    billTotal.description = 'If you have any questions about this invoice, please contact';
+    billTotal.commentTitle = 'OTHER COMMENTS';
+    billTotal.comment1 = '1. Total payment due in 30 days';
+    billTotal.comment2 = '2. Please include the invoice number on your check';
+
+    printInvoice.billTotal = billTotal;
+    printInvoice.billTo = billTo;
+    printInvoice.billFrom = billFrom;
+    return printInvoice;
+  }
+
 }

@@ -31,7 +31,7 @@
 
 /* Font-Face */
 @font-face {
-  font-family: "Conv_AlinmaTheSans-Bold";
+  font-family: "AlinmaTheSans-Bold";
   src: url("./assets/fonts/AlinmaTheSans-Bold.eot");
   src: local("☺"), 
   url("./assets/fonts/AlinmaTheSans-Bold.woff") format("woff"),
@@ -42,7 +42,7 @@
 }
 
 @font-face {
-  font-family: "Conv_AlinmaTheSans-Plain";
+  font-family: "AlinmaTheSans-Plain";
   src: url("./assets/fonts/AlinmaTheSans-Plain.eot");
   src: url("./assets/fonts/AlinmaTheSans-Plain.woff") format("woff"),
     url("./assets/fonts/AlinmaTheSans-Plain.ttf") format("truetype"),
@@ -53,10 +53,10 @@
 
 body,
 html {
-  font-family: Conv_AlinmaTheSans-Plain, "Trebuchet MS", Helvetica, sans-serif;
+  font-family: AlinmaTheSans-Bold, "Trebuchet MS", Helvetica, sans-serif;
 }
 * {
-  font-family: Conv_AlinmaTheSans-Plain, "Trebuchet MS", Helvetica, sans-serif !important;
+  font-family: AlinmaTheSans-Bold, "Trebuchet MS", Helvetica, sans-serif !important;
 }
 
 .material-icons {

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UtilsService } from '../../services/utils.service';
 import { NgProgress, NgProgressRef } from 'ngx-progressbar';
 import { Subscription } from 'rxjs';
+import { UserService } from '../../services/auth/user.service';
 
 declare interface RouteInfo {
   path: string;
@@ -27,7 +28,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   sidebar: boolean = true;
   menuItems: RouteInfo[];
   // private progressRef: NgProgressRef;
-  constructor(private utilService: UtilsService, private progress: NgProgress) {
+  constructor(private utilService: UtilsService, private userService: UserService, private progress: NgProgress) {
     // this.progressRef = this.progress.ref('myProgress');
 
   }
@@ -44,7 +45,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       { path: '/customers', title: 'sidebar.menu.customers', icon: 'people_outline', class: '' },
       { path: '/invoices', title: 'sidebar.menu.invoices', icon: 'people_outline', class: '' },
       { path: '/invoices-list', title: 'sidebar.menu.invoices', icon: 'people_outline', class: '' },
-      
+
       { path: '/profile', title: 'sidebar.menu.profile', icon: 'person', class: '' },
       // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
       // { path: '/typography', title: 'Typography',  icon:'library_books', class: '' },
@@ -86,4 +87,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
 
+  logout() {
+    this.userService.logout();
+  }
 }
