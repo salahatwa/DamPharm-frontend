@@ -1,43 +1,127 @@
 <div class="card mt-5">
   <div class="card-body">
-      <h6 class="text-center">Customers</h6>
-      
-    <form #customerForm="ngForm"(ngSubmit)="onSubmit(customerForm)">
+    <h6 class="text-center">Customers</h6>
+
+    <form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)">
       <alert [id]="alert.id"></alert>
-      <input type="hidden" name="id" #id="ngModel" [(ngModel)]="customerService.selectedCustomer.id">
-       
+      <input
+        type="hidden"
+        name="id"
+        #id="ngModel"
+        [(ngModel)]="customerService.selectedCustomer.id"
+      />
+
       <div class="form-group">
-          <div [hidden]="name.valid || name.pristine" class="alert alert-danger"  >Name is required</div>
-        <input type="text" name="name" class="form-control" #name="ngModel"[(ngModel)]="customerService.selectedCustomer.name" placeholder="Add Customer Name" minlength=3  pattern="[0-9a-zA-Z\s\u0600-\u06FF]*" required>       
-      </div>
-      
-      <div class="form-group">
-          <div [hidden]="lastname.valid || lastname.pristine" class="alert alert-danger" >Last Name is required</div>
-        <input type="text" name="lastname" class="form-control" #lastname="ngModel"[(ngModel)]="customerService.selectedCustomer.lastname" placeholder="Add Customer Last Name" minlength=2  pattern="[0-9a-zA-Z\s\u0600-\u06FF]*" required>
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+          Name is required
+        </div>
+        <input
+          type="text"
+          name="name"
+          class="form-control"
+          #name="ngModel"
+          [(ngModel)]="customerService.selectedCustomer.name"
+          placeholder="Add Customer Name"
+          minlength="3"
+          pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
+          required
+        />
       </div>
 
       <div class="form-group">
-          <div [hidden]="phone.valid || phone.pristine" class="alert alert-danger">Phone is required</div>
-        <input type="text" name="phone" class="form-control" (keypress)="keyPress($event)" minlength=10 maxlength=10 #phone="ngModel"[(ngModel)]="customerService.selectedCustomer.phone" placeholder="Add Customer Phone" required>
+        <div
+          [hidden]="state.valid || state.pristine"
+          class="alert alert-danger"
+        >
+          State is required
+        </div>
+        <input
+          type="text"
+          name="state"
+          class="form-control"
+          #state="ngModel"
+          [(ngModel)]="customerService.selectedCustomer.state"
+          placeholder="Add Customer State"
+          minlength="2"
+          pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
+          required
+        />
       </div>
 
       <div class="form-group">
-          <div [hidden]="address.valid || address.pristine" class="alert alert-danger">Address is required</div>
-        <textarea name="address" class="form-control" #address="ngModel"[(ngModel)]="customerService.selectedCustomer.address" placeholder="Add Customer Address" required></textarea>
-        
+        <div
+          [hidden]="email.valid || email.pristine"
+          class="alert alert-danger"
+        >
+          Email is invalid
+        </div>
+        <input
+          type="text"
+          name="email"
+          class="form-control"
+          #email="ngModel"
+          [(ngModel)]="customerService.selectedCustomer.email"
+          placeholder="Add Customer Email"
+          minlength="2"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
+        />
       </div>
-     
-    
-    <div class="form-group">
-      <button [disabled]="customerForm.invalid" class="btn btn-primary" type="submit">
-        <i class="fas fa-plus-circle"></i> {{this.customerService.valueBtn}} A Customer
-      </button>
-      <button class="btn btn-secondary" type="reset" (click)="resetForm(customerForm)">
+
+      <div class="form-group">
+        <div
+          [hidden]="phone.valid || phone.pristine"
+          class="alert alert-danger"
+        >
+          Phone is required
+        </div>
+        <input
+          type="text"
+          name="phone"
+          class="form-control"
+          (keypress)="keyPress($event)"
+          minlength="10"
+          maxlength="10"
+          #phone="ngModel"
+          [(ngModel)]="customerService.selectedCustomer.phone"
+          placeholder="Add Customer Phone"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <div
+          [hidden]="address.valid || address.pristine"
+          class="alert alert-danger"
+        >
+          Address is required
+        </div>
+        <textarea
+          name="address"
+          class="form-control"
+          #address="ngModel"
+          [(ngModel)]="customerService.selectedCustomer.address"
+          placeholder="Add Customer Address"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <button
+          [disabled]="customerForm.invalid"
+          class="btn btn-primary"
+          type="submit"
+        >
+          <i class="fas fa-plus-circle"></i>
+          {{ this.customerService.valueBtn }} A Customer
+        </button>
+        <button
+          class="btn btn-secondary"
+          type="reset"
+          (click)="resetForm(customerForm)"
+        >
           <i class="fas fa-sync-alt"></i> Reset
         </button>
-    </div>
+      </div>
     </form>
   </div>
 </div>
-
-

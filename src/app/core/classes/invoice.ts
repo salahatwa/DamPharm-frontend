@@ -2,7 +2,7 @@ import { Customer } from './customer';
 import { Product } from './product';
 
 export class IInvoice {
-  $key?: string;
+  id?: string;
   invoiceNumber?: number;
   uid?: string;
   customer: Customer;

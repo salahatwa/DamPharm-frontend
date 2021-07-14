@@ -6,6 +6,7 @@ import { UtilsService } from './shared/services/utils.service';
 import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from './shared/services/auth/user.service';
 
 declare const Offline: any;
 declare const jQuery: any;
@@ -27,10 +28,12 @@ export class AppComponent implements OnInit {
     private utilService: UtilsService,
     private http: HttpClient,
     private utils: UtilsService,
+    private userService:UserService
   ) {
   
     this.utils.loadDefaultSetting();
     this.reloadDir();
+    this.userService.populate();
 
     router.events.subscribe(event => {
       if(event instanceof NavigationEnd) {

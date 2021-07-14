@@ -13,6 +13,7 @@ import { AlertType } from './../../../shared/components/alert/alert.model';
 import { AlertService } from './../../../shared/components/alert/alert.service';
 import { UtilsService } from './../../../shared/services/utils.service';
 import { DamConstants } from './../../../shared/utils/constants';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 declare var Stimulsoft: any;
 
@@ -133,12 +134,30 @@ export class InvoiceListComponent implements OnInit {
     }
   }
 
-  onDelete($key: string) {
-    this.invoiceService.deleteInvoice($key);
-    this.showUpdatedMessage = true;
-    this.color = "danger"
-    setTimeout(() => this.showUpdatedMessage = false, 3000);
-    this.msg = "this record has been deleted"
+
+  onDelete(invoice: IInvoice, index: number) {
+
+    const dialogRef = this.modalService.open(ConfirmDialogComponent);
+
+    dialogRef.result.then(result => {
+      if (result) {
+        this.loading = true;
+        this.invoiceService.deleteInvoice(invoice?.id).pipe(finalize(() => {
+          this.loading = false;
+        })).subscribe(data => {
+          this.invoiceList.splice(index, 1);
+          this.alertService.success(this.translateService.instant('notify.success.delete'), this.alert);
+          console.log(this.translateService.instant('notify.success.delete'));
+        }, err => {
+          this.alertService.success(err.message, this.alert);
+        });
+
+      }
+    }).catch((res) => {
+
+    });
+
+
   }
 
   onSubmitUpdate() {
@@ -202,7 +221,7 @@ export class InvoiceListComponent implements OnInit {
 
 
 
-    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1626185587/DamPharmLat_Invoice_latest_4_bsmhex_nr2aee.mrt');
+    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1626187344/DamPharmLat_Invoice_latest_6_bsmhex_nr2aee_qtgiub_iwovcc.mrt');
 
     report.regData("Demo22", "Demo22", dataSet);
     report.dictionary.synchronize();

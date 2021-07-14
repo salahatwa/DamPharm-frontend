@@ -142,7 +142,7 @@
                           <tr *ngIf="filterCondition(invoice)">
                             <td>{{invoice.customer.name}} {{invoice.customer.lastname}}</td>
                             <td>{{invoice.totalPrice | currency:'USD':'symbol'}}</td>
-                            <td>{{invoice.uid}}</td>
+                            <td>{{invoice.id}}</td>
                             <td>{{invoice.createdAt | date: 'dd/MM/yyyy'}}</td>
                             <td>
                               <li class="list-group-item" *ngFor="let purchase of invoice.items">
@@ -152,9 +152,9 @@
                             <td class="btn-group m-1">
                               <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="print(invoice);showDialog = !showDialog">
                                 <i class="material-icons md-18">print</i></a>      
-                              <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="onUpdate(invoice);showDialog = !showDialog">
-                                <i class="material-icons md-18">mode_edit_outline</i></a>            
-                              <a class="btn-sm icon-btn-sm btn-danger text-white" (click)="onDelete(invoice.$key)">
+                              <!-- <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="onUpdate(invoice);showDialog = !showDialog">
+                                <i class="material-icons md-18">mode_edit_outline</i></a>             -->
+                              <a class="btn-sm icon-btn-sm btn-danger text-white" (click)="onDelete(invoice,i)">
                                 <i class="material-icons md-18">delete_outline</i>
                               </a>
                             </td>

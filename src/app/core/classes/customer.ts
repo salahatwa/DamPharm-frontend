@@ -4,7 +4,8 @@ export class Customer {
   lastname?: string;
   address?: string;
   phone?: string;
-
-  index?:number;
-  action?:string;
+  state?: string;
+  email?: string;
+  index?: number;
+  action?: string;
 }

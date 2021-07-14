@@ -4,7 +4,7 @@ export class Product {
     location?: string;
     price?: number;
     categoryId?: number;
-
-    index?:number;
-    action?:string;
+    quantity?: number;
+    index?: number;
+    action?: string;
 }
