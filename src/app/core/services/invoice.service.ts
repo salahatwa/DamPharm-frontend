@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../shared/services/api.service';
 import { IInvoice } from './../classes/invoice';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReportViewerDialogComponent } from 'src/app/shared/components/report-dialogs/report-viewer-dialog/report-viewer.component';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class InvoiceService {
   invoiceList: [];
   selectedInvoice: IInvoice = new IInvoice();
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private modalService: NgbModal) {
   }
 
   getInvoices(params: any): Observable<any> {
@@ -43,5 +45,20 @@ export class InvoiceService {
 
   money(value: number) {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+  }
+
+
+  openInvoiceDialog(invoice: IInvoice) {
+    const dialogRef = this.modalService.open(ReportViewerDialogComponent, { size: 'xl' });
+    dialogRef.componentInstance.invoice = invoice;
+    dialogRef.result.then(result => {
+
+      if (result) {
+
+
+      }
+    }).catch((res) => {
+
+    });
   }
 }

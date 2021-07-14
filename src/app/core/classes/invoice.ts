@@ -3,6 +3,7 @@ import { Product } from './product';
 
 export class IInvoice {
   id?: string;
+  createdAt:string;
   invoiceNumber?: number;
   uid?: string;
   customer: Customer;
@@ -13,6 +14,7 @@ export class IInvoice {
 export interface ItemInvoice {
   product: Product;
   quantity: number;
+  discount: number;
   // amount: number;
 }
 

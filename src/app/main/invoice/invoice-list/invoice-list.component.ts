@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { Customer } from './../../../core/classes/customer';
 import { IInvoice } from './../../../core/classes/invoice';
 import { Product } from './../../../core/classes/product';
@@ -13,7 +14,6 @@ import { AlertType } from './../../../shared/components/alert/alert.model';
 import { AlertService } from './../../../shared/components/alert/alert.service';
 import { UtilsService } from './../../../shared/services/utils.service';
 import { DamConstants } from './../../../shared/utils/constants';
-import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 declare var Stimulsoft: any;
 
@@ -202,74 +202,7 @@ export class InvoiceListComponent implements OnInit {
 
 
   print(invoice) {
-
-    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/fonts/AlinmaTheSans-Bold.ttf");
-
-    let report = new Stimulsoft.Report.StiReport();
-
-    // Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/fonts/AlinmaTheSans-Bold.ttf", "AlinmaTheSans-Bold");
-
-    var fileContent = Stimulsoft.System.IO.File.getFile("assets/fonts/AlinmaTheSans-Bold.ttf", "AlinmaTheSans-Bold", true);
-    var resource = new Stimulsoft.Report.Dictionary.StiResource(
-      "AlinmaTheSans-Bold", "AlinmaTheSans-Bold", false, Stimulsoft.Report.Dictionary.StiResourceType.FontTtf, fileContent);
-    report.dictionary.resources.add(resource);
-
-    let dataSet = new Stimulsoft.System.Data.DataSet("Demo22");
-
-
-    dataSet.readJson(this.utilService.generateInvoice(invoice));
-
-
-
-    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1626187344/DamPharmLat_Invoice_latest_6_bsmhex_nr2aee_qtgiub_iwovcc.mrt');
-
-    report.regData("Demo22", "Demo22", dataSet);
-    report.dictionary.synchronize();
-
-    report.renderAsync(function () {
-      // document.getElementById("savePdf").disabled = false;
-    });
-
-    this.saveReportPdf(report);
-  }
-
-
-
-  saveReportPdf(report) {
-    var pdfSettings = new Stimulsoft.Report.Export.StiPdfExportSettings();
-    var pdfService = new Stimulsoft.Report.Export.StiPdfExportService();
-    var stream = new Stimulsoft.System.IO.MemoryStream();
-    pdfSettings.EmbeddedFonts = true;
-    pdfSettings.AllowImportSystemLibraries = true;
-    // pdfSettings.UseUnicode = true;
-    // pdfSettings.StandardPdfFonts = false;
-    // pdfSettings.AllowFontsCache = true;
-
-   
-    // pdfService.LoadFontInfoToStore("AlinmaTheSans-Bold", "https://res.cloudinary.com/genhub/raw/upload/v1626176320/AlinmaTheSans-Bold_lpz4kh.ttf"); 
-
-
-
-
-    var fileContent = Stimulsoft.System.IO.File.getFile("assets/fonts/AlinmaTheSans-Bold.ttf", "AlinmaTheSans-Bold", true);
-    var resource = new Stimulsoft.Report.Dictionary.StiResource(
-      "AlinmaTheSans-Bold", "AlinmaTheSans-Bold", false, Stimulsoft.Report.Dictionary.StiResourceType.FontTtf, fileContent);
-    report.dictionary.resources.add(resource);
-
-    report.renderAsync(function () {
-      pdfService.exportToAsync(function () {
-        var data = stream.toArray();
-        var blob = new Blob([new Uint8Array(data)], { type: "application/pdf" });
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          var fileName = (report.reportAlias == null || report.reportAlias.trim().length == 0) ? report.reportName : report.reportAlias;
-          window.navigator.msSaveOrOpenBlob(blob, fileName + ".pdf");
-        }
-        else {
-          var fileUrl = URL.createObjectURL(blob);
-          window.open(fileUrl);
-        }
-      }, report, stream, pdfSettings);
-    }, false);
+    this.invoiceService.openInvoiceDialog(invoice);
   }
 
 }

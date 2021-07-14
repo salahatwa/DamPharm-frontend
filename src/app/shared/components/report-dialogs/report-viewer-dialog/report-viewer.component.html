@@ -50,114 +50,74 @@
               </div>
               <div class="col company-details">
                 <h2 class="name">
-                  <a target="_blank" href="https://lobianijs.com">
-                    Arboshiki
+                  <a target="_blank" href="https://dampharm.com">
+                    دام فارم
                   </a>
                 </h2>
-                <div>455 Foggy Heights, AZ 85004, US</div>
+                <div>الباجور - المنوفية</div>
                 <div>(123) 456-789</div>
-                <div>company@example.com</div>
+                <div>services@dampharm.com</div>
               </div>
             </div>
           </header>
           <main>
             <div class="row contacts">
               <div class="col invoice-to">
-                <div class="text-gray-light">INVOICE TO:</div>
-                <h2 class="to">John Doe</h2>
-                <div class="address">796 Silver Harbour, TX 79273, US</div>
-                <div class="email">
-                  <a href="mailto:john@example.com">john@example.com</a>
+                <div class="text-gray-light">: المفوتر</div>
+                <h2 class="to">{{invoice?.customer?.name}}</h2>
+                <div class="address">{{invoice?.customer?.address}}</div>
+                <div class="address">{{invoice?.customer?.state}}</div>
+                <div *ngIf="invoice?.customer?.email" class="email">
+                  <a href="mailto:john@example.com">{{invoice?.customer?.email}}</a>
                 </div>
               </div>
               <div class="col invoice-details">
-                <h1 class="invoice-id">INVOICE 3-2-1</h1>
-                <div class="date">تاريخ الفاتورة: 01/10/2018</div>
-                <div class="date">تاريخ الدفع: 30/10/2018</div>
+                <h1 class="invoice-id">{{invoice?.id}}  :  فاتورة رقم</h1>
+                <div class="date">{{invoice?.createdAt | date: 'dd-MM-yyyy'}}  :  تاريخ الفاتورة</div>
+                <div class="date">-------------  :    تاريخ الدفع  </div>
               </div>
             </div>
             <table border="0" cellspacing="0" cellpadding="0">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th class="text-left">DESCRIPTION</th>
-                  <th class="text-right">HOUR PRICE</th>
-                  <th class="text-right">HOURS</th>
-                  <th class="text-right">TOTAL</th>
+                  <th class="text-left">المنتج</th>
+                  <th class="text-right">السعر</th>
+                  <th class="text-right">الكمية</th>
+                  <th class="text-right">الخصم</th>
+                  <th class="text-right">المجموع</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="no">04</td>
+                <tr *ngFor="let item of invoice?.items;let i=index">
+                  <td class="no">{{i+1}}</td>
                   <td class="text-left">
                     <h3>
-                      <a
-                        target="_blank"
-                        href="https://www.youtube.com/channel/UC_UMEcP_kF0z4E6KbxCpV1w"
-                      >
-                        Youtube channel
-                      </a>
+                      {{item?.product?.name}}
                     </h3>
-                    <a
-                      target="_blank"
-                      href="https://www.youtube.com/channel/UC_UMEcP_kF0z4E6KbxCpV1w"
-                    >
-                      Useful videos
-                    </a>
-                    to improve your Javascript skills. Subscribe and stay tuned
-                    :)
                   </td>
-                  <td class="unit">$0.00</td>
-                  <td class="qty">100</td>
-                  <td class="total">$0.00</td>
+                  <td class="unit">{{item?.product?.price}}</td>
+                  <td class="qty">{{item?.quantity}}</td>
+                  <td class="unit">{{item?.discount}}</td>
+                  <td class="total">{{itemTotalAfterDiscount(item)}}</td>
                 </tr>
-                <tr>
-                  <td class="no">01</td>
-                  <td class="text-left">
-                    <h3>Website Design</h3>
-                    Creating a recognizable design solution based on the
-                    company's existing visual identity
-                  </td>
-                  <td class="unit">$40.00</td>
-                  <td class="qty">30</td>
-                  <td class="total">$1,200.00</td>
-                </tr>
-                <tr>
-                  <td class="no">02</td>
-                  <td class="text-left">
-                    <h3>Website Development</h3>
-                    Developing a Content Management System-based Website
-                  </td>
-                  <td class="unit">$40.00</td>
-                  <td class="qty">80</td>
-                  <td class="total">$3,200.00</td>
-                </tr>
-                <tr>
-                  <td class="no">03</td>
-                  <td class="text-left">
-                    <h3>Search Engines Optimization</h3>
-                    Optimize the site for search engines (SEO)
-                  </td>
-                  <td class="unit">$40.00</td>
-                  <td class="qty">20</td>
-                  <td class="total">$800.00</td>
-                </tr>
+               
               </tbody>
               <tfoot>
                 <tr>
                   <td colspan="2"></td>
-                  <td colspan="2">SUBTOTAL</td>
-                  <td>$5,200.00</td>
+                  <td colspan="3">المجموع الفرعي</td>
+                  <td>{{itemSubtotal(invoice)}}</td>
                 </tr>
                 <tr>
                   <td colspan="2"></td>
-                  <td colspan="2">TAX 25%</td>
-                  <td>$1,300.00</td>
+                  <td colspan="3">ضريبة</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <td colspan="2"></td>
-                  <td colspan="2">GRAND TOTAL</td>
-                  <td>$6,500.00</td>
+                  <td colspan="3">المجموع الإجمالي</td>
+                  <td>{{itemSubtotal(invoice)}}</td>
                 </tr>
               </tfoot>
             </table>

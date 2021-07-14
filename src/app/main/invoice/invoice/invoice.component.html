@@ -87,7 +87,7 @@
                   <div class="col-sm"><button type="button" (click)="resetPurchase()" class="btn btn-warning"
                       style="padding-right: 10px">Reset</button></div>
                   <div class="col-sm"> <button type="submit"  class="btn btn-success float-right">Submit</button></div>
-                  <div class="col-sm"> <button type="button" (click)="print()" class="btn btn-success float-right">Print</button></div>
+                  <!-- <div class="col-sm"> <button type="button" (click)="print()" class="btn btn-success float-right">Print</button></div> -->
                 </div>
               </div>
             </div>
@@ -106,8 +106,14 @@
                     <small class="text-warning">Price: {{money(purchase.get('product').value.price)}}</small>
                   </div>
                   <p class="mb-1">
+                    <label>الكمية</label>
                     <input type="number" formControlName="quantity" class="form-control form-control-sm">
                   </p>
+                  <p class="mb-1">
+                    <label>خصم</label>
+                    <input type="number" formControlName="discount" class="form-control form-control-sm">
+                  </p>
+
                   <small>
                     <input type="hidden" formControlName="amount" class="form-control form-control-sm"> Sub-Total
                     {{money(purchase.get('amount').value)}}

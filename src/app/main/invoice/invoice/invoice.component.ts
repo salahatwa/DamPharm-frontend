@@ -29,7 +29,7 @@ export class InvoiceComponent implements OnInit {
   showDialog1;
   showDialog;
 
-  constructor(private modalService: NgbModal, private router: Router, private _fb: FormBuilder, private invoiceService: InvoiceService, private customerService: CustomerService, private productService: ProductService) { }
+  constructor(private router: Router, private _fb: FormBuilder, private invoiceService: InvoiceService, private customerService: CustomerService, private productService: ProductService) { }
 
   ngOnInit() {
     this.customerService.getAllCustomers().subscribe(data => {
@@ -57,7 +57,14 @@ export class InvoiceComponent implements OnInit {
     const control = <FormArray>this.form.controls['items'];
     let totalSum = 0;
     for (let i in items) {
-      const amount = (items[i].quantity * items[i].product.price);
+      let amount = (items[i].quantity * items[i].product.price);
+
+      let discoubtControlValue=control.at(+i).get('discount').value;
+      
+      if (discoubtControlValue) {
+        let discount = amount - ((amount * discoubtControlValue) / 100);
+        amount = discount;
+      }
       control.at(+i).get('amount').setValue(amount, { onlySelf: true, emitEvent: false });
       // update total price
       totalSum += amount;
@@ -70,6 +77,7 @@ export class InvoiceComponent implements OnInit {
     return this._fb.group({
       product: [product, Validators.required],
       quantity: [1, [Validators.required, Validators.pattern(numberPatern)]],
+      discount: [0],
       amount: [{ value: 0, disabled: true }],
     });
   }
@@ -111,14 +119,16 @@ export class InvoiceComponent implements OnInit {
       const result: IInvoice = <IInvoice>this.form.value;
       // Do useful stuff with the gathered data
       console.log(result);
-      this.invoiceService.insertInvoice(result).subscribe((data => {
 
+      this.invoiceService.insertInvoice(result).subscribe((data => {
+        this.invoiceService.openInvoiceDialog(data);
         this.phoneCustomer = '';
         this.addressCustomer = '';
         this.showDiv = null;
         //Agregar msg
         this.initForm();
-        this.router.navigate(['/invoices-list']);
+       
+        // this.router.navigate(['/invoices-list']);
       }));
 
 
@@ -132,80 +142,16 @@ export class InvoiceComponent implements OnInit {
   }
 
 
- print() {
+ 
 
-    let report = new Stimulsoft.Report.StiReport();
-
-    let dataSet = new Stimulsoft.System.Data.DataSet("Demo22");
-
-    // this.dataSet.readJson(this.invoice());
-
-    report.loadFile('https://res.cloudinary.com/genhub/raw/upload/v1617538367/DamPharmLat10_zzcvtn.mrt');
-
-    report.regData("Demo22", "Demo22", dataSet);
-    report.dictionary.synchronize();
-
-    report.renderAsync(function () {
-      // document.getElementById("savePdf").disabled = false;
-    });
-
-    this.saveReportPdf(report);
-
-
-    // const dialogRef = this.modalService.open(ReportViewerDialogComponent, { size: 'xl' });
-
-    // dialogRef.result.then(result => {
-
-    //   if (result) {
-
-
-    //   }
-    // }).catch((res) => {
-
-    // });
-  }
-
-
-  saveReportPdf(report) {
-    var pdfSettings = new Stimulsoft.Report.Export.StiPdfExportSettings();
-    var pdfService = new Stimulsoft.Report.Export.StiPdfExportService();
-    var stream = new Stimulsoft.System.IO.MemoryStream();
-    report.renderAsync(function () {
-      pdfService.exportToAsync(function () {
-        var data = stream.toArray();
-        var blob = new Blob([new Uint8Array(data)], { type: "application/pdf" });
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          var fileName = (report.reportAlias == null || report.reportAlias.trim().length == 0) ? report.reportName : report.reportAlias;
-          window.navigator.msSaveOrOpenBlob(blob, fileName + ".pdf");
-        }
-        else {
-          var fileUrl = URL.createObjectURL(blob);
-          window.open(fileUrl);
-        }
-      }, report, stream, pdfSettings);
-    }, false);
-  }
-
-  design(){
-    const dialogRef = this.modalService.open(ReportViewerDialogComponent, { size: 'xl' });
-
-    dialogRef.result.then(result => {
-
-      if (result) {
-       
-
-      }
-    }).catch((res) => {
-
-    });
-  }
+  
 
   getSelectedOptionText(event) {
     this.resetPurchase();
     this.showDiv = null;
     this.phoneCustomer = event.phone;
     this.addressCustomer = event.address;
-  } 
+  }
 
 
 

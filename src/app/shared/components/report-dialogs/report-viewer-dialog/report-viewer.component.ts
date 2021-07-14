@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
-import { IInvoice } from 'src/app/core/classes/invoice';
+import { IInvoice, ItemInvoice } from 'src/app/core/classes/invoice';
 
 declare var html2pdf: any;
 
@@ -37,7 +37,7 @@ export class ReportViewerDialogComponent implements OnInit {
     var element = document.getElementById('htmlData');
     var opt = {
       margin: 0,
-      filename: 'Order_1' + '.pdf',
+      filename: this.invoice.id + '.pdf',
       image: { type: 'jpeg', quality: 1 },
       html2canvas: { dpi: 95, scale: 5, letterRendering: true },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -55,6 +55,23 @@ export class ReportViewerDialogComponent implements OnInit {
 
     }).save();
 
+  }
+
+  itemTotalAfterDiscount(item: ItemInvoice) {
+    let amount = (item?.quantity * item?.product?.price);
+    if (item?.discount) {
+      let discount = amount - ((amount * item?.discount) / 100);
+      amount = discount;
+    }
+    return amount;
+  }
+
+  itemSubtotal(invoice: IInvoice) {
+    let totalSum = 0;
+    invoice?.items.forEach((item) => {
+      totalSum += this.itemTotalAfterDiscount(item);
+    });
+    return totalSum;
   }
 
 }
