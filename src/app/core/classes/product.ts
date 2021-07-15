@@ -5,6 +5,7 @@ export class Product {
     price?: number;
     categoryId?: number;
     quantity?: number;
+    availableQuantity?:number;
     index?: number;
     action?: string;
 }

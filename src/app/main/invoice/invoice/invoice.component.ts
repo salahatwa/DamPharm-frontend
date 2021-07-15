@@ -37,6 +37,7 @@ export class InvoiceComponent implements OnInit {
     });
     this.productService.getAllProducts().subscribe(data => {
       this.productList = data;
+      console.log(data);
     });
     this.initForm();
   }
@@ -53,14 +54,29 @@ export class InvoiceComponent implements OnInit {
     myFormValueChanges$.subscribe(items => this.updatePurchasesAmount(items));
   }
 
+  updateProductList(product) {
+    let itemIndex = this.productList.findIndex(item => item.id == product.id);
+    this.productList[itemIndex] = product;
+  }
+
+
+
   updatePurchasesAmount(items: any) {
     const control = <FormArray>this.form.controls['items'];
     let totalSum = 0;
     for (let i in items) {
       let amount = (items[i].quantity * items[i].product.price);
 
-      let discoubtControlValue=control.at(+i).get('discount').value;
-      
+      // console.log(items[i].product.availableQuantity + "-" + items[i].quantity);
+      // const old = items[i].product.availableQuantity;
+      // const availableQuantity =  old - items[i].quantity;
+      // items[i].product.availableQuantity = availableQuantity;
+      // control.at(+i).get('product').setValue(items[i].product, { onlySelf: true, emitEvent: false });
+      // this.updateProductList(items[i].product);
+
+      let discoubtControlValue = control.at(+i).get('discount').value;
+
+
       if (discoubtControlValue) {
         let discount = amount - ((amount * discoubtControlValue) / 100);
         amount = discount;
@@ -91,13 +107,15 @@ export class InvoiceComponent implements OnInit {
     const control = <FormArray>this.form.controls['items'];
     let add = true;
     for (let i in control.controls) {
-      if (control.at(+i).get('product').value.name === product.name) {
+      if (control.at(+i).get('product').value.id === product.id) {
         // control.controls[i].get('quantity').setValue(control.controls[i].controls.quantity.value + 1);
         control.at(+i).get('quantity').setValue(control.at(+i).get('quantity').value + 1);
+
         add = false;
       }
     }
     if (add) {
+      console.log(product);
       control.push(this.purchaseForm(product));
       this.showDiv = add;
     }
@@ -114,10 +132,18 @@ export class InvoiceComponent implements OnInit {
     control.controls = [];
   }
 
+  updateAvailableQuantity(invoice: IInvoice) {
+    invoice.items.forEach(item => {
+      item.product.availableQuantity = item.product.availableQuantity - item.quantity;
+    });
+  }
+
   saveProduct() {
     if (this.form.valid && this.form.controls['totalPrice'].value > 0) {
       const result: IInvoice = <IInvoice>this.form.value;
       // Do useful stuff with the gathered data
+
+      this.updateAvailableQuantity(result);
       console.log(result);
 
       this.invoiceService.insertInvoice(result).subscribe((data => {
@@ -127,7 +153,6 @@ export class InvoiceComponent implements OnInit {
         this.showDiv = null;
         //Agregar msg
         this.initForm();
-       
         // this.router.navigate(['/invoices-list']);
       }));
 
@@ -142,9 +167,9 @@ export class InvoiceComponent implements OnInit {
   }
 
 
- 
 
-  
+
+
 
   getSelectedOptionText(event) {
     this.resetPurchase();

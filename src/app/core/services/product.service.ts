@@ -15,6 +15,7 @@ export class ProductService {
   productList: Product[];
   selectedProduct: Product = new Product();
   public valueBtn: string;
+  public status: number = 1;
 
   constructor(private apiService: ApiService) { }
 
@@ -33,10 +34,14 @@ export class ProductService {
   }
 
   getValueBtn(val) {
-    if (val == 1)
-      return this.valueBtn = 'Add';
-    else
-      return this.valueBtn = 'Update';
+    if (val == 1) {
+      this.status = 1;
+      return this.valueBtn = 'حفظ';
+    }
+    else {
+      this.status = 2;
+      return this.valueBtn = 'تعديل';
+    }
   }
 
   insertProduct(product: Product): Observable<Product> {
