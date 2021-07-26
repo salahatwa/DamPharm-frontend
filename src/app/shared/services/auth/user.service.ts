@@ -80,13 +80,23 @@ export class UserService {
   // Update the user on the server (email, pass, etc)
   update(user): Observable<User> {
     return this.apiService
-      .put('/user/update', user)
+      .put('/users/update', user)
       .pipe(map(data => {
         // Update the currentUser observable
         this.purgeAuth();
         this.setAuth(data);
         return data;
       }));
+  }
+
+  updateLogo(uploadImageData): Observable<User> {
+    return this.apiService.uploadFile('/users/logo/update', uploadImageData).pipe(map(data => {
+      // Update the currentUser observable
+      // this.purgeAuth();
+      console.log(data);
+      this.setAuth(data.body);
+      return data;
+    }));
   }
 
   logout() {

@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { IInvoice, ItemInvoice } from 'src/app/core/classes/invoice';
+import { UserService } from 'src/app/shared/services/auth/user.service';
+import { User } from 'src/app/core/classes/user.model';
 
 declare var html2pdf: any;
 
@@ -16,8 +18,10 @@ export class ReportViewerDialogComponent implements OnInit {
 
   @Input() invoice: IInvoice;
 
+  currentUser: User;
 
-  constructor(public activeModal: NgbActiveModal, private http: HttpClient) {
+
+  constructor(private userService: UserService, public activeModal: NgbActiveModal, private http: HttpClient) {
     this.addScript('./assets/js/html2pdf.bundle.js');
   }
 
@@ -27,9 +31,17 @@ export class ReportViewerDialogComponent implements OnInit {
     script.src = url;
     document.head.appendChild(script);
   }
-
+  base64ImageString;
 
   ngOnInit(): void {
+
+    this.userService.currentUser.subscribe(data => {
+      this.currentUser = data;
+      this.getBase64ImageFromUrl(this.currentUser.companyLogo).then(base64 => {
+        this.base64ImageString = base64;
+      })
+    });
+
 
   }
 
@@ -72,6 +84,21 @@ export class ReportViewerDialogComponent implements OnInit {
       totalSum += this.itemTotalAfterDiscount(item);
     });
     return totalSum;
+  }
+
+  async getBase64ImageFromUrl(imageUrl) {
+    var res = await fetch(imageUrl);
+    var blob = await res.blob();
+    return new Promise((resolve, reject) => {
+      var reader = new FileReader();
+      reader.addEventListener("load", function () {
+        resolve(reader.result);
+      }, false);
+      reader.onerror = () => {
+        return reject(this);
+      };
+      reader.readAsDataURL(blob);
+    })
   }
 
 }

@@ -2,16 +2,24 @@
 
 export interface User {
   accessToken: string;
-  profile:Profile;
-}
+  email:string;
+  authorities: [];
 
-export interface Profile {
   username: string;
   bio: string;
   image: string;
   following: boolean;
-  oldpass:string;
-  newpass:string;
-  confirmpass:string;
+  oldpass: string;
+  newpass: string;
+  confirmpass: string;
+
+  companyLogo: string;
+  companyName:string;
+  address: string;
+  postalCode: string;
+  country: string;
+  city: string;
+  phone: string;
 }
+
 
