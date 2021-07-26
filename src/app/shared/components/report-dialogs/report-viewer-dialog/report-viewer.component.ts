@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { IInvoice, ItemInvoice } from 'src/app/core/classes/invoice';
 import { UserService } from 'src/app/shared/services/auth/user.service';
 import { User } from 'src/app/core/classes/user.model';
+import { Observable, Observer } from 'rxjs';
 
 declare var html2pdf: any;
 
@@ -37,9 +38,13 @@ export class ReportViewerDialogComponent implements OnInit {
 
     this.userService.currentUser.subscribe(data => {
       this.currentUser = data;
-      this.getBase64ImageFromUrl(this.currentUser.companyLogo).then(base64 => {
-        this.base64ImageString = base64;
-      })
+
+
+
+      this.getBase64ImageFromURL(this.currentUser?.companyLogo).subscribe((base64Data: string) => {
+        this.base64ImageString = base64Data;
+        console.log(base64Data);
+      });
     });
 
 
@@ -86,19 +91,43 @@ export class ReportViewerDialogComponent implements OnInit {
     return totalSum;
   }
 
-  async getBase64ImageFromUrl(imageUrl) {
-    var res = await fetch(imageUrl);
-    var blob = await res.blob();
-    return new Promise((resolve, reject) => {
-      var reader = new FileReader();
-      reader.addEventListener("load", function () {
-        resolve(reader.result);
-      }, false);
-      reader.onerror = () => {
-        return reject(this);
-      };
-      reader.readAsDataURL(blob);
-    })
+  /* Method to fetch image from Url */
+  getBase64ImageFromURL(url: string): Observable<string> {
+    return Observable.create((observer: Observer<string>) => {
+      // create an image object
+      let img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = url;
+      if (!img.complete) {
+        // This will call another method that will create image from url
+        img.onload = () => {
+          observer.next(this.getBase64Image(img));
+          observer.complete();
+        };
+        img.onerror = err => {
+          observer.error(err);
+        };
+      } else {
+        observer.next(this.getBase64Image(img));
+        observer.complete();
+      }
+    });
+  }
+
+  /* Method to create base64Data Url from fetched image */
+  getBase64Image(img: HTMLImageElement): string {
+    // We create a HTML canvas object that will create a 2d image
+    var canvas: HTMLCanvasElement = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    // This will draw image
+    ctx.drawImage(img, 0, 0);
+    // Convert the drawn image to Data URL
+    let dataURL: string = canvas.toDataURL("image/png");
+    // this.base64ImageString = dataURL;
+    // return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    return dataURL;
   }
 
 }
