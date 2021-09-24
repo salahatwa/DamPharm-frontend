@@ -16,7 +16,7 @@ export class AlertService {
 
 
   options = {
-    autoClose: false,
+    autoClose: true,
     keepAfterRouteChange: false,
     duplicat: false,
     alertType: AlertType.DEFAULT

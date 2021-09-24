@@ -7,6 +7,7 @@ import { Category } from './../../../core/classes/category';
 import { Product } from './../../../core/classes/product';
 import { CategoryService } from './../../../core/services/category.service';
 import { ProductService } from './../../../core/services/product.service';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class ProductComponent implements OnInit {
   public selectUndefinedOptionValue: any;
   categoryList: Category[];
   showDialog;
+  loading: boolean = false;
 
 
   constructor(public productService: ProductService, public categoryService: CategoryService, private translateService: TranslateService, private alertService: AlertService) { }
@@ -27,25 +29,32 @@ export class ProductComponent implements OnInit {
     // this.productService.getProducts();
     this.resetForm();
     this.productService.getValueBtn(1);
-    this.categoryService.getAllCategories().subscribe(items => {
+    this.loading = true;
+    this.categoryService.getAllCategories().pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe(items => {
       this.categoryList = items;
     });
   }
 
   onSubmit(productForm: NgForm) {
+    this.loading=true;
     this.productService.getValueBtn(1);
     if (productForm.value.id == null)
-      this.productService.insertProduct(productForm.value).subscribe(data => {
+      this.productService.insertProduct(productForm.value).pipe(finalize(() => {
+        this.loading = false;
+      })).subscribe(data => {
         this.alertService.success(this.translateService.instant('notify.success.add'), this.alert);
       }, err => {
         this.alertService.error(err.message, this.alert);
       });
-    else
-    {
-      let req:Product=productForm.value;
-      req.index=this.productService.selectedProduct.index;
+    else {
+      let req: Product = productForm.value;
+      req.index = this.productService.selectedProduct.index;
 
-      this.productService.updateProduct(req).subscribe(data => {
+      this.productService.updateProduct(req).pipe(finalize(() => {
+        this.loading = false;
+      })).subscribe(data => {
         this.alertService.success(this.translateService.instant('notify.success.update'), this.alert);
       }, err => {
         this.alertService.error(err.message, this.alert);

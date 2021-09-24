@@ -20,6 +20,7 @@ export interface User {
   country: string;
   city: string;
   phone: string;
+  productRiskCategory:number;
 }
 
 

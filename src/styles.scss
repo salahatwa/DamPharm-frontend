@@ -1,6 +1,16 @@
 @charset "UTF-8";
 // @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+.loading-section{
+  background-color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 999999;
+  padding: 20px;
+}
 .text-green {
   color: #007b43;
 }
@@ -54,6 +64,7 @@
 body,
 html {
   font-family: AlinmaTheSans-Bold, "Trebuchet MS", Helvetica, sans-serif;
+  // text-align: left !important;
 }
 * {
   font-family: AlinmaTheSans-Bold, "Trebuchet MS", Helvetica, sans-serif !important;
@@ -5179,6 +5190,7 @@ a.text-dark:hover {
   }
   .table {
     border-collapse: collapse !important;
+    text-align: right!important;
   }
   .table td,
   .table th {
@@ -9780,7 +9792,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .main-panel-rtl .main-content {
-  margin-top: 70px;
+  // margin-top: 70px;
   padding: 30px 15px;
   min-height: calc(100vh - 123px);
 }
@@ -10662,16 +10674,19 @@ label {
 .card .card-title {
   margin-top: 0;
   margin-bottom: 15px;
+  text-align: right;
 }
 .card .card-body {
   padding: 0.9375rem 20px;
   position: relative;
+  text-align: right;
 }
 .card .card-header .card-title {
   margin-bottom: 3px;
 }
 .card .card-header .card-category {
   margin: 0;
+  text-align: right;
 }
 .card .card-header.card-header-text {
   display: inline-block;

@@ -10,51 +10,48 @@
       &times;
     </button>
   </div>
-  <h4 class="modal-title w-100">Are you sure?</h4>
+  <h4 class="modal-title w-100">طباعة الفاتورة</h4>
 </div>
+
 <div class="modal-body">
   <app-section-loading [isLoading]="isLoading"></app-section-loading>
 
-  <div class="toolbar hidden-print">
-    <div class="text-right">
-      <button id="printInvoice" class="btn btn-info">
-        <i class="fa fa-print"></i> Print
-      </button>
-      <button class="btn btn-info" (click)="downloadPDF()">
-        <i class="fa fa-file-pdf-o"></i> Export as PDF
-      </button>
-    </div>
-    <hr />
-  </div>
-
-  <div
-    *ngIf="!isLoading"
+  <div 
+   *ngIf="!isLoading"
     class="section-box"
-    id="htmlData"
-    #htmlData
     style="height: 100%; position: relative; direction: ltr"
   >
+  
+
+    <div class="toolbar hidden-print">
+      <div class="text-right">
+        <button class="btn btn-info" (click)="downloadPDF()">
+          <i class="fa fa-file-pdf-o"></i> تنزيل الفاتورة
+        </button>
+      </div>
+      <hr />
+    </div>
+
     <div id="invoice">
       <div class="invoice overflow-auto">
         <div style="min-width: 600px">
           <header>
             <div class="row">
               <div class="col">
-               
-                  <img
-                  src='{{ base64ImageString }}'
-                    width="100" height="100"
-                    data-holder-rendered="true"
-                  />
-               
+                <img
+                  src="{{ base64ImageString }}"
+                  width="100"
+                  height="100"
+                  data-holder-rendered="true"
+                />
               </div>
               <div class="col company-details">
                 <h2 class="name">
-                    {{currentUser?.companyName}}
+                  {{ currentUser?.companyName }}
                 </h2>
-                <div>{{currentUser?.address}}</div>
-                <div>{{currentUser?.phone}}</div>
-                <div>{{currentUser?.email}}</div>
+                <div>{{ currentUser?.address }}</div>
+                <div>{{ currentUser?.phone }}</div>
+                <div>{{ currentUser?.email }}</div>
               </div>
             </div>
           </header>
@@ -62,17 +59,21 @@
             <div class="row contacts">
               <div class="col invoice-to">
                 <div class="text-gray-light">: المفوتر</div>
-                <h2 class="to">{{invoice?.customer?.name}}</h2>
-                <div class="address">{{invoice?.customer?.address}}</div>
-                <div class="address">{{invoice?.customer?.state}}</div>
+                <h2 class="to">{{ invoice?.customer?.name }}</h2>
+                <div class="address">{{ invoice?.customer?.address }}</div>
+                <div class="address">{{ invoice?.customer?.state }}</div>
                 <div *ngIf="invoice?.customer?.email" class="email">
-                  <a href="mailto:john@example.com">{{invoice?.customer?.email}}</a>
+                  <a href="mailto:john@example.com">{{
+                    invoice?.customer?.email
+                  }}</a>
                 </div>
               </div>
               <div class="col invoice-details">
-                <h1 class="invoice-id">{{invoice?.id}}  :  فاتورة رقم</h1>
-                <div class="date">{{invoice?.createdAt | date: 'dd-MM-yyyy'}}  :  تاريخ الفاتورة</div>
-                <div class="date">-------------  :    تاريخ الدفع  </div>
+                <h1 class="invoice-id">{{ invoice?.id }} : فاتورة رقم</h1>
+                <div class="date">
+                  {{ invoice?.createdAt | date: "dd-MM-yyyy" }} : تاريخ الفاتورة
+                </div>
+                <div class="date">------------- : تاريخ الدفع</div>
               </div>
             </div>
             <table border="0" cellspacing="0" cellpadding="0">
@@ -87,25 +88,24 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of invoice?.items;let i=index">
-                  <td class="no">{{i+1}}</td>
+                <tr *ngFor="let item of invoice?.items; let i = index">
+                  <td class="no">{{ i + 1 }}</td>
                   <td class="text-left">
                     <h3>
-                      {{item?.product?.name}}
+                      {{ item?.product?.name }}
                     </h3>
                   </td>
-                  <td class="unit">{{item?.product?.price}}</td>
-                  <td class="qty">{{item?.quantity}}</td>
-                  <td class="unit">{{item?.discount}}</td>
-                  <td class="total">{{itemTotalAfterDiscount(item)}}</td>
+                  <td class="unit">{{ item?.product?.price }}</td>
+                  <td class="qty">{{ item?.quantity }}</td>
+                  <td class="unit">{{ item?.discount }}</td>
+                  <td class="total">{{ itemTotalAfterDiscount(item) }}</td>
                 </tr>
-               
               </tbody>
               <tfoot>
                 <tr>
                   <td colspan="2"></td>
                   <td colspan="3">المجموع الفرعي</td>
-                  <td>{{itemSubtotal(invoice)}}</td>
+                  <td>{{ itemSubtotal(invoice) }}</td>
                 </tr>
                 <tr>
                   <td colspan="2"></td>
@@ -115,7 +115,7 @@
                 <tr>
                   <td colspan="2"></td>
                   <td colspan="3">المجموع الإجمالي</td>
-                  <td>{{itemSubtotal(invoice)}}</td>
+                  <td>{{ itemSubtotal(invoice) }}</td>
                 </tr>
               </tfoot>
             </table>
@@ -123,27 +123,16 @@
             <div class="notices">
               <div>ملحوظة</div>
               <div class="notice">
-               <li>إجمالي الدفعة المستحقة خلال 30 يومًا</li>
-               <li>يرجى تضمين رقم الفاتورة على الشيك الخاص بك</li>
+                <li>إجمالي الدفعة المستحقة خلال 30 يومًا</li>
+                <li>يرجى تضمين رقم الفاتورة على الشيك الخاص بك</li>
               </div>
             </div>
 
-            <div class="signaturetitle">
-             الإعتماد   والختم
-            </div>
-            <div id="signature">
-             
-            </div>
-            
-            <div id="signature">
-              _____________
-            </div>
+            <div class="signaturetitle">الإعتماد والختم</div>
+            <div id="signature"></div>
 
+            <div id="signature">_____________</div>
           </main>
-          <footer>
-            Invoice was created on a computer and is valid without the signature
-            and seal.
-          </footer>
         </div>
         <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
         <div></div>
@@ -152,19 +141,18 @@
   </div>
 </div>
 <div class="modal-footer justify-content-center">
+ 
   <button
     type="button"
     class="btn btn-secondary"
     data-dismiss="modal"
     (click)="activeModal.dismiss()"
   >
-    Cancel
+    إلغاء
   </button>
-  <button
-    type="button"
-    class="btn btn-danger"
-    (click)="activeModal.close(true)"
-  >
-    Delete
+
+  <button type="button" class="btn btn-info" (click)="downloadPDF()">
+    <i class="fa fa-file-pdf-o"></i> تنزيل الفاتورة
   </button>
+  
 </div>

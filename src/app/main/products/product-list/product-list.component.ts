@@ -10,6 +10,7 @@ import { UtilsService } from 'src/app/shared/services/utils.service';
 import { DamConstants } from 'src/app/shared/utils/constants';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from './../../../core/classes/product';
+import { InvoiceService } from 'src/app/core/services/invoice.service';
 
 @Component({
   selector: 'app-product-list',
@@ -25,7 +26,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   page = { id: 'product-list', itemsPerPage: DamConstants.PAGE_SIZE, currentPage: 1, totalItems: 0 };
 
   productList: Product[];
-  constructor(private translateService: TranslateService, private alertService: AlertService, public productService: ProductService, public utilService: UtilsService, private modalService: NgbModal) { }
+  constructor(private translateService: TranslateService,private invoiceService:InvoiceService, private alertService: AlertService, public productService: ProductService, public utilService: UtilsService, private modalService: NgbModal) { }
 
   showMessage: boolean;
   colormsg: string;
@@ -61,6 +62,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.productService.getValueBtn(2);
     this.productService.selectedProduct = Object.assign({}, product);
     this.productService.selectedProduct.index = index;
+  }
+
+  money(value: number) {
+    let tmoney = this.invoiceService.money(value);
+    return tmoney;
   }
 
   onDelete(product: Product, index: number) {

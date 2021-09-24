@@ -40,6 +40,13 @@ export class ApiService {
     });
   }
 
+  getGetFile(path: string): Observable<ArrayBuffer> {
+    return this.http.get(`${this.config.api}${path}`, {
+      responseType: 'arraybuffer'
+    });
+  }
+
+
   postGetFile(path: string, body: Object = {}): Observable<ArrayBuffer> {
     return this.http.post(`${this.config.api}${path}`, body, {
       responseType: 'arraybuffer'
@@ -59,10 +66,13 @@ export class ApiService {
     ).pipe(catchError(this.formatErrors));
   }
 
-  post(path: string, body: Object = {}): Observable<any> {
+  post(path: string, body: Object = {}, params?: any): Observable<any> {
     return this.http.post(
       `${this.config.api}${path}`,
-      body
+      body,
+      {
+        params: params
+      }
     ).pipe(catchError(this.formatErrors));
   }
 
@@ -72,7 +82,7 @@ export class ApiService {
     ).pipe(catchError(this.formatErrors));
   }
 
-  uploadFile(path, uploadFileData) : Observable<any>{
+  uploadFile(path, uploadFileData): Observable<any> {
     return this.http.post(`${this.config.api}${path}`, uploadFileData, { observe: 'response' })
       .pipe(catchError(this.formatErrors));
   }

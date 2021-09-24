@@ -1,6 +1,7 @@
 <div class="card mt-5">
+  <app-section-loading [isLoading]="loading"></app-section-loading>
   <div class="card-body">
-    <h6 class="text-center">Customers</h6>
+    <h6 class="text-center">إضافة أو تحديث عميل</h6>
 
     <form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)">
       <alert [id]="alert.id"></alert>
@@ -13,7 +14,7 @@
 
       <div class="form-group">
         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-          Name is required
+         الإسم مطلوب
         </div>
         <input
           type="text"
@@ -21,7 +22,7 @@
           class="form-control"
           #name="ngModel"
           [(ngModel)]="customerService.selectedCustomer.name"
-          placeholder="Add Customer Name"
+          placeholder="إضافة أسم عميل"
           minlength="3"
           pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
           required
@@ -33,7 +34,7 @@
           [hidden]="state.valid || state.pristine"
           class="alert alert-danger"
         >
-          State is required
+         المحافظة مطلوبة
         </div>
         <input
           type="text"
@@ -41,7 +42,7 @@
           class="form-control"
           #state="ngModel"
           [(ngModel)]="customerService.selectedCustomer.state"
-          placeholder="Add Customer State"
+          placeholder="إضافة محافظة"
           minlength="2"
           pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
           required
@@ -53,7 +54,7 @@
           [hidden]="email.valid || email.pristine"
           class="alert alert-danger"
         >
-          Email is invalid
+         البريد مطلوب
         </div>
         <input
           type="text"
@@ -61,7 +62,7 @@
           class="form-control"
           #email="ngModel"
           [(ngModel)]="customerService.selectedCustomer.email"
-          placeholder="Add Customer Email"
+          placeholder="إضافة بريد إلكترونى"
           minlength="2"
           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
         />
@@ -72,7 +73,7 @@
           [hidden]="phone.valid || phone.pristine"
           class="alert alert-danger"
         >
-          Phone is required
+         التليفون مطلوب
         </div>
         <input
           type="text"
@@ -83,7 +84,7 @@
           maxlength="10"
           #phone="ngModel"
           [(ngModel)]="customerService.selectedCustomer.phone"
-          placeholder="Add Customer Phone"
+          placeholder="إضافة تليفون"
           required
         />
       </div>
@@ -93,14 +94,14 @@
           [hidden]="address.valid || address.pristine"
           class="alert alert-danger"
         >
-          Address is required
+         العنوان مطلوب
         </div>
         <textarea
           name="address"
           class="form-control"
           #address="ngModel"
           [(ngModel)]="customerService.selectedCustomer.address"
-          placeholder="Add Customer Address"
+          placeholder="إضافة عنوان"
           required
         ></textarea>
       </div>
@@ -112,14 +113,14 @@
           type="submit"
         >
           <i class="fas fa-plus-circle"></i>
-          {{ this.customerService.valueBtn }} A Customer
+          {{ this.customerService.valueBtn }} عميل
         </button>
         <button
           class="btn btn-secondary"
           type="reset"
           (click)="resetForm(customerForm)"
         >
-          <i class="fas fa-sync-alt"></i> Reset
+          <i class="fas fa-sync-alt"></i> مسح
         </button>
       </div>
     </form>

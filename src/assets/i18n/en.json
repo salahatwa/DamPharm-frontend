@@ -16,6 +16,7 @@
       "categories": "Categories",
       "products": "Products",
       "customers": "Customers",
+      "newInvoices":"New Invoice",
       "invoices":"Invoices",
       "profile": "Profile"
     }

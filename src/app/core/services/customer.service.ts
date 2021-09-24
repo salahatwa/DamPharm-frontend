@@ -20,9 +20,9 @@ export class CustomerService {
 
   getValueBtn(val) {
     if (val == 1)
-      return this.valueBtn = 'Add';
+      return this.valueBtn = 'حفظ';
     else
-      return this.valueBtn = 'Update';
+      return this.valueBtn = 'تحديث';
   }
 
   getAllCustomers(): Observable<any> {

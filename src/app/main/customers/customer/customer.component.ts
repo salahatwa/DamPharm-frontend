@@ -7,6 +7,7 @@ import { AlertService } from 'src/app/shared/components/alert/alert.service';
 import { UtilsService } from 'src/app/shared/services/utils.service';
 import { Customer } from './../../../core/classes/customer';
 import { CustomerService } from './../../../core/services/customer.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer',
@@ -14,7 +15,7 @@ import { CustomerService } from './../../../core/services/customer.service';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
-
+  loading: boolean = false;
   alert = { id: 'customer-opt-alert', alertType: AlertType.ALINMA };
   customerList: Customer[];
   constructor(public customerService: CustomerService, private translateService: TranslateService, private alertService: AlertService, public utilService: UtilsService, private modalService: NgbModal) { }
@@ -27,8 +28,11 @@ export class CustomerComponent implements OnInit {
   }
 
   onSubmit(customerForm: NgForm) {
+    this.loading = true
     if (customerForm.value.id == null)
-      this.customerService.insertCustomer(customerForm.value).subscribe(data => {
+      this.customerService.insertCustomer(customerForm.value).pipe(finalize(() => {
+        this.loading = false;
+      })).subscribe(data => {
         this.alertService.success(this.translateService.instant('notify.success.add'), this.alert);
       }, err => {
         this.alertService.error(err.message, this.alert);
@@ -37,7 +41,9 @@ export class CustomerComponent implements OnInit {
     else {
       let req: Customer = customerForm.value;
       req.index = this.customerService.selectedCustomer.index;
-      this.customerService.updateCustomer(req).subscribe(data => {
+      this.customerService.updateCustomer(req).pipe(finalize(() => {
+        this.loading = false;
+      })).subscribe(data => {
         this.alertService.success(this.translateService.instant('notify.success.update'), this.alert);
       }, err => {
         this.alertService.error(err.message, this.alert);

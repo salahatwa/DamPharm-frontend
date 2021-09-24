@@ -24,6 +24,13 @@ export class InvoiceService {
     }));
   }
 
+  filterInvoices(filter:any,params: any): Observable<any> {
+    return this.apiService.post('/invoice/filter',filter, params).pipe(map(data => {
+      this.invoiceList = data;
+      return data;
+    }));
+  }
+
   insertInvoice(invoice: IInvoice): Observable<IInvoice> {
     console.log(invoice);
     return this.apiService.post('/invoice', invoice).pipe(map(data => {
@@ -43,8 +50,14 @@ export class InvoiceService {
     }));
   }
 
+  downloadInvoice(id: string) {
+    return this.apiService.getGetFile('/invoice/download/' + id).pipe(map(data => {
+      return data;
+    }));
+  }
+
   money(value: number) {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+    return value.toLocaleString('ar', { style: 'currency', currency: 'EGB', minimumFractionDigits: 2 });
   }
 
 

@@ -1,30 +1,39 @@
 <div class="card mt-5">
   <div class="card-body">
-    <h6 class="text-center">List of Categories</h6>
+    <h6 class="text-center">قائمة التصنيفات</h6>
 
     <alert [id]="alert.id"></alert>
 
     <app-section-loading [isLoading]="loading"></app-section-loading>
     <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">الإسم</th>
+          <th scope="col">الوصف</th>
+          <th scope="col">العمليات</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr *ngFor="let category of categoryList | paginate: page;let i=index">
+        <tr
+          *ngFor="let category of categoryList | paginate: page; let i = index"
+        >
           <td>{{ category.name }}</td>
           <td>{{ category.description }}</td>
           <td>
-            <a 
-            mat-raised-button
-            color="dam-success"
-            class="btn-sm icon-btn-sm mr-2"
-              (click)="onEdit(category,i)"
+            <a
+              mat-raised-button
+              color="dam-success"
+              class="btn-sm icon-btn-sm mr-2"
+              (click)="onEdit(category, i)"
             >
               <i class="material-icons md-18">mode_edit_outline</i>
             </a>
 
             <a
-            mat-raised-button
-            color="warn"
-            class="btn-sm icon-btn-sm  mr-2"
-              (click)="onDelete(category,i)"
+              mat-raised-button
+              color="warn"
+              class="btn-sm icon-btn-sm mr-2"
+              (click)="onDelete(category, i)"
             >
               <i class="material-icons md-18">delete_outline</i>
             </a>
@@ -32,10 +41,9 @@
         </tr>
       </tbody>
     </table>
-    <!-- <app-no-result-found [display]="categoryList.length<=0"></app-no-result-found> -->
 
- 
-    <pagination-controls *ngIf="categoryList?.length>0"
+    <pagination-controls
+      *ngIf="categoryList?.length > 0"
       (pageChange)="getPage($event)"
       id="{{ page.id }}"
     ></pagination-controls>

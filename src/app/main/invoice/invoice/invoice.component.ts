@@ -9,6 +9,7 @@ import { Product } from './../../../core/classes/product';
 import { CustomerService } from './../../../core/services/customer.service';
 import { InvoiceService } from './../../../core/services/invoice.service';
 import { ProductService } from './../../../core/services/product.service';
+import { finalize } from 'rxjs/operators';
 declare var Stimulsoft: any;
 
 @Component({
@@ -22,20 +23,25 @@ export class InvoiceComponent implements OnInit {
   addressCustomer: "";
   showDiv: true;
   customer: true;
-  title = 'Add Invoice';
   private selectUndefinedOptionValue: any;
   customerList: Customer[];
   productList: Product[];
   showDialog1;
   showDialog;
+  loading: boolean = false;
 
   constructor(private router: Router, private _fb: FormBuilder, private invoiceService: InvoiceService, private customerService: CustomerService, private productService: ProductService) { }
 
   ngOnInit() {
-    this.customerService.getAllCustomers().subscribe(data => {
+    this.loading = true;
+    this.customerService.getAllCustomers().pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe(data => {
       this.customerList = data;
     });
-    this.productService.getAllProducts().subscribe(data => {
+    this.productService.getAllProducts().pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe(data => {
       this.productList = data;
       console.log(data);
     });
@@ -139,14 +145,18 @@ export class InvoiceComponent implements OnInit {
   }
 
   saveProduct() {
+
     if (this.form.valid && this.form.controls['totalPrice'].value > 0) {
+      this.loading = true;
       const result: IInvoice = <IInvoice>this.form.value;
       // Do useful stuff with the gathered data
 
       this.updateAvailableQuantity(result);
       console.log(result);
 
-      this.invoiceService.insertInvoice(result).subscribe((data => {
+      this.invoiceService.insertInvoice(result).pipe(finalize(() => {
+        this.loading = false;
+      })).subscribe((data => {
         this.invoiceService.openInvoiceDialog(data);
         this.phoneCustomer = '';
         this.addressCustomer = '';
@@ -179,5 +189,18 @@ export class InvoiceComponent implements OnInit {
   }
 
 
+  print() {
 
+    // this.invoiceService.insertInvoice(result).subscribe((data => {
+    //   this.invoiceService.openInvoiceDialog(data);
+    //   this.phoneCustomer = '';
+    //   this.addressCustomer = '';
+    //   this.showDiv = null;
+    //   //Agregar msg
+    //   this.initForm();
+    //   // this.router.navigate(['/invoices-list']);
+    // }));
+
+
+  }
 }

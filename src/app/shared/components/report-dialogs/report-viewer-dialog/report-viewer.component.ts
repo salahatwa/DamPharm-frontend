@@ -5,6 +5,8 @@ import { IInvoice, ItemInvoice } from 'src/app/core/classes/invoice';
 import { UserService } from 'src/app/shared/services/auth/user.service';
 import { User } from 'src/app/core/classes/user.model';
 import { Observable, Observer } from 'rxjs';
+import { InvoiceService } from 'src/app/core/services/invoice.service';
+import { finalize } from 'rxjs/operators';
 
 declare var html2pdf: any;
 
@@ -22,16 +24,10 @@ export class ReportViewerDialogComponent implements OnInit {
   currentUser: User;
 
 
-  constructor(private userService: UserService, public activeModal: NgbActiveModal, private http: HttpClient) {
-    this.addScript('./assets/js/html2pdf.bundle.js');
+  constructor(private invoiceService: InvoiceService, private userService: UserService, public activeModal: NgbActiveModal, private http: HttpClient) {
   }
 
-  addScript(url) {
-    var script = document.createElement('script');
-    script.type = 'application/javascript';
-    script.src = url;
-    document.head.appendChild(script);
-  }
+
   base64ImageString;
 
   ngOnInit(): void {
@@ -51,27 +47,23 @@ export class ReportViewerDialogComponent implements OnInit {
   }
 
   public downloadPDF(): void {
-    var element = document.getElementById('htmlData');
-    var opt = {
-      margin: 0,
-      filename: this.invoice.id + '.pdf',
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: { dpi: 95, scale: 5, letterRendering: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
+    this.isLoading = true;
+    this.invoiceService.downloadInvoice(this.invoice.id).pipe(finalize(() => {
+      this.isLoading = false;
+    })).subscribe(data => {
+      this.downLoadFile(data, "application/pdf");
+    }, err => {
 
-    html2pdf().from(element).set(opt).toPdf().get('pdf').then(function (pdf) {
-      var totalPages = pdf.internal.getNumberOfPages();
-      let i: number = 0;
-      for (i = 1; i <= totalPages; i++) {
-        pdf.setPage(i);
+    });
 
-        this.pageHeight = pdf.internal.pageSize.getHeight();
-      }
+  }
 
-
-    }).save();
-
+  downLoadFile(data: any, type: string) {
+    let blob = new Blob([data], { type: type });
+    let url = window.URL.createObjectURL(blob);
+    let pwa = window.open(url); if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
+      alert('Please disable your Pop-up blocker and try again.');
+    }
   }
 
   itemTotalAfterDiscount(item: ItemInvoice) {

@@ -1,6 +1,6 @@
 <div class="container">
-    <div class="row">
-        <!-- <app-dialog [(visible)]="showDialog">      
+  <div class="row">
+    <!-- <app-dialog [(visible)]="showDialog">      
             <div class="card mt-5">
               <div class="card-body">
                 <div class="col-md-12">
@@ -102,14 +102,15 @@
               </div>
             </div>
           </app-dialog> -->
-      <div class="col-md-12 text-center" >
-        <div class="card mt-5">
-          <div class="card-body">
-              <h6 class="text-center p-4">
-                <!-- <button (click)="showDialog1 = !showDialog1" class="btn btn-outline-success text-success float-right">Add Invoice&nbsp;<i
+    <div class="col-md-12 text-center">
+      <div class="card mt-5">
+        <div class="card-body">
+          <h6 class="text-center p-4">
+            <!-- <button (click)="showDialog1 = !showDialog1" class="btn btn-outline-success text-success float-right">Add Invoice&nbsp;<i
                 class="fas fa-plus-circle"></i></button> -->
-                List of Invoices </h6> 
-                <!-- <app-dialog [(visible)]="showDialog1">
+            قائمة الفواتير
+          </h6>
+          <!-- <app-dialog [(visible)]="showDialog1">
                     <div class="card mt-5">
                       <div class="card-body">
                         <div class="col-md-12">
@@ -118,69 +119,131 @@
                       </div>
                     </div>
                   </app-dialog> -->
-  
-            <form class="form-inline" style="padding-bottom: 10px">
-              <input class="form-control" name="searchInput" placeholder="Search by name" #searchInput="ngModel"
-                [(ngModel)]="searchText" style="width: 40%;">
-              <button class="btn btn-outline-primary" (click)="searchText=''">X</button>
-            </form>
-            <div class="row">
-              <div class="table-responsive">
-                  <table class="table table-hover table-bordered ">
-                      <thead class="thead-light">
-                        <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">Total</th>
-                          <th scope="col">Vendor</th>
-                          <th scope="col">Date</th>
-                          <th scope="col">Items</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>   
-                        <ng-container *ngFor="let invoice of invoiceList| paginate: page;let i=index">
-                          <tr *ngIf="filterCondition(invoice)">
-                            <td>{{invoice.customer.name}} {{invoice.customer.lastname}}</td>
-                            <td>{{invoice.totalPrice | currency:'USD':'symbol'}}</td>
-                            <td>{{invoice.id}}</td>
-                            <td>{{invoice.createdAt | date: 'dd/MM/yyyy'}}</td>
-                            <td>
-                              <li class="list-group-item" *ngFor="let purchase of invoice.items">
-                                {{purchase.product.name}} -  {{purchase.quantity}}
-                              </li>
-                            </td>
-                            <td class="btn-group m-1">
-                              <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="print(invoice);showDialog = !showDialog">
-                                <i class="material-icons md-18">print</i></a>      
-                              <!-- <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="onUpdate(invoice);showDialog = !showDialog">
+
+          <section class="search-sec">
+            <div class="container">
+              <form [formGroup]="searchForm" (ngSubmit)="filter(1)">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="row">
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                        <input
+                          type="text"
+                          class="form-control search-slt"
+                          placeholder="Search by id"
+                          formControlName="id"
+                        />
+                      </div>
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                        <select
+                          class="form-control search-slt"
+                          id="customer"
+                          formControlName="customer"
+                        >
+                          <option  [ngValue]="null">-إختر عميل-</option>
+                          <option
+                            *ngFor="let item of customerList"
+                            [ngValue]="item"
+                          >
+                            {{ item.name }} {{ item.lastname }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                        <button type="submit" class="btn btn-danger wrn-btn">
+                          بحث
+                        </button>
+                      </div>
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                        <button
+                          class="btn btn-outline-primary wrn-btn"
+                          type="reset"
+                          (click)="resetSearchForm()"
+                        >
+                          مسح
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <div class="row">
+            <div class="table-responsive">
+              <app-section-loading [isLoading]="loading"></app-section-loading>
+              <table class="table table-hover table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">العميل</th>
+                    <th scope="col">إجمالى الفاتورة</th>
+                    <th scope="col">رفم الفاتورة</th>
+                    <th scope="col">التاريخ</th>
+                    <th scope="col">المنتجات</th>
+                    <th scope="col">العمليات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container
+                    *ngFor="
+                      let invoice of invoiceList | paginate: page;
+                      let i = index
+                    "
+                  >
+                    <tr *ngIf="filterCondition(invoice)">
+                      <td>
+                        {{ invoice.customer.name }}
+                        {{ invoice.customer.lastname }}
+                      </td>
+                      <td>
+                        {{ invoice.totalPrice | currency: "USD":"symbol" }}
+                      </td>
+                      <td>{{ invoice.id }}</td>
+                      <td>{{ invoice.createdAt | date: "dd/MM/yyyy" }}</td>
+                      <td>
+                        <li
+                          class="list-group-item"
+                          *ngFor="let purchase of invoice.items"
+                        >
+                          {{ purchase.product.name }} - {{ purchase.quantity }}
+                        </li>
+                      </td>
+                      <td class="btn-group m-1">
+                        <a
+                          class="btn-sm icon-btn-sm btn-primary text-white"
+                          (click)="print(invoice); showDialog = !showDialog"
+                        >
+                          <i class="material-icons md-18">print</i></a
+                        >
+                        <!-- <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="onUpdate(invoice);showDialog = !showDialog">
                                 <i class="material-icons md-18">mode_edit_outline</i></a>             -->
-                              <a class="btn-sm icon-btn-sm btn-danger text-white" (click)="onDelete(invoice,i)">
-                                <i class="material-icons md-18">delete_outline</i>
-                              </a>
-                            </td>
-                          </tr>
-                        </ng-container>
-                     
-                      </tbody>
-                    </table>
-              </div>
+                        <a
+                          class="btn-sm icon-btn-sm btn-danger text-white"
+                          (click)="onDelete(invoice, i)"
+                        >
+                          <i class="material-icons md-18">delete_outline</i>
+                        </a>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
             </div>
-            <div class="row">
-              <pagination-controls *ngIf="invoiceList?.length>0"
-                (pageChange)="getPage($event)"
-                id="{{ page.id }}"
-              ></pagination-controls>
-            </div>
-  
-            <!-- <div class="alert alert-danger" *ngIf="showDeletedMessage">
+          </div>
+          <div class="row">
+            <pagination-controls
+              *ngIf="invoiceList?.length > 0"
+              (pageChange)="getPage($event)"
+              id="{{ page.id }}"
+            ></pagination-controls>
+          </div>
+
+          <!-- <div class="alert alert-danger" *ngIf="showDeletedMessage">
               Deleted successfully.
             </div> -->
-          </div>
         </div>
-  
       </div>
-      
-  
-   
     </div>
   </div>
+</div>

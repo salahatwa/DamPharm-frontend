@@ -1,6 +1,7 @@
 <div class="card mt-5">
+  <app-section-loading [isLoading]="loading"></app-section-loading>
   <div class="card-body">
-    <h6 class="text-center">Products</h6>
+    <h6 class="text-center">إضافة أو تحديث منتج</h6>
     <!-- <app-dialog [(visible)]="showDialog">           
             <div class="col-md-12">
               <app-category></app-category>               
@@ -16,7 +17,7 @@
       />
       <div class="form-group">
         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-          Name is required
+          الإسم مطلوب
         </div>
         <input
           type="text"
@@ -24,7 +25,7 @@
           class="form-control"
           #name="ngModel"
           [(ngModel)]="productService.selectedProduct.name"
-          placeholder="Add Product Name"
+          placeholder="إضافة إسم المنتج"
           minlength="3"
           pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
           required
@@ -36,7 +37,7 @@
           [hidden]="location.valid || location.pristine"
           class="alert alert-danger"
         >
-          Product Location is required
+          عنوان المنتج/ المصنع مطلوب
         </div>
         <input
           type="text"
@@ -44,7 +45,7 @@
           class="form-control"
           #location="ngModel"
           [(ngModel)]="productService.selectedProduct.location"
-          placeholder="Add Product Location"
+          placeholder="إضافة عنوان المنتج /المصنع"
           minlength="3"
           pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
           required
@@ -55,7 +56,7 @@
           [hidden]="price.valid || price.pristine"
           class="alert alert-danger"
         >
-          Price is required
+          السعر مطلوب
         </div>
         <input
           type="number"
@@ -63,7 +64,7 @@
           class="form-control"
           #price="ngModel"
           [(ngModel)]="productService.selectedProduct.price"
-          placeholder="Add Product Price"
+          placeholder="إضافة سعر المنتج"
           required
           minlength="1"
         />
@@ -74,7 +75,7 @@
           [hidden]="quantity.valid || quantity.pristine"
           class="alert alert-danger"
         >
-          Quantity is required
+          الكمية مطلوبة
         </div>
         <input
           type="number"
@@ -82,7 +83,7 @@
           class="form-control"
           #quantity="ngModel"
           [(ngModel)]="productService.selectedProduct.quantity"
-          placeholder="Add Product Quantity"
+          placeholder="إضاقة كمية"
           required
           minlength="1"
         />
@@ -98,25 +99,25 @@
           class="form-control"
           #availableQuantity="ngModel"
           [(ngModel)]="productService.selectedProduct.availableQuantity"
-          placeholder="Add Product Quantity"
+          placeholder="الكمية المتاحة"
           disabled
           minlength="1"
         />
       </div>
 
       <div class="form-group">
-        <a
+        <!-- <a
           class="badge badge-purple badge-outlined"
           (click)="showDialog = !showDialog"
           style="cursor: pointer"
           >Add New Category <i class="fas fa-plus-circle text-success"></i
-        ></a>
+        ></a> -->
 
         <div
           [hidden]="categoryId.valid || categoryId.pristine"
           class="alert alert-danger"
         >
-          Category is required
+         إختيار التصنيف مطلوب
         </div>
         <select
           class="form-control"
@@ -126,7 +127,7 @@
           required
         >
           <option disabled hidden [value]="selectUndefinedOptionValue">
-            Please select value
+           إختر
           </option>
           <option
             *ngFor="let catg of categoryList; let i = index"
@@ -136,6 +137,27 @@
           </option>
         </select>
       </div>
+
+      <div class="form-group">
+        <div
+          [hidden]="code.valid || code.pristine"
+          class="alert alert-danger"
+        >
+         الباركود حقل مطلوب برموز صحيحة ولا يقل عن 5 حروف
+        </div>
+        <input
+          type="text"
+          name="code"
+          class="form-control"
+          #code="ngModel"
+          [(ngModel)]="productService.selectedProduct.code"
+          placeholder="الباركود الخاص بالمنتج"
+          minlength="5"
+          pattern="[0-9a-zA-Z\s\u0600-\u06FF]*"
+          required
+        />
+      </div>
+
       <div class="form-group">
         <button
           [disabled]="productForm.invalid"

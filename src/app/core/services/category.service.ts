@@ -19,9 +19,9 @@ export class CategoryService {
 
   getValueBtn(val) {
     if (val == 1)
-      return this.valueBtn = 'Add';
+      return this.valueBtn = 'إضافة';
     else
-      return this.valueBtn = 'Update';
+      return this.valueBtn = 'تحديث';
   }
   
   getAllCategories(): Observable<any> {

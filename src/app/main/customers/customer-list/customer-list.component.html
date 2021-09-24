@@ -1,17 +1,17 @@
 <div class="card mt-5">
+  <app-section-loading [isLoading]="loading"></app-section-loading>
   <div class="card-body p-4">
-    <h6 class="text-center">List of Customer</h6>
+    <h6 class="text-center">قائمة العملاء</h6>
     <alert [id]="alert.id"></alert>
-    <app-section-loading [isLoading]="loading"></app-section-loading>
     <div class="table-responsive">
       <table class="table table-sm table-hover">
         <thead>
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">State</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Address</th>
-            <th scope="col">Actions</th>
+            <th scope="col">الإسم</th>
+            <th scope="col">المحافظة</th>
+            <th scope="col">التليفون</th>
+            <th scope="col">العنوان</th>
+            <th scope="col">العمليات</th>
           </tr>
         </thead>
         <tbody>

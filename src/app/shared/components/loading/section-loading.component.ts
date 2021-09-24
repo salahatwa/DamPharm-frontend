@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-section-loading',
@@ -11,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
       </div>
     </div>
     <div class="row">
-      <strong>{{text}}</strong>
+      <strong>برجاء الإنتظار جارى تنفيذ طلبك</strong>
     </div>
   </div>
   `,
@@ -20,13 +19,10 @@ import { TranslateService } from '@ngx-translate/core';
 
 export class SectionLoadingComponent implements OnInit {
     @Input() isLoading: boolean = false;
-    @Input() text: string;
 
-    constructor(private translateService: TranslateService) { }
+    constructor() { }
 
     ngOnInit(): void {
-        if (!this.text || this.text == null || this.text == '')
-            this.text = this.translateService.instant('common.loading');
     }
 
 }

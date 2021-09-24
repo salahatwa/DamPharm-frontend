@@ -17,6 +17,9 @@ import { DamConstants } from './../../../shared/utils/constants';
 
 declare var Stimulsoft: any;
 
+export enum SearchMode {
+  INVOICE_LIST = 0, INVOICE_FILTER = 1
+}
 
 @Component({
   selector: 'app-invoice-list',
@@ -24,9 +27,12 @@ declare var Stimulsoft: any;
   styleUrls: ['./invoice-list.component.css']
 })
 export class InvoiceListComponent implements OnInit {
+
+  mode: SearchMode = SearchMode.INVOICE_LIST;
   alert = { id: 'customer-list-alert', alertType: AlertType.ALINMA };
   loading: boolean;
   page = { id: 'customer-list', itemsPerPage: DamConstants.PAGE_SIZE, currentPage: 1, totalItems: 0 };
+
 
   constructor(private invoiceService: InvoiceService, private _fb: FormBuilder, private customerService: CustomerService, private productService: ProductService,
     private translateService: TranslateService, private alertService: AlertService, public utilService: UtilsService, private modalService: NgbModal) { }
@@ -34,6 +40,7 @@ export class InvoiceListComponent implements OnInit {
   productList: Product[];
   invoiceList: any[];
   form: FormGroup;
+  searchForm: FormGroup;
   customerList: Customer[];
   productData: any;
   customerSelected: Number;
@@ -43,7 +50,6 @@ export class InvoiceListComponent implements OnInit {
 
   searchText: string = "";
 
-  private allItems: any[];
 
 
   ngOnInit() {
@@ -51,7 +57,9 @@ export class InvoiceListComponent implements OnInit {
       this.customerList = data;
     });
 
+    this.mode = SearchMode.INVOICE_LIST;
     this.getPage(1);
+
     this.productService.getAllProducts().subscribe(data => {
       this.productList = data;
     });
@@ -65,13 +73,24 @@ export class InvoiceListComponent implements OnInit {
   getPage(page: number) {
     this.loading = true;
     this.page.currentPage = page;
-    this.invoiceService.getInvoices(this.utilService.getRequestParams(page, DamConstants.PAGE_SIZE, 'createdAt')).pipe(finalize(() => {
-      this.loading = false;
-    })).subscribe(item => {
-      console.log(item);
-      this.invoiceList = item?.content;
-      this.page.totalItems = item?.totalElements;
-    });
+    switch (this.mode) {
+      case SearchMode.INVOICE_FILTER:
+        this.filter(page);
+        break;
+
+      case SearchMode.INVOICE_LIST:
+        this.invoiceService.getInvoices(this.utilService.getRequestParams(page, DamConstants.PAGE_SIZE, 'createdAt')).pipe(finalize(() => {
+          this.loading = false;
+        })).subscribe(item => {
+          console.log(item);
+          this.invoiceList = item?.content;
+          this.page.totalItems = item?.totalElements;
+        });
+        break;
+      default:
+        break;
+    }
+
   }
 
   updateForm(): void {
@@ -80,6 +99,11 @@ export class InvoiceListComponent implements OnInit {
       customer: [null, Validators.required],
       totalPrice: 0,
       items: this._fb.array([])
+    });
+
+    this.searchForm = this._fb.group({
+      id: '',
+      customer: [null]
     });
   }
 
@@ -167,6 +191,28 @@ export class InvoiceListComponent implements OnInit {
       this.addMsg('success', '3000', 'this record has been updated');
 
     } else { alert("This record can not be updated with values 0. If you want to delete this record, go back to the list and do it") }
+  }
+
+  filter(page: number) {
+    this.mode = SearchMode.INVOICE_FILTER;
+    let filter = this.searchForm.value;
+
+    this.loading = true;
+    this.page.currentPage = page;
+    this.invoiceService.filterInvoices(filter, this.utilService.getRequestParams(page, DamConstants.PAGE_SIZE, 'createdAt')).pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe(item => {
+      console.log(item);
+      this.invoiceList = item?.content;
+      this.page.totalItems = item?.totalElements;
+    });
+
+  }
+
+  resetSearchForm() {
+    this.mode = SearchMode.INVOICE_LIST;
+    this.searchForm.reset();
+    this.getPage(1);
   }
 
   public addPurchase(product: Product): void {

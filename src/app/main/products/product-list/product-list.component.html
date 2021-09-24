@@ -1,6 +1,6 @@
 <div class="card mt-5">
     <div class="card-body">
-      <h6 class="text-center">List of Products</h6>
+      <h6 class="text-center">قائمة التصنيفات</h6>
       <alert [id]="alert.id"></alert>
 
       <app-section-loading [isLoading]="loading"></app-section-loading>
@@ -8,7 +8,7 @@
         <tbody>
           <tr *ngFor="let product of productList | paginate: page;let i=index">
             <td>{{product.name}}</td>
-            <td>{{product.price | currency:'USD':'symbol'}}</td> 
+            <td>{{money(product.price)}}</td> 
             <td>
               <a  class="btn btn-secondary text-white" (click)="onEdit(product,i)">
                 <i class="material-icons md-18">mode_edit_outline</i>
