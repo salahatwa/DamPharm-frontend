@@ -27,13 +27,17 @@
             <td>{{ customer.address }}</td>
             <td>
               <a
-                class="btn btn-secondary text-white"
+                mat-raised-button
+                color="dam-success"
+                class="btn-sm icon-btn-sm mr-2"
                 (click)="onEdit(customer, i)"
               >
                 <i class="material-icons md-18">mode_edit_outline</i>
               </a>
               <a
-                class="btn btn-danger text-white"
+                mat-raised-button
+                color="warn"
+                class="btn-sm icon-btn-sm mr-2"
                 (click)="onDelete(customer, i)"
               >
                 <i class="material-icons md-18">delete_outline</i>

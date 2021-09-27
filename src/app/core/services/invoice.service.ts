@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiService } from '../../shared/services/api.service';
-import { IInvoice } from './../classes/invoice';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportViewerDialogComponent } from 'src/app/shared/components/report-dialogs/report-viewer-dialog/report-viewer.component';
+import { ApiService } from '../../shared/services/api.service';
+import { IInvoice, InvoiceStatusUpdate } from './../classes/invoice';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,15 @@ export class InvoiceService {
     }));
   }
 
-  filterInvoices(filter:any,params: any): Observable<any> {
-    return this.apiService.post('/invoice/filter',filter, params).pipe(map(data => {
+  updateInvoiceStatus(rq: InvoiceStatusUpdate): Observable<any> {
+    return this.apiService.post('/invoice/update-status', rq).pipe(map(data => {
+      this.invoiceList = data;
+      return data;
+    }));
+  }
+
+  filterInvoices(filter: any, params: any): Observable<any> {
+    return this.apiService.post('/invoice/filter', filter, params).pipe(map(data => {
       this.invoiceList = data;
       return data;
     }));

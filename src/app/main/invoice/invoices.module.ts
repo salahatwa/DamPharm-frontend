@@ -5,10 +5,11 @@ import { AuthModule } from '../../shared/services/auth/auth.module';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { InvoicesComponent } from './invoices.component';
+import { PaidDialogComponent } from './update-status/paid-dialog/paid-dialog.component';
 
 
 @NgModule({
-  declarations: [InvoicesComponent, InvoiceListComponent, InvoiceComponent],
+  declarations: [InvoicesComponent, InvoiceListComponent, InvoiceComponent,PaidDialogComponent],
   imports: [
     SharedModule,
     AuthModule,

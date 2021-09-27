@@ -1,6 +1,16 @@
 @charset "UTF-8";
 // @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+
+
+.bg-teal{
+  background-color: #32234b;
+  color:#fff;
+}
+
+.example-full-width {
+  width: 100%;
+}
 .loading-section{
   background-color: rgba(255, 255, 255, 0.7);
   position: absolute;

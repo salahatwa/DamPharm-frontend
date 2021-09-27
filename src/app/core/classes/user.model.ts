@@ -21,6 +21,7 @@ export interface User {
   city: string;
   phone: string;
   productRiskCategory:number;
+  qr:boolean;
 }
 
 

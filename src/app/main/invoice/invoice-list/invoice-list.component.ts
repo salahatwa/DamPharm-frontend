@@ -1,11 +1,13 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs/operators';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { PaidDialogComponent } from '../update-status/paid-dialog/paid-dialog.component';
 import { Customer } from './../../../core/classes/customer';
-import { IInvoice } from './../../../core/classes/invoice';
+import { IInvoice, InvoiceStatusUpdate } from './../../../core/classes/invoice';
 import { Product } from './../../../core/classes/product';
 import { CustomerService } from './../../../core/services/customer.service';
 import { InvoiceService } from './../../../core/services/invoice.service';
@@ -27,6 +29,9 @@ export enum SearchMode {
   styleUrls: ['./invoice-list.component.css']
 })
 export class InvoiceListComponent implements OnInit {
+  keys = Object.keys;
+  // statusTypes: InvoiceStatus;
+  public statusTypes = [{ key: 'NEW', value: 'جديد' }, { key: 'PAID', value: 'مدفوعة' }, { key: 'RETURNS', value: 'مرتجع' }, { key: 'CANCELED', value: 'ألغيت' }, { key: 'DRAFT', value: 'مسودة' }]
 
   mode: SearchMode = SearchMode.INVOICE_LIST;
   alert = { id: 'customer-list-alert', alertType: AlertType.ALINMA };
@@ -34,7 +39,7 @@ export class InvoiceListComponent implements OnInit {
   page = { id: 'customer-list', itemsPerPage: DamConstants.PAGE_SIZE, currentPage: 1, totalItems: 0 };
 
 
-  constructor(private invoiceService: InvoiceService, private _fb: FormBuilder, private customerService: CustomerService, private productService: ProductService,
+  constructor(public datepipe: DatePipe, private invoiceService: InvoiceService, private _fb: FormBuilder, private customerService: CustomerService, private productService: ProductService,
     private translateService: TranslateService, private alertService: AlertService, public utilService: UtilsService, private modalService: NgbModal) { }
 
   productList: Product[];
@@ -94,6 +99,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   updateForm(): void {
+    // let date=new Date();
     this.form = this._fb.group({
       $key: '',
       customer: [null, Validators.required],
@@ -101,9 +107,21 @@ export class InvoiceListComponent implements OnInit {
       items: this._fb.array([])
     });
 
+    this.initSearchForm();
+  }
+
+  // currentDate = new Date();
+
+  initSearchForm() {
+    // dd/MM/yyyy
+    let currentDate = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     this.searchForm = this._fb.group({
       id: '',
-      customer: [null]
+      customer: [null],
+      status:[null],
+      state:'',
+      fromDate: new FormControl(new Date(currentDate)),
+      toDate: new FormControl(new Date(currentDate))
     });
   }
 
@@ -171,17 +189,54 @@ export class InvoiceListComponent implements OnInit {
         })).subscribe(data => {
           this.invoiceList.splice(index, 1);
           this.alertService.success(this.translateService.instant('notify.success.delete'), this.alert);
-          console.log(this.translateService.instant('notify.success.delete'));
         }, err => {
-          this.alertService.success(err.message, this.alert);
+          this.alertService.error(err.message, this.alert);
         });
 
       }
     }).catch((res) => {
 
     });
+  }
 
+  updateStatus(status, id) {
+    let rq: InvoiceStatusUpdate = {
+      status: status,
+      id: id
+    };
 
+    switch (status) {
+      case 'PAID':
+        const dialogRef = this.modalService.open(PaidDialogComponent);
+
+        dialogRef.result.then(paidDate => {
+          if (paidDate) {
+            rq.paidDate = paidDate;
+            this.updateInvoiceStatus(rq);
+          }
+        }).catch((res) => {
+
+        });
+
+        break;
+
+      default:
+        this.updateInvoiceStatus(rq);
+        break;
+    }
+
+  }
+
+  updateInvoiceStatus(rq: InvoiceStatusUpdate) {
+    this.loading = true;
+    this.invoiceService.updateInvoiceStatus(rq).pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe(data => {
+      // this.invoiceList.splice(index, 1);
+      this.alertService.success(this.translateService.instant('notify.success.update'), this.alert);
+    }, err => {
+      this.alertService.error(err.message, this.alert);
+    });
   }
 
   onSubmitUpdate() {
@@ -196,7 +251,7 @@ export class InvoiceListComponent implements OnInit {
   filter(page: number) {
     this.mode = SearchMode.INVOICE_FILTER;
     let filter = this.searchForm.value;
-
+    console.log(filter);
     this.loading = true;
     this.page.currentPage = page;
     this.invoiceService.filterInvoices(filter, this.utilService.getRequestParams(page, DamConstants.PAGE_SIZE, 'createdAt')).pipe(finalize(() => {

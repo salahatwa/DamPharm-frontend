@@ -1,0 +1,43 @@
+<div class="modal-header text-right">
+  <!-- <div class="icon-box text-left">
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      (click)="activeModal.dismiss()"
+    >
+      &times;
+    </button>
+  </div> -->
+  <h4 class="modal-title w-100 ">من فضلك قم بإختيار تاريخ الدفع</h4>
+</div>
+<div class="modal-body">
+  <mat-form-field appearance="fill">
+    <mat-label>تاريخ الدفع</mat-label>
+    <input matInput [matDatepicker]="picker3" [value]="selectedDate" [(ngModel)]="selectedDate" />
+    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+    <mat-datepicker #picker3></mat-datepicker>
+  </mat-form-field>
+</div>
+<div class="modal-footer justify-content-center">
+  <button
+    type="button"
+    data-dismiss="modal"
+    mat-raised-button
+    color="dam-warn"
+    class="mr-2"
+    (click)="activeModal.dismiss()"
+  >
+    إلغاء
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    color="dam-success"
+    class="mr-2"
+    (click)="activeModal.close(selectedDate)"
+  >
+    تأكيد
+  </button>
+</div>

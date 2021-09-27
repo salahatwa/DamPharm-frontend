@@ -14,7 +14,7 @@
 
       <div class="form-group">
         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-         الإسم مطلوب
+          الإسم مطلوب
         </div>
         <input
           type="text"
@@ -34,7 +34,7 @@
           [hidden]="state.valid || state.pristine"
           class="alert alert-danger"
         >
-         المحافظة مطلوبة
+          المحافظة مطلوبة
         </div>
         <input
           type="text"
@@ -54,7 +54,7 @@
           [hidden]="email.valid || email.pristine"
           class="alert alert-danger"
         >
-         البريد مطلوب
+          البريد مطلوب
         </div>
         <input
           type="text"
@@ -64,7 +64,7 @@
           [(ngModel)]="customerService.selectedCustomer.email"
           placeholder="إضافة بريد إلكترونى"
           minlength="2"
-          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" 
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
         />
       </div>
 
@@ -73,7 +73,7 @@
           [hidden]="phone.valid || phone.pristine"
           class="alert alert-danger"
         >
-         التليفون مطلوب
+          التليفون مطلوب
         </div>
         <input
           type="text"
@@ -94,7 +94,7 @@
           [hidden]="address.valid || address.pristine"
           class="alert alert-danger"
         >
-         العنوان مطلوب
+          العنوان مطلوب
         </div>
         <textarea
           name="address"
@@ -106,18 +106,21 @@
         ></textarea>
       </div>
 
-      <div class="form-group">
+      <div class="text-center">
         <button
+          mat-raised-button
+          color="dam-success"
           [disabled]="customerForm.invalid"
-          class="btn btn-primary"
           type="submit"
         >
           <i class="fas fa-plus-circle"></i>
           {{ this.customerService.valueBtn }} عميل
         </button>
         <button
-          class="btn btn-secondary"
+          mat-raised-button
+          color="dam-warn"
           type="reset"
+          class="mr-2"
           (click)="resetForm(customerForm)"
         >
           <i class="fas fa-sync-alt"></i> مسح

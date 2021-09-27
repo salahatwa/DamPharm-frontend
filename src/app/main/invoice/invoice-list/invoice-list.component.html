@@ -105,11 +105,6 @@
     <div class="col-md-12 text-center">
       <div class="card mt-5">
         <div class="card-body">
-          <h6 class="text-center p-4">
-            <!-- <button (click)="showDialog1 = !showDialog1" class="btn btn-outline-success text-success float-right">Add Invoice&nbsp;<i
-                class="fas fa-plus-circle"></i></button> -->
-            قائمة الفواتير
-          </h6>
           <!-- <app-dialog [(visible)]="showDialog1">
                     <div class="card mt-5">
                       <div class="card-body">
@@ -126,38 +121,125 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="row">
-                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                        <input
-                          type="text"
-                          class="form-control search-slt"
-                          placeholder="Search by id"
-                          formControlName="id"
-                        />
-                      </div>
-                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                        <select
-                          class="form-control search-slt"
-                          id="customer"
-                          formControlName="customer"
+                      <div class="col-lg-2 col-md-2 col-sm-12 p-0">
+                        <mat-form-field
+                          class="example-full-width"
+                          appearance="outline"
                         >
-                          <option  [ngValue]="null">-إختر عميل-</option>
-                          <option
-                            *ngFor="let item of customerList"
-                            [ngValue]="item"
-                          >
-                            {{ item.name }} {{ item.lastname }}
-                          </option>
-                        </select>
+                          <mat-label>رقم الفاتورة</mat-label>
+                          <input
+                            type="text"
+                            matInput
+                            formControlName="id"
+                            placeholder="بحث برقم الفاتورة"
+                          />
+                        </mat-form-field>
                       </div>
+                      <div class="col-lg-2 col-md-2 col-sm-12 p-0">
+                        <mat-form-field appearance="outline">
+                          <mat-label>بحث بالعميل</mat-label>
+                          <mat-select
+                            formControlName="customer"
+                            name="customer"
+                          >
+                            <mat-option [value]="null">إختر</mat-option>
+                            <mat-option
+                              *ngFor="let item of customerList"
+                              [value]="item"
+                            >
+                              {{ item.name }} {{ item.lastname }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-12 p-0">
+                        <mat-form-field
+                          class="example-full-width"
+                          appearance="outline"
+                        >
+                          <mat-label>المحافظة</mat-label>
+                          <input
+                            type="text"
+                            matInput
+                            formControlName="state"
+                            placeholder="بحث بالمحافظة"
+                          />
+                        </mat-form-field>
+                      </div>
+
                       <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                        <button type="submit" class="btn btn-danger wrn-btn">
+                        <mat-form-field appearance="outline">
+                          <mat-label>بحث بالحالة</mat-label>
+                          <mat-select formControlName="status" name="status">
+                            <mat-option [value]="null">إختر</mat-option>
+                            <mat-option
+                              *ngFor="let invStatus of statusTypes"
+                              [value]="invStatus?.key"
+                            >
+                              {{ invStatus?.value }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                        <mat-form-field appearance="outline">
+                          <mat-label>التاريخ بين</mat-label>
+                          <mat-date-range-input [rangePicker]="picker">
+                            <input
+                              matStartDate
+                              formControlName="fromDate"
+                              placeholder="من"
+                            />
+                            <input
+                              matEndDate
+                              formControlName="toDate"
+                              placeholder="إلى"
+                            />
+                          </mat-date-range-input>
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker"
+                          ></mat-datepicker-toggle>
+                          <mat-date-range-picker
+                            #picker
+                          ></mat-date-range-picker>
+
+                          <mat-error
+                            *ngIf="
+                              searchForm.controls.fromDate.hasError(
+                                'matStartDateInvalid'
+                              )
+                            "
+                            >Invalid start date</mat-error
+                          >
+                          <mat-error
+                            *ngIf="
+                              searchForm.controls.toDate.hasError(
+                                'matEndDateInvalid'
+                              )
+                            "
+                            >Invalid end date</mat-error
+                          >
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="text-right">
+                        <button
+                          mat-raised-button
+                          color="dam-success"
+                          type="submit"
+                          class="btn-sm"
+                        >
                           بحث
                         </button>
-                      </div>
-                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+
                         <button
-                          class="btn btn-outline-primary wrn-btn"
-                          type="reset"
+                          mat-raised-button
+                          color="dam-warn"
+                          class="btn-sm mr-2"
                           (click)="resetSearchForm()"
                         >
                           مسح
@@ -172,13 +254,15 @@
 
           <div class="row">
             <div class="table-responsive">
+              <alert [id]="alert.id"></alert>
               <app-section-loading [isLoading]="loading"></app-section-loading>
               <table class="table table-hover table-bordered">
-                <thead class="thead-light">
+                <thead class="bg-teal">
                   <tr>
                     <th scope="col">العميل</th>
                     <th scope="col">إجمالى الفاتورة</th>
                     <th scope="col">رفم الفاتورة</th>
+                    <th scope="col">الحالة</th>
                     <th scope="col">التاريخ</th>
                     <th scope="col">المنتجات</th>
                     <th scope="col">العمليات</th>
@@ -199,19 +283,57 @@
                       <td>
                         {{ invoice.totalPrice | currency: "USD":"symbol" }}
                       </td>
-                      <td>{{ invoice.id }}</td>
-                      <td>{{ invoice.createdAt | date: "dd/MM/yyyy" }}</td>
+                      <td>{{ invoice?.id }}</td>
+                      <td>
+                        <mat-form-field
+                          appearance="outline"
+                          style="width: 80px; font-size: 12px"
+                        >
+                          <mat-select
+                            *ngIf="invoice?.status"
+                            [(ngModel)]="invoice.status"
+                            (selectionChange)="
+                              updateStatus(invoice.status, invoice.id)
+                            "
+                          >
+                            <mat-option
+                              *ngFor="let invStatus of statusTypes"
+                              [value]="invStatus?.key"
+                            >
+                              {{ invStatus?.value }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                        <!-- <select
+                          *ngIf="invoice?.status"
+                          class="form-control custom-select"
+                          [(ngModel)]="invoice.status"
+                          (change)="updateStatus(invoice.status, invoice.id)"
+                        >
+                          <option
+                            *ngFor="let invStatus of statusTypes"
+                            [value]="invStatus?.key"
+                          >
+                            {{ invStatus?.value }}
+                          </option>
+                        </select> -->
+                      </td>
+                      <td>{{ invoice?.createdAt | date: "dd/MM/yyyy" }}</td>
                       <td>
                         <li
                           class="list-group-item"
                           *ngFor="let purchase of invoice.items"
                         >
-                          {{ purchase.product.name }} - {{ purchase.quantity }}
+                          {{ purchase?.product?.name }} -
+                          {{ purchase?.quantity }}
                         </li>
                       </td>
                       <td class="btn-group m-1">
                         <a
-                          class="btn-sm icon-btn-sm btn-primary text-white"
+                          mat-raised-button
+                          color="dam-success"
+                          class="btn-sm icon-btn-sm mr-2"
                           (click)="print(invoice); showDialog = !showDialog"
                         >
                           <i class="material-icons md-18">print</i></a
@@ -219,7 +341,9 @@
                         <!-- <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="onUpdate(invoice);showDialog = !showDialog">
                                 <i class="material-icons md-18">mode_edit_outline</i></a>             -->
                         <a
-                          class="btn-sm icon-btn-sm btn-danger text-white"
+                          mat-raised-button
+                          color="warn"
+                          class="btn-sm icon-btn-sm mr-2"
                           (click)="onDelete(invoice, i)"
                         >
                           <i class="material-icons md-18">delete_outline</i>

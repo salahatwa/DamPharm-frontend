@@ -87,7 +87,6 @@
             </p>
           </div>
 
-          
           <app-section-loading [isLoading]="loading"></app-section-loading>
           <div class="card-body text-default">
             <div class="row">
@@ -138,7 +137,8 @@
                   <button
                     type="button"
                     (click)="resetPurchase()"
-                    class="btn btn-warning"
+                    mat-raised-button
+                    color="dam-warn"
                     style="padding-right: 10px"
                   >
                     مسح
@@ -148,7 +148,9 @@
                   <button
                     type="submit"
                     [disabled]="!form.valid"
-                    class="btn btn-success float-right"
+                    mat-raised-button
+                    color="dam-success"
+                    class="float-right"
                   >
                     حفظ
                   </button>

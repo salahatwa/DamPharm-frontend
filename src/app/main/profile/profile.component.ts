@@ -44,6 +44,8 @@ export class ProfileComponent implements OnInit {
       postalCode: new FormControl({ value: user.postalCode, disabled: false }),
       phone: new FormControl({ value: user.phone, disabled: false }),
       productRiskCategory: new FormControl({ value: user.productRiskCategory, disabled: false }),
+      qr: new FormControl({ value: user.qr, disabled: false }),
+      
     })
   }
 

@@ -1,33 +1,39 @@
 <div class="card mt-5">
-    <div class="card-body">
-      <h6 class="text-center">قائمة التصنيفات</h6>
-      <alert [id]="alert.id"></alert>
+  <div class="card-body">
+    <h6 class="text-center">قائمة التصنيفات</h6>
+    <alert [id]="alert.id"></alert>
 
-      <app-section-loading [isLoading]="loading"></app-section-loading>
-      <table class="table table-sm table-hover">
-        <tbody>
-          <tr *ngFor="let product of productList | paginate: page;let i=index">
-            <td>{{product.name}}</td>
-            <td>{{money(product.price)}}</td> 
-            <td>
-              <a  class="btn btn-secondary text-white" (click)="onEdit(product,i)">
-                <i class="material-icons md-18">mode_edit_outline</i>
-              </a>
-          </td>
+    <app-section-loading [isLoading]="loading"></app-section-loading>
+    <table class="table table-sm table-hover">
+      <tbody>
+        <tr *ngFor="let product of productList | paginate: page; let i = index">
+          <td>{{ product.name }}</td>
+          <td>{{ money(product.price) }}</td>
           <td>
-              <a class="btn btn-danger text-white" (click)="onDelete(product,i)">
-                <i class="material-icons md-18">delete_outline</i>
-              
-              </a>
+            <a
+              mat-raised-button
+              color="dam-success"
+              class="btn-sm icon-btn-sm mr-2"
+              (click)="onEdit(product, i)"
+            >
+              <i class="material-icons md-18">mode_edit_outline</i>
+            </a>
+            <a
+              mat-raised-button
+              color="warn"
+              class="btn-sm icon-btn-sm mr-2"
+              (click)="onDelete(product, i)"
+            >
+              <i class="material-icons md-18">delete_outline</i>
+            </a>
           </td>
-  
-          </tr>
-        </tbody>
-      </table>
-      <pagination-controls *ngIf="productList?.length>0"
-        (pageChange)="getPage($event)"
-        id="{{ page.id }}"
-      ></pagination-controls>
-
-    </div>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls
+      *ngIf="productList?.length > 0"
+      (pageChange)="getPage($event)"
+      id="{{ page.id }}"
+    ></pagination-controls>
   </div>
+</div>
