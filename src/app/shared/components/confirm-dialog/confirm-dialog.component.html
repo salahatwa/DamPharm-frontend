@@ -1,36 +1,27 @@
-<div class="modal-header">
-  <div class="icon-box">
-    <button
-      type="button"
-      class="close"
-      data-dismiss="modal"
-      aria-hidden="true"
-      (click)="activeModal.dismiss()"
-    >
-      &times;
-    </button>
-  </div>
-  <h4 class="modal-title w-100">Are you sure?</h4>
+<div class="modal-header text-right">
+  <h4 class="modal-title w-100">هل أنت متأكد ؟</h4>
 </div>
-<div class="modal-body">
-  <p>
-    Do you really want to delete these records? This process cannot be undone.
-  </p>
+<div class="modal-body text-right">
+  <p>هل أنت متأكد , لا يمكن التراجع عن هذة العملية</p>
 </div>
 <div class="modal-footer justify-content-center">
   <button
     type="button"
-    class="btn btn-secondary"
+    mat-raised-button
+    color="dam-warn"
+    class="mr-2"
     data-dismiss="modal"
     (click)="activeModal.dismiss()"
   >
-    Cancel
+    إلغاء
   </button>
   <button
     type="button"
-    class="btn btn-danger"
+    mat-raised-button
+    color="dam-success"
+    class="mr-2"
     (click)="activeModal.close(true)"
   >
-    Delete
+    تأكيد
   </button>
 </div>

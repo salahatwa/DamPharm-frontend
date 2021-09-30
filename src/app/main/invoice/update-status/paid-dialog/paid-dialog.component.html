@@ -1,24 +1,56 @@
 <div class="modal-header text-right">
-  <!-- <div class="icon-box text-left">
-    <button
-      type="button"
-      class="close"
-      data-dismiss="modal"
-      aria-hidden="true"
-      (click)="activeModal.dismiss()"
-    >
-      &times;
-    </button>
-  </div> -->
-  <h4 class="modal-title w-100 ">من فضلك قم بإختيار تاريخ الدفع</h4>
+  <h4 class="modal-title w-100">قيمة الفاتورة  {{ _invoice.totalPrice }}</h4>
 </div>
-<div class="modal-body">
-  <mat-form-field appearance="fill">
-    <mat-label>تاريخ الدفع</mat-label>
-    <input matInput [matDatepicker]="picker3" [value]="selectedDate" [(ngModel)]="selectedDate" />
-    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-    <mat-datepicker #picker3></mat-datepicker>
-  </mat-form-field>
+<div class="modal-body text-right">
+  <form [formGroup]="paidForm">
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <mat-label>تاريخ الدفع</mat-label>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            [matDatepicker]="picker3"
+            formControlName="paidDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker3"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+        <span
+          *ngIf="paidForm?.controls?.paidDate?.errors?.required"
+          class="text-red"
+        >
+          تاريخ الدفع مطلوب
+        </span>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <mat-label>القيمة المدفوعة</mat-label>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <input
+            matInput
+            placeholder="حدد القيمة المدفوعة"
+            type="number"
+            formControlName="paidAmt"
+          />
+        </mat-form-field>
+        <span
+          *ngIf="paidForm?.controls?.paidAmt?.errors?.required"
+          class="text-red"
+        >
+          قيمة الدفع مطلوبة
+        </span>
+        <span
+          *ngIf="paidForm?.controls?.paidAmt?.errors?.minimum"
+          class="text-red"
+        >
+          القيمة يجب أن تكون أصغر من المجموع الكلى للفاتورة
+          {{ _invoice.totalPrice }}
+        </span>
+      </div>
+    </div>
+  </form>
 </div>
 <div class="modal-footer justify-content-center">
   <button
@@ -33,10 +65,11 @@
   </button>
   <button
     type="button"
+    [disabled]="paidForm.invalid"
     mat-raised-button
     color="dam-success"
     class="mr-2"
-    (click)="activeModal.close(selectedDate)"
+    (click)="activeModal.close(paidForm.value)"
   >
     تأكيد
   </button>

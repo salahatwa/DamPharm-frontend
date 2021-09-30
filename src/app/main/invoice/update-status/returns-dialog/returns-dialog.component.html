@@ -1,0 +1,105 @@
+<div class="modal-header text-right">
+  <!-- <div class="icon-box text-left">
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-hidden="true"
+      (click)="activeModal.dismiss()"
+    >
+      &times;
+    </button>
+  </div> -->
+  <h4 class="modal-title w-100">قم بكتابة الكمية المرتجعة لكل عنصر</h4>
+</div>
+<div class="modal-body text-right">
+  <div class="container">
+    <form [formGroup]="returnsForm">
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>تاريخ الإرتجاع</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker3"
+            formControlName="returnsDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker3"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="row" formArrayName="items">
+        <div class="col-lg-12">
+          <div class="row">
+            <div
+              class="col-lg-6 col-md-6 col-sm-12 p-0 ml-2"
+              *ngFor="let myItem of returnsItems?.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-label>{{ myItem.value.name }}</mat-label>
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input
+                  matInput
+                  placeholder="إدخل الكمية المرتجعة ل {{ myItem.value.name }}"
+                  type="number"
+                  formControlName="returns"
+                />
+                <mat-hint
+                  >الكمية المدخلة يجب أن تكون أصغر من
+                  {{ myItem.value.quantity }}</mat-hint
+                >
+                <span
+                  *ngIf="myItem?.controls?.returns?.errors?.required"
+                  class="text-red"
+                >
+                 الكمية المرتجعة مطلوبة
+                </span>
+
+
+                <span
+                  *ngIf="myItem?.controls?.returns?.errors?.minimum"
+                  class="text-red"
+                >
+                  الكمية المدخلة يجب أن تكون أصغر من
+                  {{ myItem.value.quantity }}
+                </span>
+
+                <span
+                  *ngIf="myItem?.controls?.returns?.errors?.pattern"
+                  class="text-red"
+                >
+                  من فضلك أدخل رقم صحيح
+                </span>
+                <span></span>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer justify-content-center">
+  <button
+    type="button"
+    data-dismiss="modal"
+    mat-raised-button
+    color="dam-warn"
+    class="mr-2"
+    (click)="activeModal.dismiss()"
+  >
+    إلغاء
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    [disabled]="returnsForm.invalid"
+    color="dam-success"
+    class="mr-2"
+    (click)="activeModal.close(returnsForm.value)"
+  >
+    تأكيد
+  </button>
+</div>

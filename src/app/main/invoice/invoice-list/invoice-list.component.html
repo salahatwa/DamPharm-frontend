@@ -142,7 +142,6 @@
                             formControlName="customer"
                             name="customer"
                           >
-                            <mat-option [value]="null">إختر</mat-option>
                             <mat-option
                               *ngFor="let item of customerList"
                               [value]="item"
@@ -170,8 +169,8 @@
                       <div class="col-lg-3 col-md-3 col-sm-12 p-0">
                         <mat-form-field appearance="outline">
                           <mat-label>بحث بالحالة</mat-label>
-                          <mat-select formControlName="status" name="status">
-                            <mat-option [value]="null">إختر</mat-option>
+                          <mat-select formControlName="statusList" name="statusList" multiple>
+                            <!-- <mat-option [value]="null">إختر</mat-option> -->
                             <mat-option
                               *ngFor="let invStatus of statusTypes"
                               [value]="invStatus?.key"
@@ -237,6 +236,16 @@
                         </button>
 
                         <button
+                        mat-raised-button
+                        color="dam-info"
+                        type="button"
+                        class="btn-sm mr-2"
+                        (click)="downloadStatmentReport()"
+                      >
+                        تحصيلات
+                      </button>
+                        
+                        <button
                           mat-raised-button
                           color="dam-warn"
                           class="btn-sm mr-2"
@@ -285,39 +294,14 @@
                       </td>
                       <td>{{ invoice?.id }}</td>
                       <td>
-                        <mat-form-field
-                          appearance="outline"
-                          style="width: 80px; font-size: 12px"
-                        >
-                          <mat-select
-                            *ngIf="invoice?.status"
-                            [(ngModel)]="invoice.status"
-                            (selectionChange)="
-                              updateStatus(invoice.status, invoice.id)
-                            "
+                        <ng-container *ngFor="let invStatus of statusTypes">
+                          <span
+                            *ngIf="invStatus?.key == invoice?.status"
+                            class="build-badge__status {{ invStatus?.class }}"
                           >
-                            <mat-option
-                              *ngFor="let invStatus of statusTypes"
-                              [value]="invStatus?.key"
-                            >
-                              {{ invStatus?.value }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-
-                        <!-- <select
-                          *ngIf="invoice?.status"
-                          class="form-control custom-select"
-                          [(ngModel)]="invoice.status"
-                          (change)="updateStatus(invoice.status, invoice.id)"
-                        >
-                          <option
-                            *ngFor="let invStatus of statusTypes"
-                            [value]="invStatus?.key"
+                            {{ invStatus?.value }}</span
                           >
-                            {{ invStatus?.value }}
-                          </option>
-                        </select> -->
+                        </ng-container>
                       </td>
                       <td>{{ invoice?.createdAt | date: "dd/MM/yyyy" }}</td>
                       <td>
@@ -330,24 +314,49 @@
                         </li>
                       </td>
                       <td class="btn-group m-1">
-                        <a
+                        <button
+                          mat-mini-fab
                           mat-raised-button
                           color="dam-success"
-                          class="btn-sm icon-btn-sm mr-2"
+                          class="mr-2"
                           (click)="print(invoice); showDialog = !showDialog"
                         >
-                          <i class="material-icons md-18">print</i></a
-                        >
+                          <i class="material-icons md-14">print</i>
+                        </button>
                         <!-- <a class="btn-sm icon-btn-sm btn-primary text-white" (click)="onUpdate(invoice);showDialog = !showDialog">
                                 <i class="material-icons md-18">mode_edit_outline</i></a>             -->
-                        <a
+                        <button
+                          mat-mini-fab
                           mat-raised-button
                           color="warn"
-                          class="btn-sm icon-btn-sm mr-2"
+                          class="mr-2"
                           (click)="onDelete(invoice, i)"
                         >
-                          <i class="material-icons md-18">delete_outline</i>
-                        </a>
+                          <i class="material-icons md-14">delete_outline</i>
+                        </button>
+
+                        <mat-form-field
+                          class="mr-2"
+                          appearance="outline"
+                          style="width: 70px; font-size: 10px"
+                        >
+                        <mat-label>تغيير الحالة</mat-label>
+                          <mat-select
+                         
+                            [disabled]="invoice?.status == 'CANCELED'||invoice?.status == 'PAID'"
+                            (selectionChange)="
+                              updateStatus($event.value, invoice,i)
+                            "
+                          >
+                            <mat-option [value]="null">إختر</mat-option>
+                            <mat-option
+                              *ngFor="let invStatus of getAvailableStatus(invoice?.status)"
+                              [value]="invStatus?.key"
+                            >
+                              {{ invStatus?.value }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
                       </td>
                     </tr>
                   </ng-container>

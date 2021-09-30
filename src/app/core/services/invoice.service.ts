@@ -63,6 +63,14 @@ export class InvoiceService {
     }));
   }
 
+
+  downloadStatment(filter:any) {
+    return this.apiService.postGetFile('/invoice/download/statment' ,filter).pipe(map(data => {
+      return data;
+    }));
+  }
+
+
   money(value: number) {
     return value.toLocaleString('ar', { style: 'currency', currency: 'EGB', minimumFractionDigits: 2 });
   }

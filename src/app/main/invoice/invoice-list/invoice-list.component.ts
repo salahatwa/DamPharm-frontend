@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { PaidDialogComponent } from '../update-status/paid-dialog/paid-dialog.component';
 import { Customer } from './../../../core/classes/customer';
-import { IInvoice, InvoiceStatusUpdate } from './../../../core/classes/invoice';
+import { IInvoice, InvoiceStatusUpdate, InvoiceStatus } from './../../../core/classes/invoice';
 import { Product } from './../../../core/classes/product';
 import { CustomerService } from './../../../core/services/customer.service';
 import { InvoiceService } from './../../../core/services/invoice.service';
@@ -16,8 +16,9 @@ import { AlertType } from './../../../shared/components/alert/alert.model';
 import { AlertService } from './../../../shared/components/alert/alert.service';
 import { UtilsService } from './../../../shared/services/utils.service';
 import { DamConstants } from './../../../shared/utils/constants';
+import { ReturnsDialogComponent } from '../update-status/returns-dialog/returns-dialog.component';
 
-declare var Stimulsoft: any;
+
 
 export enum SearchMode {
   INVOICE_LIST = 0, INVOICE_FILTER = 1
@@ -29,9 +30,46 @@ export enum SearchMode {
   styleUrls: ['./invoice-list.component.css']
 })
 export class InvoiceListComponent implements OnInit {
-  keys = Object.keys;
+  newInvoiceStatus: InvoiceStatus;
   // statusTypes: InvoiceStatus;
-  public statusTypes = [{ key: 'NEW', value: 'جديد' }, { key: 'PAID', value: 'مدفوعة' }, { key: 'RETURNS', value: 'مرتجع' }, { key: 'CANCELED', value: 'ألغيت' }, { key: 'DRAFT', value: 'مسودة' }]
+  public statusTypes = [{ key: 'NEW', value: 'جديد', class: 'build-badge__status-indeterminate' }, { key: 'PAID', value: 'مدفوعة', class: 'build-badge__status-success' }, { key: 'RETURNS', value: 'مرتجع', class: 'build-badge__status-warning' }, { key: 'CANCELED', value: 'ألغيت', class: 'build-badge__status-error' }, { key: 'PAID_PARTIALLY', value: 'مدفوعة جزئيا', class: 'build-badge__status-information' }]
+
+
+  getAvailableStatus(status) {
+    let desiredStatus: any[] = [];
+    switch (status) {
+      case 'NEW':
+        desiredStatus = this.filterWithMultipleProperties(this.statusTypes, ['PAID', 'RETURNS', 'PAID_PARTIALLY', 'CANCELED']);
+        break;
+      case 'RETURNS':
+        desiredStatus = this.filterWithMultipleProperties(this.statusTypes, ['PAID', 'RETURNS', 'PAID_PARTIALLY']);
+        break;
+      case 'PAID_PARTIALLY':
+        desiredStatus = this.filterWithMultipleProperties(this.statusTypes, ['PAID', 'PAID_PARTIALLY']);
+        break;
+
+
+      default:
+        desiredStatus = this.statusTypes;
+        break;
+    }
+
+    return desiredStatus;
+  }
+
+  /**
+   * filter Arr with multiple elements
+   * @param arr 
+   * @param codes 
+   * @returns 
+   */
+  filterWithMultipleProperties(arr, keys: string[]): any[] {
+    let result = arr.filter(item => keys.includes(item.key));
+    return result;
+  }
+
+
+
 
   mode: SearchMode = SearchMode.INVOICE_LIST;
   alert = { id: 'customer-list-alert', alertType: AlertType.ALINMA };
@@ -118,8 +156,8 @@ export class InvoiceListComponent implements OnInit {
     this.searchForm = this._fb.group({
       id: '',
       customer: [null],
-      status:[null],
-      state:'',
+      statusList: [null],
+      state: '',
       fromDate: new FormControl(new Date(currentDate)),
       toDate: new FormControl(new Date(currentDate))
     });
@@ -199,20 +237,22 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-  updateStatus(status, id) {
+  updateStatus(status, invoice: IInvoice, index: number) {
     let rq: InvoiceStatusUpdate = {
       status: status,
-      id: id
+      id: invoice?.id
     };
 
     switch (status) {
       case 'PAID':
         const dialogRef = this.modalService.open(PaidDialogComponent);
+        invoice.totalyPaid = true;
+        dialogRef.componentInstance.invoice = invoice;
 
-        dialogRef.result.then(paidDate => {
-          if (paidDate) {
-            rq.paidDate = paidDate;
-            this.updateInvoiceStatus(rq);
+        dialogRef.result.then(result => {
+          if (result) {
+            rq.paidDate = result?.paidDate;
+            this.updateInvoiceStatus(rq, index);
           }
         }).catch((res) => {
 
@@ -220,19 +260,68 @@ export class InvoiceListComponent implements OnInit {
 
         break;
 
+      case 'CANCELED':
+        const cdialogRef = this.modalService.open(ConfirmDialogComponent);
+
+        cdialogRef.result.then(result => {
+          if (result) {
+            rq.cancel = result;
+            this.updateInvoiceStatus(rq, index);
+
+          }
+        }).catch((res) => {
+
+        });
+        break;
+
+      case 'RETURNS':
+        const cdialogRef2 = this.modalService.open(ReturnsDialogComponent);
+        cdialogRef2.componentInstance.invoice = invoice;
+        cdialogRef2.result.then(result => {
+          if (result) {
+            console.log(result);
+            rq.items = result?.items;
+            rq.returnsDate = result?.returnsDate;
+            rq.id = result?.id;
+            this.updateInvoiceStatus(rq, index);
+
+          }
+        }).catch((res) => {
+
+        });
+        break;
+
+      case 'PAID_PARTIALLY':
+        const dialogRef3 = this.modalService.open(PaidDialogComponent);
+        invoice.totalyPaid = false;
+        dialogRef3.componentInstance.invoice = invoice;
+
+        dialogRef3.result.then(result => {
+          if (result) {
+            rq.paidDate = result?.paidDate;
+            rq.paidAmt = result?.paidAmt;
+            this.updateInvoiceStatus(rq, index);
+          }
+        }).catch((res) => {
+
+        });
+
+        break;
+        break;
+
       default:
-        this.updateInvoiceStatus(rq);
+        // this.updateInvoiceStatus(rq);
         break;
     }
 
   }
 
-  updateInvoiceStatus(rq: InvoiceStatusUpdate) {
+  updateInvoiceStatus(rq: InvoiceStatusUpdate, index: number) {
     this.loading = true;
     this.invoiceService.updateInvoiceStatus(rq).pipe(finalize(() => {
       this.loading = false;
     })).subscribe(data => {
-      // this.invoiceList.splice(index, 1);
+      this.invoiceList[index] = data;
       this.alertService.success(this.translateService.instant('notify.success.update'), this.alert);
     }, err => {
       this.alertService.error(err.message, this.alert);
@@ -261,9 +350,29 @@ export class InvoiceListComponent implements OnInit {
       this.invoiceList = item?.content;
       this.page.totalItems = item?.totalElements;
     });
+  }
+
+  downloadStatmentReport() {
+
+    let filter = this.searchForm.value;
+    this.loading = true;
+    this.invoiceService.downloadStatment(filter).pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe(data => {
+      this.downLoadFile(data, "application/pdf");
+    }, err => {
+
+    });
 
   }
 
+  downLoadFile(data: any, type: string) {
+    let blob = new Blob([data], { type: type });
+    let url = window.URL.createObjectURL(blob);
+    let pwa = window.open(url); if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
+      alert('Please disable your Pop-up blocker and try again.');
+    }
+  }
   resetSearchForm() {
     this.mode = SearchMode.INVOICE_LIST;
     this.searchForm.reset();

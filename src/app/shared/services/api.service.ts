@@ -47,7 +47,7 @@ export class ApiService {
   }
 
 
-  postGetFile(path: string, body: Object = {}): Observable<ArrayBuffer> {
+  postGetFile(path: string, body: Object = {}) : Observable<ArrayBuffer>{
     return this.http.post(`${this.config.api}${path}`, body, {
       responseType: 'arraybuffer'
     });
