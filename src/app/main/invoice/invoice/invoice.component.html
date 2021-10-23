@@ -1,14 +1,4 @@
 <div class="container">
-  <!-- <app-dialog [(visible)]="showDialog">
-      <div class="col-md-12">
-        <app-product></app-product>
-      </div>
-    </app-dialog> -->
-  <!-- <app-dialog [(visible)]="showDialog1">
-        <div class="col-md-12">
-          <app-customer></app-customer>
-        </div>
-      </app-dialog> -->
   <form
     class="form-horizontal"
     [formGroup]="form"
@@ -19,12 +9,6 @@
     <div class="row">
       <div class="col">
         <div class="card border-info mb-3" style="max-width: 100%">
-          <!-- <div class="card-header">
-              <i class="fas fa-users text-success"></i> العملاء
-              <a class="badge badge-purple badge-outlined" (click)="showDialog1 = !showDialog1" style="cursor: pointer;">Add New
-                <i class="fas fa-user-plus text-purple"></i>
-              </a>
-            </div> -->
           <div class="card-header">
             <h4 class="card-title">إضافة فاتورة</h4>
             <p class="card-category">إختر عميل لإضافة فاتورة له</p>
@@ -33,34 +17,37 @@
           <div class="card-body text-info">
             <div class="form-row">
               <div class="col-md-4">
-                <select
-                  class="form-control custom-select"
-                  id="customer"
-                  formControlName="customer"
-                  (ngModelChange)="getSelectedOptionText($event)"
-                >
-                  <option value="">-إختر عميل-</option>
-                  <option *ngFor="let item of customerList" [ngValue]="item">
-                    {{ item.name }} {{ item.lastname }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-md-4">
-                <span *ngIf="phoneCustomer">
-                  <label
-                    ><i class="fas fa-phone text-success"></i> تليفون:</label
+                <mat-form-field appearance="outline">
+                  <mat-label>إختر عميل</mat-label>
+                  <mat-select
+                    id="customer"
+                    formControlName="customer"
+                    name="customer"
+                    (ngModelChange)="getSelectedOptionText($event)"
                   >
-                  {{ phoneCustomer }}
-                </span>
+                    <!-- <mat-option [value]="">إختر عميل</mat-option> -->
+                    <mat-option
+                      *ngFor="let item of customerList"
+                      [value]="item"
+                    >
+                      {{ item.name }} {{ item.lastname }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
-              <div class="col-md-4">
-                <span *ngIf="addressCustomer">
-                  <label
-                    ><i class="fas fa-map-marker-alt text-success"></i>
-                    عنوان:</label
-                  >
-                  {{ addressCustomer }}</span
-                >
+              <div *ngIf="selectedCustomer" class="col-md-4">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td><span class="badge badge-success p-2">التليفون</span></td>
+                      <td>{{ selectedCustomer?.phone }}</td>
+                    </tr>
+                    <tr>
+                      <td><span class="badge badge-success p-2">  العنوان</span></td>
+                      <td>{{ selectedCustomer?.address }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -68,18 +55,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-6" *ngIf="phoneCustomer">
+      <div class="col-sm-6" *ngIf="selectedCustomer">
         <div class="card border-warning" style="max-width: 100%">
-          <!-- <div class="card-header">
-            <i class="fas fa-shopping-cart text-success"></i> المنتجات
-            <a
-              class="badge badge-purple badge-outlined"
-              (click)="showDialog = !showDialog"
-              style="cursor: pointer"
-              >إضافة
-              <i class="fas fa-plus-circle text-purple"></i>
-            </a>
-          </div> -->
           <div class="card-header">
             <h4 class="card-title">إختر منتج أو أكثر</h4>
             <p class="card-category">
@@ -196,37 +173,111 @@
                     >الكمية المتاحة:
                     {{
                       purchase.get("product").value.availableQuantity -
-                        purchase.get("quantity").value
+                        purchase.get("quantity").value -
+                        purchase.get("bonus").value
                     }}</small
                   >
                 </div>
-                <p class="mb-1">
-                  <label>الكمية</label>
-                  <input
-                    type="number"
-                    formControlName="quantity"
-                    class="form-control form-control-sm"
-                    [min]="1"
-                    [max]="
-                      purchase.get('product').value.availableQuantity -
-                      purchase.get('quantity').value
-                    "
-                  />
-                </p>
-                <div
-                  *ngIf="purchase.get('quantity').errors"
-                  class="alert alert-danger"
-                >
-                  لقد تم استخدام كل الكمية المتاحة
+
+                <div class="form-row">
+                  <div class="form-group col-lg-4 col-md-4">
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>الكمية</mat-label>
+                      <input
+                        type="number"
+                        matInput
+                        [min]="1"
+                        [max]="purchase.get('product').value.availableQuantity"
+                        formControlName="quantity"
+                        placeholder="الكمية"
+                      />
+                    </mat-form-field>
+
+                    <span
+                      *ngIf="purchase.get('quantity').errors?.min"
+                      class="text-red"
+                    >
+                      الكمية قليلة جدا
+                    </span>
+                    <span
+                      *ngIf="purchase.get('quantity').errors?.max"
+                      class="text-red"
+                    >
+                      الكمية تخطت الكمية المتاحة
+                    </span>
+                    <span
+                      *ngIf="purchase.get('quantity').errors?.required"
+                      class="text-red"
+                    >
+                      الكمية مطلوبة
+                    </span>
+                    <span
+                      *ngIf="purchase.get('quantity').errors?.pattern"
+                      class="text-red"
+                    >
+                      الكمية يجب أن تكون أرقام فقط
+                    </span>
+                  </div>
+
+                  <div class="form-group col-lg-4 col-md-4">
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>الخصم</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        formControlName="discount"
+                        placeholder="الخصم"
+                      />
+                    </mat-form-field>
+                    <span
+                      *ngIf="purchase.get('discount').errors?.max"
+                      class="text-red"
+                    >
+                      الخصم تخطى قيمة السعر
+                    </span>
+                    <span
+                      *ngIf="purchase.get('discount').errors?.pattern"
+                      class="text-red"
+                    >
+                      مسموح بالأرقام العشرية فقط
+                    </span>
+                  </div>
+
+                  <div class="form-group col-lg-4 col-md-4">
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>البونص</mat-label>
+                      <input
+                        type="number"
+                        matInput
+                        [min]="0"
+                        [max]="purchase.get('product').value.availableQuantity"
+                        formControlName="bonus"
+                        placeholder="البونص"
+                      />
+                    </mat-form-field>
+                    <span
+                      *ngIf="purchase.get('bonus').errors?.max"
+                      class="text-red"
+                    >
+                      البونص تخطى الكمية المتاحة
+                    </span>
+                    <span
+                      *ngIf="purchase.get('bonus').errors?.pattern"
+                      class="text-red"
+                    >
+                      مسموح بالأرقام فقط
+                    </span>
+                  </div>
                 </div>
-                <p class="mb-1">
-                  <label>خصم</label>
-                  <input
-                    type="number"
-                    formControlName="discount"
-                    class="form-control form-control-sm"
-                  />
-                </p>
 
                 <small>
                   <input
