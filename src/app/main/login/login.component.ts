@@ -6,6 +6,7 @@ import { UtilsService } from '../../shared/services/utils.service';
 import { ApiService } from './../../shared/services/api.service';
 import { JwtService } from './../../shared/services/auth/jwt.service';
 import { UserService } from './../../shared/services/auth/user.service';
+import { finalize } from 'rxjs/operators';
 
 
 class AuthenticationRequest {
@@ -21,13 +22,16 @@ class AuthenticationRequest {
   providers: [UserService, ApiService, JwtService]
 })
 export class LoginComponent {
-  
+
   hide = true;
   title: String = '';
   errors: [];
   isSubmitting = false;
   authForm: FormGroup;
   selectedLang: string = 'ar';
+  alert = {
+    id: 'login-alert'
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -54,16 +58,16 @@ export class LoginComponent {
     const credentials = this.authForm.value;
     this.userService
       .attemptAuth('login', credentials)
+      .pipe(finalize(()=>{
+        this.isSubmitting = false;
+      }))
       .subscribe(
         data => {
           this.utilService.setDocTitle('dashboard.title', false);
           this.router.navigateByUrl('/dashboard');
         },
         err => {
-          console.log(err);
-          this.alertService.error(err.message);
-          this.errors = err;
-          this.isSubmitting = false;
+          this.alertService.error(err.message, this.alert);
         }
       );
 

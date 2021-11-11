@@ -1,8 +1,9 @@
-body{
+body,html{
 	margin: 0px;
 	padding: 0px;
 	font-size: 20px;
 	font-family: 'Cairo', sans-serif;
+    direction: rtl;
 }
 p, a, .h2, .h4, .h5, .h6{
 font-family: 'Cairo', sans-serif;
