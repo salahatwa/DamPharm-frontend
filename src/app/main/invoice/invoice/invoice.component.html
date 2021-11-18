@@ -239,7 +239,7 @@
                       *ngIf="purchase.get('discount').errors?.max"
                       class="text-red"
                     >
-                      الخصم تخطى قيمة السعر
+                    الخصم يجب ألا يزيد عن 100 %
                     </span>
                     <span
                       *ngIf="purchase.get('discount').errors?.pattern"

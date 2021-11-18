@@ -3,7 +3,7 @@ const { name, description, version } = require('../../package.json');
 
 export const environment = {
   production: false,
-  api: 'http://localhost:8080/api',
+  api: 'https://dampharm-backend.herokuapp.com/api',
   unauth_api:'http://localhost:8080/unauth',
   name,
   description,

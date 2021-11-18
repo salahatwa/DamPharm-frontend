@@ -84,7 +84,7 @@ export class InvoiceComponent implements OnInit {
     return this._fb.group({
       product: [product, Validators.required],
       quantity: [1, [Validators.max(product.availableQuantity), Validators.required, Validators.pattern(numberPatern)]],
-      discount: [0, [Validators.max(product.price), Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]],
+      discount: [0, [Validators.max(99), Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]],
       bonus: [0, [Validators.max(product.availableQuantity), Validators.pattern(numberPatern)]],
       amount: [{ value: 0, disabled: true }],
     });
