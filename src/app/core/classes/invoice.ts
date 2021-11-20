@@ -41,5 +41,11 @@ export enum InvoiceStatus {
   PAID = 1,
   RETURNS = 2,
   CANCELED = 3,
-  PAID_PARTIALLY = 4
+  PAID_PARTIALLY = 4,
+  SAMPLE=5
+}
+
+export enum ServiceType {
+  INVOICE = 0,
+  SAMPLE = 1
 }

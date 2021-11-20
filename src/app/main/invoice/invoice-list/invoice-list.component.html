@@ -284,7 +284,8 @@
                       let i = index
                     "
                   >
-                    <tr *ngIf="filterCondition(invoice)">
+                  
+                    <tr [ngClass]="invoice?.status == 'SAMPLE'?'sample':''">
                       <td>
                         {{ invoice.customer.name }}
                         {{ invoice.customer.lastname }}
@@ -343,7 +344,7 @@
                         <mat-label>تغيير الحالة</mat-label>
                           <mat-select
                          
-                            [disabled]="invoice?.status == 'CANCELED'||invoice?.status == 'PAID'"
+                            [disabled]="invoice?.status == 'CANCELED'||invoice?.status == 'PAID'||invoice?.status == 'SAMPLE'"
                             (selectionChange)="
                               updateStatus($event.value, invoice,i)
                             "

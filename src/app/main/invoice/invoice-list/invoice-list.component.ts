@@ -32,7 +32,7 @@ export enum SearchMode {
 export class InvoiceListComponent implements OnInit {
   newInvoiceStatus: InvoiceStatus;
   // statusTypes: InvoiceStatus;
-  public statusTypes = [{ key: 'NEW', value: 'جديد', class: 'build-badge__status-indeterminate' }, { key: 'PAID', value: 'مدفوعة', class: 'build-badge__status-success' }, { key: 'RETURNS', value: 'مرتجع', class: 'build-badge__status-warning' }, { key: 'CANCELED', value: 'ألغيت', class: 'build-badge__status-error' }, { key: 'PAID_PARTIALLY', value: 'مدفوعة جزئيا', class: 'build-badge__status-information' }]
+  public statusTypes = [{ key: 'NEW', value: 'جديد', class: 'build-badge__status-indeterminate' }, { key: 'PAID', value: 'مدفوعة', class: 'build-badge__status-success' }, { key: 'RETURNS', value: 'مرتجع', class: 'build-badge__status-warning' }, { key: 'CANCELED', value: 'ألغيت', class: 'build-badge__status-error' }, { key: 'PAID_PARTIALLY', value: 'مدفوعة جزئيا', class: 'build-badge__status-information' }, { key: 'SAMPLE', value: 'عينات', class: 'build-badge__status-indeterminate' }]
 
 
   getAvailableStatus(status) {
@@ -46,6 +46,9 @@ export class InvoiceListComponent implements OnInit {
         break;
       case 'PAID_PARTIALLY':
         desiredStatus = this.filterWithMultipleProperties(this.statusTypes, ['PAID', 'PAID_PARTIALLY']);
+        break;
+      case 'SAMPLE':
+        desiredStatus = this.filterWithMultipleProperties(this.statusTypes, []);
         break;
 
 
@@ -406,9 +409,6 @@ export class InvoiceListComponent implements OnInit {
     return tmoney;
   }
 
-  filterCondition(invoice) {
-    return invoice?.customer?.name.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1 || invoice?.customer?.lastname.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1;
-  }
 
 
   print(invoice) {

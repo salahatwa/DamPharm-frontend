@@ -1,9 +1,12 @@
+.sample {
+    background-color: #00ffff;
+}
 /*search box css start here*/
-.search-sec{
+.search-sec {
     /* background: #1A4668; */
     padding: 2rem;
 }
-.search-slt{
+.search-slt {
     display: block;
     width: 100%;
     font-size: 0.875rem;
@@ -13,13 +16,13 @@
     background-image: none;
     border: 1px solid #ccc;
     height: calc(3rem + 2px) !important;
-    border-radius:0;
+    border-radius: 0;
 }
-.wrn-btn{
+.wrn-btn {
     width: 100%;
     font-size: 16px;
     font-weight: 400;
     text-transform: capitalize;
-     height: calc(3rem + 2px) !important;
-     border-radius:0;
+    height: calc(3rem + 2px) !important;
+    border-radius: 0;
 }

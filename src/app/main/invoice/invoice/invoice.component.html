@@ -17,6 +17,15 @@
           <div class="card-body text-info">
             <div class="form-row">
               <div class="col-md-4">
+                <mat-radio-group formControlName="type">
+                  <mat-radio-button [value]="ServiceType.INVOICE">فاتورة</mat-radio-button>
+                  <mat-radio-button [value]="ServiceType.SAMPLE">عينة</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-4">
                 <mat-form-field appearance="outline">
                   <mat-label>إختر عميل</mat-label>
                   <mat-select
@@ -39,11 +48,15 @@
                 <table>
                   <tbody>
                     <tr>
-                      <td><span class="badge badge-success p-2">التليفون</span></td>
+                      <td>
+                        <span class="badge badge-success p-2">التليفون</span>
+                      </td>
                       <td>{{ selectedCustomer?.phone }}</td>
                     </tr>
                     <tr>
-                      <td><span class="badge badge-success p-2">  العنوان</span></td>
+                      <td>
+                        <span class="badge badge-success p-2"> العنوان</span>
+                      </td>
                       <td>{{ selectedCustomer?.address }}</td>
                     </tr>
                   </tbody>
@@ -100,10 +113,10 @@
         <div class="card border-success" style="max-width: 100%">
           <div class="card-header text-primary">
             <div class="row">
-              <div class="col-sm">
+              <div  class="col-sm">
                 <span class="float-right"
                   ><i class="fas fa-file-invoice-dollar text-success"></i>
-                  <strong
+                  <strong *ngIf="!isSample()"
                     >السعر الإجمالى
                     {{ money(form.get("totalPrice").value) }}</strong
                   >
@@ -222,7 +235,7 @@
                     </span>
                   </div>
 
-                  <div class="form-group col-lg-4 col-md-4">
+                  <div *ngIf="!isSample()" class="form-group col-lg-4 col-md-4">
                     <mat-form-field
                       class="example-full-width"
                       appearance="outline"
@@ -239,7 +252,7 @@
                       *ngIf="purchase.get('discount').errors?.max"
                       class="text-red"
                     >
-                    الخصم يجب ألا يزيد عن 100 %
+                      الخصم يجب ألا يزيد عن 100 %
                     </span>
                     <span
                       *ngIf="purchase.get('discount').errors?.pattern"
@@ -249,7 +262,7 @@
                     </span>
                   </div>
 
-                  <div class="form-group col-lg-4 col-md-4">
+                  <div *ngIf="!isSample()" class="form-group col-lg-4 col-md-4">
                     <mat-form-field
                       class="example-full-width"
                       appearance="outline"
@@ -279,7 +292,7 @@
                   </div>
                 </div>
 
-                <small>
+                <small *ngIf="!isSample()">
                   <input
                     type="hidden"
                     formControlName="amount"
@@ -291,7 +304,7 @@
               </div>
             </a>
           </div>
-          <div class="card-header text-primary">
+          <div *ngIf="!isSample()" class="card-header text-primary">
             <strong
               ><i class="fas fa-file-invoice-dollar text-success"></i> Total
               Price {{ money(form.get("totalPrice").value) }}</strong

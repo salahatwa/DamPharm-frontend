@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { Customer } from './../../../core/classes/customer';
-import { IInvoice } from './../../../core/classes/invoice';
+import { IInvoice, ServiceType } from './../../../core/classes/invoice';
 import { Product } from './../../../core/classes/product';
 import { CustomerService } from './../../../core/services/customer.service';
 import { InvoiceService } from './../../../core/services/invoice.service';
 import { ProductService } from './../../../core/services/product.service';
-declare var Stimulsoft: any;
+
+
 
 @Component({
   selector: 'app-invoice',
@@ -15,6 +16,7 @@ declare var Stimulsoft: any;
   styleUrls: ['./invoice.component.css']
 })
 export class InvoiceComponent implements OnInit {
+  public ServiceType = ServiceType;
   form: FormGroup;
   selectedCustomer: Customer;
   showDiv: true;
@@ -43,13 +45,19 @@ export class InvoiceComponent implements OnInit {
   initForm(): void {
     this.form = this._fb.group({
       customer: ["", Validators.required],
+      type: [ServiceType.INVOICE, Validators.required],
       totalPrice: 0,
       items: this._fb.array([])
     });
+
     // initialize stream
     const myFormValueChanges$ = this.form.controls['items'].valueChanges;
     // subscribe to the stream
     myFormValueChanges$.subscribe(items => this.updatePurchasesAmount(items));
+  }
+
+  isSample() {
+    return this.form.get('type').value === ServiceType.SAMPLE;
   }
 
   updateProductList(product) {
@@ -128,10 +136,14 @@ export class InvoiceComponent implements OnInit {
 
   saveProduct() {
 
-    if (this.form.valid && this.form.controls['totalPrice'].value > 0) {
+    if (this.form.valid && (this.form.controls['totalPrice'].value > 0)) {
       this.loading = true;
       const result: IInvoice = <IInvoice>this.form.value;
       // Do useful stuff with the gathered data
+
+      if (this.isSample()) {
+        result.totalPrice = 0;
+      }
 
       this.updateAvailableQuantity(result);
 
@@ -139,13 +151,12 @@ export class InvoiceComponent implements OnInit {
         this.loading = false;
       })).subscribe((data => {
         this.invoiceService.openInvoiceDialog(data);
-        this.selectedCustomer=null;
+        this.selectedCustomer = null;
         this.showDiv = null;
         //Agregar msg
         this.initForm();
         // this.router.navigate(['/invoices-list']);
       }));
-
 
     } else {
       if (this.form.controls['totalPrice'].value <= 0) {
@@ -164,7 +175,7 @@ export class InvoiceComponent implements OnInit {
   getSelectedOptionText(event) {
     this.resetPurchase();
     this.showDiv = null;
-    this.selectedCustomer=event;
+    this.selectedCustomer = event;
   }
 
 }
