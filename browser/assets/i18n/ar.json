@@ -1,0 +1,54 @@
+{
+  "intro": "دام فارم",
+  "change":{"language":"اختر اللغه"},
+  "form":{
+    "button":{
+    "login":"تسجيل الدخول"
+    },
+    "label":{
+      "email":"البريد الإلكترونى",
+      "password":"كلمة المرور"
+    }
+  },
+  "sidebar":
+  {
+   "menu":
+   {
+    "dashboard":"الصفحه الرئيسيه",
+    "categories":"التصنيفات",
+    "products":"المنتجات",
+    "customers":"العملاء",
+    "invoices":"الفواتير",
+    "newInvoices":"إضافة فاتورة",
+    "profile":"الملف الشخصى"
+   }
+  },
+  "navbar":{
+    "language":{
+      "arabic":"عربى",
+      "english":"إنجليزى"
+    }
+  },
+  "dashboard":{
+    "title":"الصفحه الرئيسيه",
+    "space":"المساحه المستخدمه",
+    "revenue":"العائد",
+    "fixedIssue":"المشاكل المنتهيه",
+    "followers":"المتابعين"
+  },
+  "profile":{
+    "title":"الملف الشخصى"
+  },
+  "notify":{
+    "success":{
+      "add":"تم حفظ البيانات بنجاح",
+      "update":"تم تحديث البيانات بنجاح",
+      "delete":"تم حذف البيانات بنجاح"
+    }
+  },
+  "common": {
+    "search": {
+      "emptyResult": "لا توجد بيانات"
+    }
+  }
+}
